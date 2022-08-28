@@ -1,0 +1,1209 @@
+body {
+    margin: 0;
+    background-color: #F8F8F8;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url(Components/Fonts/Roboto/Roboto-Regular.ttf);
+}
+
+@font-face {
+    font-family: Spectral;
+    src: url(Components/Fonts/Spectral_SC/SpectralSC-Regular.ttf);
+}
+
+* {
+    font-family: Roboto;
+}
+
+.spectral {
+    font-family: Spectral;
+}
+
+.container {
+    margin-left: 250px;
+    height: 100%;
+    max-width: 100vw;
+    min-width: 800px;
+    overflow-y: auto;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.flex-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.contents {
+    padding: 24px 20px;
+}
+
+.bgWhite {
+    background-color: white;
+    border-radius: 10px;
+    padding: 24px;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.space-around {
+    justify-content: space-around;
+}
+
+.center {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.rightAlign {
+    align-items: center;
+    justify-content: right;
+}
+
+.leftAlign {
+    justify-content: left;
+}
+
+.borderBottom2 {
+    border-bottom: 3px solid black;
+}
+
+.borderBottom1 {
+    border-bottom: 1px solid black;
+}
+
+.border {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 44px;
+}
+
+h2 {
+    margin: 0;
+    font-size: 32px;
+}
+
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+}
+
+.marginTop8 {
+    margin-top: 8px;
+}
+
+.marginTop {
+    margin-top: 16px;
+}
+
+.marginBottom {
+    margin-bottom: 16px;
+}
+
+.paddingBottom {
+    padding-bottom: 16px;
+}
+
+input {
+    font-family: FontAwesome, Roboto;
+    border: 1px solid #9C9C9C;
+    border-radius: 8px;
+    height: 45px;
+    margin: 0;
+    border-radius: 10px;
+    padding: 4px 14px;
+    font-size: 16px;
+    background-color: white;
+}
+
+input:disabled {
+    background-color: #D4D4D4;
+}
+
+input::-webkit-input-placeholder {
+    padding-left: 2px;
+    vertical-align: top;
+    font-size: 16px;
+    color: #63636396;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #808080;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #B8B8B8;
+}
+
+.add {
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add img {
+    margin-right: 8px;
+}
+
+/* ================== BUTTONS =========================== */
+
+.solidButton {
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    cursor: pointer;
+}
+
+.delete {
+    color: #808080;
+    font-size: 16px;
+    font-weight: 500;
+    border: 2px solid #808080;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+}
+
+.delete:hover {
+    color: #B8B8B8;
+    border: 2px solid #B8B8B8;
+}
+
+.squareButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+}
+
+.buttonBlue {
+    background: #0C1096;
+    border: 2px solid #0C1096;
+}
+
+.buttonBlue:hover {
+    background: #7175F4;
+    border: 2px solid #7175F4;
+}
+
+.buttonGreen {
+    background: #35CA3B;
+    border: 2px solid #35CA3B;
+}
+
+.buttonGreen:hover {
+    background: #86DF89;
+    border: 2px solid #86DF89;
+}
+
+.buttonBrown {
+    background: #DBB324;
+    border: 2px solid #DBB324;
+}
+
+.buttonBrown:hover {
+    background: #E9D17C;
+    border: 2px solid #E9D17C;
+}
+
+.buttonRed {
+    background: #D82727;
+    border: 2px solid #D82727;
+}
+
+.buttonRed:hover {
+    background: #E87D7D;
+    border: 2px solid #E87D7D;
+}
+
+.borderedButton {
+    color: #808080;
+    font-size: 16px;
+    font-weight: 500;
+    border: 2px solid #808080;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    width: 100px;
+    height: 50px;
+}
+
+.borderedButton:hover {
+    color: #B8B8B8;
+    border: 2px solid #B8B8B8;
+}
+
+/* ================== LOGIN =========================== */
+.login {
+    background-image: url("./Components/NewImageFiles/LoginBackground.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginForm {
+    background-color: white;
+    border-radius: 10px;
+    padding: 24px;
+    width: fit-content;
+    height: fit-content;
+}
+
+.loginHeader {
+    text-align: center;
+}
+
+.loginHeader h2 {
+    margin-bottom: 24px;
+    font-size: 32px;
+}
+
+.loginHeader p {
+    margin-bottom: 45px;
+}
+
+.loginInputContainer h3 {
+    margin-bottom: 8px;
+    margin-top: 24px;
+}
+
+.loginInputContainer input {
+    width: 340px;
+}
+
+.loginInputContainer div:last-child input {
+    width: 295px;
+}
+
+.loginButton {
+    padding: 14px;
+    text-align: center;
+    background-color: #0C1096;
+    color: white;
+    font-size: 18px;
+    margin-top: 32px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.loginButton:hover {
+    background-color: #7175F4;
+}
+
+.loginButton:disabled {
+    background-color: #D0D1FB;
+}
+
+.loginForm a {
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+}
+
+.lowerActions p {
+    color: #0C1096;
+    cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 25px;
+}
+
+.lowerActions p:hover {
+    color: #7175F4;
+}
+
+
+/* ================== MODALS =========================== */
+
+.blur {
+    filter: blur(8px);
+}
+
+.Editmodal {
+    padding: 24px
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* padding-left: 20%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.FamModal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* padding-left: 20%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.modal-content {
+    height: fit-content;
+    background-color: white;
+    border-radius: 8px;
+    padding-bottom: 24px;
+}
+
+.modalAvatar {
+    margin: 16px 0;
+}
+
+.details {
+    margin: 0;
+    padding: 0 24px
+}
+
+.exit {
+    width: 200px;
+    height: 50px;
+}
+
+.ModalButtons {
+    float: right;
+}
+
+.ModalButtons .solidButton {
+    width: 100px;
+    height: 50px;
+}
+
+/* ===================== SIDE BAR ================= */
+.sidebar {
+    width: 250px;
+    position: absolute;
+    height: 100%;
+    background-color: #0C1096;
+    overflow: auto;
+}
+
+.sidebar .logo {
+    margin: 24px 42px 55px;
+    align-items: center;
+}
+
+.sidebar .logo img {
+    margin-right: 16px;
+}
+
+.sidebar .logo p {
+    font-family: Spectral;
+    color: white;
+    font-size: 24px;
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar .active {
+    background-color: white;
+    border-radius: 10px;
+    color: #0C1096;
+}
+
+.navLinks {
+    align-items: center;
+}
+
+.navLinks img {
+    margin-right: 13px;
+}
+
+.sidebar a {
+    display: block;
+    color: black;
+    padding: 16px;
+    text-decoration: none;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.sidebar a:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.navbar {
+    padding: 0 24px;
+}
+
+@media only screen and (max-height: 799px) {
+    .lowerNav {
+        border-top: 1px solid white;
+        margin-top: 80px;
+        padding-top: 16px;
+    }
+}
+
+@media screen and (min-height: 800px) {
+    .lowerNav {
+        border-top: 1px solid white;
+        padding-top: 16px;
+        position: absolute;
+        bottom: 24px;
+        width: 202px;
+    }
+}
+
+.messageNotif {
+    background-color: #D82727;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    width: 26px;
+    height: 26px;
+    margin-left: 15px
+}
+
+/* ================== TOP BAR =========================== */
+@import "//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css";
+
+.topbar {
+    height: 103px;
+    padding: 0 32px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
+    flex-wrap: nowrap;
+}
+
+.topbar h1,
+.topbar p {
+    margin: 0;
+}
+
+.greetings {
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 1366px) {
+    .gretings p {
+        font-family: Spectral;
+        font-size: 24px;
+        align-items: center;
+        width: 400px;
+    }
+}
+
+@media screen and (min-width: 1367px) {
+    .gretings p {
+        font-family: Spectral;
+        font-size: 28px;
+        align-items: center;
+    }
+}
+
+.searchBar {
+    justify-content: center;
+    align-items: center;
+}
+
+.profile {
+    margin-left: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.profilePic {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.profilePic img {
+    margin-right: 16px;
+}
+
+.profileName h4 {
+    width: 140px;
+}
+
+/* ================== PROFILE SETTING =========================== */
+.profileContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.profileContainer .name {
+    text-align: center;
+    margin: 24px;
+}
+
+.profileContainer .name p {
+    color: #9C9C9C;
+}
+
+.profileAvatar {
+    position: relative;
+    /* left: 50%; */
+    width: 152px;
+    height: 152px;
+}
+
+.uploadAvatar {
+    position: absolute;
+    bottom: 1px;
+    right: 5px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 50px;
+}
+
+.profileDetails {
+    column-count: 2;
+}
+
+.profileDetails h3 {
+    margin-bottom: 8px;
+    margin-top: 24px;
+}
+
+.profileDetails div:first-child h3 {
+    margin-top: 0;
+}
+
+.profileDetails input {
+    width: 340px;
+}
+
+.profileDetails div:nth-child(3n+3) input {
+    width: 295px;
+}
+
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+    background-color: white;
+    border-color: #9C9C9C;
+    border-radius: 8px;
+}
+
+.profileButtons {
+    margin-top: 100px;
+    margin-left: 60%;
+}
+
+.profileButtons div {
+    border: 2px solid #808080;
+    border-radius: 6px;
+    padding: 12px 24px;
+    width: fit-content;
+    margin: 8px;
+}
+
+.profileButtons .cancel {
+    color: #808080;
+}
+
+.profileButtons .cancel:hover {
+    color: #B8B8B8;
+    border: 2px solid #B8B8B8;
+}
+
+.profileButtons .update {
+    background-color: #808080;
+    color: white;
+}
+
+.profileButtons .update:hover {
+    background-color: #B8B8B8;
+    border: 2px solid #B8B8B8;
+}
+
+/* ================== OVERVIEW =========================== */
+
+.summary {
+    background-color: white;
+    padding: 24px;
+    box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
+    border-radius: 8px;
+    justify-content: space-between;
+}
+
+.summary .flex-row {
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.recentActivity,
+.recentMessages {
+    flex-grow: 4;
+}
+
+.recentActivity {
+    margin: 0 24px;
+}
+
+.violet {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    width: 147px;
+    border-radius: 8px;
+    background: #D0D1FB;
+}
+
+.violet img,
+.green img,
+.brown img {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 16px;
+}
+
+.green {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    width: 147px;
+    border-radius: 8px;
+    background-color: #D7F4D8;
+}
+
+.brown {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    width: 147px;
+    border-radius: 8px;
+    background-color: #F8F0D3;
+}
+
+.spacer {
+    border-left: 2px solid #9C9C9C;
+    height: 25px;
+    margin: 6px 17px;
+}
+
+.recentActivity h2,
+.recentMessages h2 {
+    margin-bottom: 33px;
+}
+
+.recentActivity img,
+.recentMessages img {
+    margin-right: 16px;
+}
+
+.recentActivity p span,
+.recentMessages p span {
+    font-weight: bold;
+    color: #0C1096;
+}
+
+.recentActivity .time,
+.recentMessages .time {
+    font-size: 14x;
+    color: #9C9C9C;
+    margin-top: 5px;
+}
+
+.graph {
+    margin-top: 24px;
+    background-color: white;
+    padding: 24px;
+    box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
+    border-radius: 8px;
+}
+
+.graphHeader {
+    margin-bottom: 24px;
+}
+
+/* ================== ORGANIZATION =========================== */
+
+.topHeader {
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+}
+
+.bottomHeader {
+    margin-bottom: 32px;
+}
+
+.export {
+    border-radius: 6px;
+}
+
+@media only screen and (min-width: 400px) {
+    .headerActions div input {
+        width: 250px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .headerActions div input {
+        width: 350px;
+    }
+}
+
+.headerActions .solidButton,
+.ModalButtons .solidButton {
+    margin-left: 24px;
+}
+
+.officialCard {
+    width: 240px;
+    height: fit-content;
+    padding: 24px 0;
+    margin: 0 24px 24px 0;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
+    border-radius: 8px;
+}
+
+.officialCard .actions {
+    margin-top: 24px;
+}
+
+.avatar {
+    margin-bottom: 16px;
+}
+
+.addOfficial .selects {
+    width: 48%;
+}
+
+.addOfficial .selects h4 {
+    margin: 16px 0 8px 0px;
+}
+
+.modalheader {
+    color: white;
+    background-color: #0C1096;
+    padding: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.addOfficialDetails .details {
+    border: 2px solid #9C9C9C;
+    border-radius: 0 0 8px 8px;
+
+}
+
+.addOfficialDetails {
+    width: 48%;
+    /* border: 2px solid #9C9C9C; */
+    /* border-radius: 8px; */
+    margin-bottom: 24px;
+    padding-left: 0;
+}
+
+.addOfficialDetailsHeader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 0 30px;
+}
+
+.addOfficialDetailsHeader img {
+    height: 100px;
+}
+
+.officalModal {
+    width: 750px;
+    min-height: 400px;
+}
+
+/* ================== RESIDENTS =========================== */
+
+table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+    border-radius: 15px;
+    border-style: hidden;
+    box-shadow: 0 0 0 1px #9C9C9C;
+    background-color: white;
+    table-layout: fixed;
+}
+
+.Residents_table td:nth-child(3) {
+    width: 325px;
+}
+
+td:nth-child(4) {
+    width: 210px;
+}
+
+td:nth-child(1) {
+    min-width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+thead td {
+    padding: 12px 24px;
+    border-bottom: 1px solid #9C9C9C;
+    font-weight: 500;
+}
+
+tbody td {
+    padding: 8px 24px;
+    border-bottom: 1px solid #9C9C9C;
+    font-size: 16px;
+}
+
+tfoot td {
+    padding: 8px 24px;
+    border: 0;
+}
+
+.paginationButton {
+    border: 0;
+    background-color: white;
+
+}
+
+.disable {
+    visibility: hidden;
+}
+
+.paginationButtons {
+    float: right;
+    align-items: center;
+}
+
+.pageNumber {
+    border: 1px solid white;
+    border-radius: 50px;
+    background-color: white;
+    font-size: 18px;
+    width: 40px;
+    height: 40px;
+    font-weight: 400;
+    margin: 0 8px;
+}
+
+.activeNumber {
+    border: 1px solid #0C1096;
+    background-color: #0C1096;
+    color: white;
+}
+
+.prevButton,
+.nextButton {
+    margin: 0 15px;
+}
+
+.selectDisabled {
+    border-radius: 8px;
+    background-color: #D4D4D4;
+}
+
+.dotGreen {
+    height: 8px;
+    width: 8px;
+    background-color: #35CA3B;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.dotRed {
+    height: 8px;
+    width: 8px;
+    background-color: #D82727;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* ================== RESIDENTS MODAL =========================== */
+
+.residentModals {
+    width: 755px;
+    height: 690px;
+    padding: 24px
+}
+
+.addResidentModals {
+    width: 755px;
+    height: 655px;
+    padding: 24px
+}
+
+.deleteModals {
+    width: 350px;
+    height: 190px;
+    padding: 24px 24px 0 24px
+}
+
+.deleteModals p {
+    margin: 31px 0 24px 0;
+}
+
+.remove {
+    background-color: #D82727;
+    color: white;
+    border-color: #D82727;
+}
+
+/* ================== RESIDENTS MODAL TABS=========================== */
+.tab {
+    padding: 0 10px;
+}
+
+.inputs {
+    width: 48%;
+    margin-bottom: 24px;
+}
+
+.inputs input {
+    width: 90%;
+}
+
+.inputs #date {
+    width: 95%;
+}
+
+.tab h4 {
+    margin-bottom: 8px;
+}
+
+.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root {
+    border-radius: 8px;
+}
+
+/* ==================  View Family Member =========================== */
+
+.viewFamilyMemberContainer {
+    background: #FFFFFF;
+    box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
+    border-radius: 8px;
+    margin-bottom: 24px;
+    padding: 24px;
+}
+
+/* ================== ANNOUNCEMENT MODAL=========================== */
+
+/* description */
+.css-8ewcdo-MuiInputBase-root-MuiOutlinedInput-root {
+    border-radius: 10px;
+    border-color: #9C9C9C;
+    padding: 0;
+}
+
+/* description */
+.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input {
+    padding: 16.5px 14px;
+}
+
+.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled {
+    background-color: #D4D4D4;
+    border-radius: 10px;
+}
+
+/* time and date */
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+    border-radius: 10px;
+}
+
+.announcementModals {
+    width: 690px;
+    padding: 24px
+}
+
+.addAnnouncement h4 {
+    margin-bottom: 8px;
+    margin-top: 24px;
+}
+
+.addAnnouncement input {
+    width: 96%;
+}
+
+/* ================== EVENT =========================== */
+
+.eventModals {
+    width: 700px;
+    padding: 24px
+}
+
+@media screen and (min-width: 400px){
+    .Events_table td:nth-child(2) {
+        width: 105px;
+    }
+    .Events_table td:nth-child(3){
+        width: 75px;
+    }
+}
+
+@media screen and (min-width: 1200px){
+    .Events_table td:nth-child(2){
+        width: 200px;
+    }
+    .Events_table td:nth-child(3) {
+        width: 150px;
+    }
+}
+
+td.actions:last-child{
+    margin-right: 0;
+}
+/* .Events_table td:nth-child(2) {
+    width: 100px;
+}
+
+.Events_table td:nth-child(3) {
+    width: 100px;
+} */
+
+.eventModals h4 {
+    margin-bottom: 8px;
+}
+
+.addArticle {
+    height: 270px;
+    padding-right: 10px;
+}
+
+.uploadArticleBanner {
+    margin-top: 8px;
+    height: fit-content;
+    background: #F8F8F8;
+    border: 3px dashed #0C1096;
+    border-radius: 9px;
+    padding: 24px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.uploadArticleBanner .fileUpload {
+    cursor: pointer;
+    /* border: 1px solid #ccc;
+    display: inline-block;
+    padding: 12px 24px;
+    
+    color: #0C1096;
+    font-weight: bold;
+    border: 3px solid #0C1096;
+    border-radius: 6px; */
+}
+
+.fileUpload img {
+    margin-right: 30px;
+}
+
+.fileUpload h4 {
+    font-size: 16px;
+}
+
+.fileUpload p {
+    font-size: 14px;
+    color: #9C9C9C;
+}
+
+.fileUpload .upload {
+    background-color: #F8F8F8;
+    border: 3px solid #0C1096;
+    border-radius: 9px;
+    padding: 12px 24px;
+    height: fit-content;
+    width: fit-content;
+    font-weight: bold;
+    color: #0C1096;
+    font-size: 16px;
+}
+
+.fileUpload .upload:hover {
+    background-color: #F8F8F8;
+    border: 3px solid #7175F4;
+    color: #7175F4;
+}
+
+.fileUploadContent {
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ================== HELP =========================== */
+.help {
+    width: 700px;
+}
+
+.help li {
+    margin-bottom: 24px;
+}
+
+.help p {
+    margin: 24px 0;
+}
+
+.help img:last-child {
+    margin-bottom: 24px;
+}
+
+
+/* ================== ACTIVITY LOGS =========================== */
+.ActivityLogs_table td:last-child {
+    width: 80%;
+}
+
+.ActivityLogs_table tbody td,
+.Projects_table tbody td {
+    padding: 24px;
+}
+
+.ActivityLogs_table td:first-child {
+    width: 200px;
+}

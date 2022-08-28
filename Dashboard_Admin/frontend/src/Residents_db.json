@@ -1,0 +1,676 @@
+{
+  "Residents": [
+    {
+        "id": 1,
+        "name": {
+            "firstName": "Claire",
+            "middleName": "Dela Cruz",
+            "lastName": "Zumac"
+        },
+        "birthday": "1968-10-24",
+        "gender": "Male",
+        "birthPlace": "Cavite",
+        "religion": "Catholic",
+        "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+        "email": "emmanuel99@mclaughlin.biz",
+        "phone": "0932 933 5246",
+        "govermentMemberships": {
+            "sss": "Yes",
+            "gsis": "No",
+            "pagibig": "Yes",
+            "philHealth": "Yes"
+        },
+        "educationAttainment": "High School",
+        "occupation": "Construction Worker",
+        "monthlyIncome": "9000",
+        "familyMembers": [
+            {
+                "name": "Ben Concepcion",
+                "relation": "Spouse"
+            },
+            {
+                "name": "Leanne Graham",
+                "relation": "Daughter"
+            },
+            {
+                "name": "Daniel Aquino",
+                "relation": "Son"
+            },
+            {
+                "name": "Ace Legaspi",
+                "relation": "Son"
+            }
+        ]
+    },
+    {
+      "id": 2,
+      "name": {
+        "firstName": "Esther",
+        "middle": "Dela Cruz",
+        "lastName": "Zumac"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": {
+        "firstName": "Tanya",
+        "middle": "Dela Cruz",
+        "lastName": "Malabanan"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": {
+        "firstName": "Shane",
+        "middle": "Dela Cruz",
+        "lastName": "Espejo"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": {
+        "firstName": "Randili",
+        "middle": "Dela Cruz",
+        "lastName": "Espejo"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": {
+        "firstName": "Dustin",
+        "middle": "Dela Cruz",
+        "lastName": "Espejo"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": {
+        "firstName": "Gladys",
+        "middle": "Dela Cruz",
+        "lastName": "Espejo"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": {
+        "firstName": "Pepito",
+        "middle": "Dela Cruz",
+        "lastName": "Dela Cruz"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": {
+        "firstName": "Juan",
+        "middle": "Dela Cruz",
+        "lastName": "Dela Cruz"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": {
+        "firstName": "Juan",
+        "middle": "Dela Cruz",
+        "lastName": "Ponce"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": {
+        "firstName": "Pedro",
+        "middle": "Dela Cruz",
+        "lastName": "Dela Cruz"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": {
+        "firstName": "Pepito",
+        "middle": "Dela Cruz",
+        "lastName": "Dela Cruz"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": {
+        "firstName": "Juan",
+        "middle": "Dela Cruz",
+        "lastName": "Dela Cruz"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": {
+        "firstName": "Juan",
+        "middle": "Dela Cruz",
+        "lastName": "Ponce"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": {
+        "firstName": "Pedro",
+        "middle": "Dela Cruz",
+        "lastName": "Dela Cruz"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": {
+        "firstName": "Pepito",
+        "middle": "Dela Cruz",
+        "lastName": "Dela Cruz"
+      },
+      "birthday": "1968-10-24",
+      "gender": "Male",
+      "birthPlace": "Cavite",
+      "religion": "Catholic",
+      "address": "66 Washington Street Greenhills West 1500, San Juan City, Metro Manila, NCR ",
+      "email": "emmanuel99@mclaughlin.biz",
+      "phone": "0932 933 5246",
+      "govermentMemberships": {
+        "sss": "Yes",
+        "gsis": "No",
+        "pagibig": "Yes",
+        "philHealth": "Yes"
+      },
+      "educationAttainment": "High School",
+      "occupation": "Construction Worker",
+      "monthlyIncome": "9000",
+      "familyMembers": [
+        {
+          "name": "Ben Concepcion",
+          "relation": "Spouse"
+        },
+        {
+          "name": "Leanne Graham",
+          "relation": "Daughter"
+        },
+        {
+          "name": "Daniel Aquino",
+          "relation": "Son"
+        },
+        {
+          "name": "Ace Legaspi",
+          "relation": "Son"
+        }
+      ]
+    }
+  ]
+}

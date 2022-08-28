@@ -1,0 +1,6 @@
+npm run start
+npx json-server --watch src/db.json --port 8000
+npx json-server --watch src/Residents_db.json --port 8001
+npx json-server --watch src/Announcement.json --port 8002
+npx json-server --watch src/Events.json --port 8003
+npx json-server --watch src/ActivityLogs.json --port 8004
