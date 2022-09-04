@@ -45,6 +45,7 @@ body {
 
 .contents {
     padding: 24px 20px;
+    max-height: 70%;
 }
 
 .bgWhite {
@@ -555,18 +556,22 @@ input::-webkit-input-placeholder {
     align-items: center;
 }
 
-.profilePic {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-}
-
-.profilePic img {
-    margin-right: 16px;
-}
-
 .profileName h4 {
-    width: 140px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 150%;
+    color: #0E0E0E;
+}
+
+.profileName p {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 160%;
+    color: #9C9C9C;
 }
 
 /* ================== PROFILE SETTING =========================== */
@@ -574,7 +579,6 @@ input::-webkit-input-placeholder {
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 .profileContainer .name {
@@ -582,83 +586,43 @@ input::-webkit-input-placeholder {
     margin: 24px;
 }
 
+.profileContainer .name h2 {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 140%;
+    text-align: center;
+}
+
 .profileContainer .name p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
     color: #9C9C9C;
 }
 
 .profileAvatar {
     position: relative;
-    /* left: 50%; */
     width: 152px;
     height: 152px;
 }
 
-.uploadAvatar {
-    position: absolute;
-    bottom: 1px;
-    right: 5px;
-    background-color: white;
-    padding: 15px;
-    border-radius: 50px;
+.updateProfileButtons{
+    display: flex;
+    flex-direction: column;
 }
-
-.profileDetails {
-    column-count: 2;
-}
-
-.profileDetails h3 {
-    margin-bottom: 8px;
-    margin-top: 24px;
-}
-
-.profileDetails div:first-child h3 {
-    margin-top: 0;
-}
-
-.profileDetails input {
-    width: 340px;
-}
-
-.profileDetails div:nth-child(3n+3) input {
-    width: 295px;
-}
-
-.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
-    background-color: white;
-    border-color: #9C9C9C;
+.updateProfileButtons button {
+    width: 336px;
+    height: 53px;
+    background: #0C1096;
     border-radius: 8px;
-}
-
-.profileButtons {
-    margin-top: 100px;
-    margin-left: 60%;
-}
-
-.profileButtons div {
-    border: 2px solid #808080;
-    border-radius: 6px;
-    padding: 12px 24px;
-    width: fit-content;
-    margin: 8px;
-}
-
-.profileButtons .cancel {
-    color: #808080;
-}
-
-.profileButtons .cancel:hover {
-    color: #B8B8B8;
-    border: 2px solid #B8B8B8;
-}
-
-.profileButtons .update {
-    background-color: #808080;
-    color: white;
-}
-
-.profileButtons .update:hover {
-    background-color: #B8B8B8;
-    border: 2px solid #B8B8B8;
+    font-size: 18px;
+    color: #FFFFFF;
+    font-weight: 500;
+    margin-bottom: 16px;
+    text-decoration: none;
+    border: none;
 }
 
 /* ================== OVERVIEW =========================== */
@@ -1077,27 +1041,30 @@ tfoot td {
     padding: 24px
 }
 
-@media screen and (min-width: 400px){
+@media screen and (min-width: 400px) {
     .Events_table td:nth-child(2) {
         width: 105px;
     }
-    .Events_table td:nth-child(3){
+
+    .Events_table td:nth-child(3) {
         width: 75px;
     }
 }
 
-@media screen and (min-width: 1200px){
-    .Events_table td:nth-child(2){
+@media screen and (min-width: 1200px) {
+    .Events_table td:nth-child(2) {
         width: 200px;
     }
+
     .Events_table td:nth-child(3) {
         width: 150px;
     }
 }
 
-td.actions:last-child{
+td.actions:last-child {
     margin-right: 0;
 }
+
 /* .Events_table td:nth-child(2) {
     width: 100px;
 }

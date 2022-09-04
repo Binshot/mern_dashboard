@@ -119,8 +119,21 @@ function Header(props) {
                                     />
                                 </div>
                             </div>
-                            
+
                         </div>
+                        {/* <div style={{ marginBottom: "16px" }}>
+                            <h4>Description</h4>
+                            <TextField
+                                id="outlined-multiline-static"
+                                placeholder="Input Description"
+                                multiline
+                                rows={5}
+                                fullWidth
+                                inputProps={{
+                                    maxLength: 400
+                                }}
+                            />
+                        </div> */}
                         <div>
                             <ModalTabs action="add" />
                         </div>

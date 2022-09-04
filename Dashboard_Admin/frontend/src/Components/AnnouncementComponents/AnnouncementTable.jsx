@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-import Residents from './AnnouncementTableContents';
+import React, { useEffect, useState } from 'react';
+import AnnouncementTableContents from './AnnouncementTableContents';
 import PageNumber from './AnnouncementPageNumber';
-import useFetch from "../usFetch";
 
 import Modal from "../CommonComponents/Modal"
 import TextField from "@mui/material/TextField";
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
 
 //FOR SNACKBAR
 import Snackbar from '@mui/material/Snackbar';
@@ -16,13 +11,29 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 
-const Table = (props) => {
-    // const { data: residentsList, error, isPending } = useFetch("http://localhost:8002/Announcement");
-    const residentsList = props.list
+import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
+
+const Table = () => {
+    //get all announcement
+    const { announcements, dispatch } = useAnnouncementContext()
+
+    useEffect(() => {
+        const fetchWorkouts = async () => {
+            const response = await fetch('https://drims-demo.herokuapp.com/api/announcements/')
+            const json = await response.json()
+            if (response.ok) {
+                dispatch({ type: 'SET_ANNOUNCEMENT', payload: json })
+            }
+        }
+
+        fetchWorkouts()
+    }, [dispatch])
+
+    // const announcement = props.list
     const [currentPage, setCurrentPage] = useState(1);
-    const residentsPerPage = 5;
+    const announcementsPerPage = 5;
     //Get Id of selected Resident
-    const [residentID, setResidentID] = useState(null);
+    const [announcementID, setAnnouncementID] = useState(null);
     //Set action flag
     const [action, setAction] = useState(null);
     const [showModal, setShowModal] = useState(null);
@@ -35,8 +46,6 @@ const Table = (props) => {
     //For Modal contents
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
-    const [time, setTime] = useState('')
-    const [date, setDate] = useState('')
 
     const actionButton = (
         <React.Fragment>
@@ -61,36 +70,59 @@ const Table = (props) => {
         </React.Fragment>
     );
 
-    //Delete Resident
+    if (announcements) {
 
-    if (residentsList) {
-
-        const residents = residentsList
-
-        // Get current residents
-        let indexOfLastResident = currentPage * residentsPerPage;
-        let indexOfFirstResident = indexOfLastResident - residentsPerPage;
-        let currentResidents;
-        currentResidents = residents.slice(indexOfFirstResident, indexOfLastResident);
+        // Get current announcement
+        let indexOfLastResident = currentPage * announcementsPerPage;
+        let indexOfFirstResident = indexOfLastResident - announcementsPerPage;
+        let currentAnnouncement;
+        currentAnnouncement = announcements.slice(indexOfFirstResident, indexOfLastResident);
 
         // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
 
-        const getResidentID = id => setResidentID(id);
+        const getAnnouncementID = id => setAnnouncementID(id);
         const getAction = action => setAction(action);
         const getModal = modal => setShowModal(modal);
         const getDelete = del => setShowDeleteModal(del)
         const getTitle = title => setTitle(title)
         const getDes = des => setDescription(des)
-        const getDate = date => setDate(date)
-        const getTime = time => setTime(time)
-        let setSelectedAnnouncement = residents.findIndex(res => res.id === residentID)
 
-        const handleUpdate = () => {
-            residentsList[residentID-1].title = title
-            residentsList[residentID-1].description = description
-            residentsList[residentID-1].dateSched = date
-            residentsList[residentID-1].timeSched = time
+        // Delete Announcement
+        const handleDelete = async () => {
+
+            const response = await fetch('https://drims-demo.herokuapp.com/api/announcements/'
+                + announcementID, {
+                method: 'DELETE'
+            })
+            const json = await response.json()
+
+            if (response.ok) {
+                dispatch({ type: 'DELETE_ANNOUNCEMENT', payload: json })
+            }
+        }
+
+        // Update Announcement
+        const handleUpdate = async () => {
+
+            const response = await fetch('https://drims-demo.herokuapp.com/api/announcements/'
+                + announcementID, {
+                method: 'PATCH',
+                body: JSON.stringify({
+                    announcementTitle: title,
+                    announcementDetail: description
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+
+            })
+
+            const json = await response.json()
+
+            if (response.ok) {
+                dispatch({ type: 'UPDATE_ANNOUNCEMENT', payload: json })
+            }
         }
 
         return (
@@ -136,42 +168,8 @@ const Table = (props) => {
                                     onChange={(e) => setDescription(e.target.value)}
                                 />
                             </div>
-
-                            <div className="flex-row space-between">
-                                <div className="flex-column inputs">
-                                    <h4>Schedule Date Post</h4>
-                                    <TextField
-                                        id="date"
-                                        type="date"
-                                        defaultValue={date}
-                                        sx={{ width: 338 }}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                        disabled={action === "view" ? true : false}
-                                        onChange={(e) => setDate(e.target.value)}
-                                    />
-                                </div>
-                                <div className="flex-column inputs">
-                                    <h4>Schedule Time Post</h4>
-                                    <TextField
-                                        id="time"
-                                        type="time"
-                                        defaultValue={time}
-                                        disabled={action === "view" ? true : false}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                        inputProps={{
-                                            step: 300, // 5 min
-                                        }}
-                                        sx={{ width: 338 }}
-                                        onChange={(e) => setTime(e.target.value)}
-                                    />
-                                </div>
-                            </div>
                         </div>
-                        <div className="rightAlign ModalButtons">
+                        <div className="rightAlign ModalButtons" style={{ marginTop: "23px" }}>
                             <button
                                 className="borderedButton"
                                 onClick={() => {
@@ -205,7 +203,7 @@ const Table = (props) => {
                 <Modal
                     shown={showDeleteModal}
                     close={() => {
-                        setShowDeleteModal(false);
+                        setShowDeleteModal(false)
                     }}>
                     <div className="deleteModals">
                         <h2> Remove Announcement?</h2>
@@ -232,8 +230,8 @@ const Table = (props) => {
                                     document.getElementById("sideBlur").className = "sidebar";
                                     document.getElementById("contentBlur").className = "resident";
                                     document.getElementById("headerBlur").className = "header";
+                                    handleDelete()
                                     toggleDeletesnackbar(true)
-                                    residentsList.splice(setSelectedAnnouncement, 1)
                                 }}>
                                 Remove
                             </button>
@@ -259,7 +257,9 @@ const Table = (props) => {
                 />
                 <Snackbar
                     open={Deletesnackbar}
-                    onClose={() => { toggleDeletesnackbar(false) }}
+                    onClose={() => {
+                        toggleDeletesnackbar(false)
+                    }}
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     autoHideDuration={2000}
                     message={`${title} has been removed!`}
@@ -287,27 +287,25 @@ const Table = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <Residents
-                                residents={currentResidents}
-                                id={getResidentID}
+                            <AnnouncementTableContents
+                                announcement={currentAnnouncement}
+                                id={getAnnouncementID}
                                 action={getAction}
                                 flag={getModal}
                                 del={getDelete}
                                 title={getTitle}
                                 description={getDes}
-                                date={getDate}
-                                time={getTime}
                             />
                         </tbody>
                         <tfoot>
                             <tr>
                                 <td colSpan={2}>
-                                    <h4>Total Announcement: {residents.length}</h4>
+                                    <h4>Total Announcement: {announcements.length}</h4>
                                 </td>
                                 <td colSpan={2}>
                                     <PageNumber
-                                        residentsPerPage={residentsPerPage}//ResidentPerPage
-                                        totalResidents={residents.length}
+                                        announcementsPerPage={announcementsPerPage}//ResidentPerPage
+                                        totalAnnouncement={announcements.length}
                                         paginate={paginate}
                                     />
                                 </td>

@@ -8,14 +8,28 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import VisibilityOn from '@mui/icons-material/Visibility';
 
+import { useLogin } from "../../hooks/useLogin"
+
 function Login() {
     const [type, setType] = useState(false)
 
     const handleClickShowPassword = () => {
         setType(!type)
     };
+
+    //For Login Auth
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const {login, error, isLoading} = useLogin()
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault()
+      console.log(email, password)
+      await login(email, password)
+    }
+  
     return (
-        <div className='login'>
+        <form className='login' onSubmit={handleSubmit}>
             <div className='loginForm'>
                 <div className='loginHeader'>
                     <h2>LOGIN</h2>
@@ -24,13 +38,15 @@ function Login() {
                 <div className='loginInputContainer'>
                     <div>
                         <h3>Email</h3>
-                        <input type="email" placeholder='Input Email' />
+                        <input type="email" placeholder='Input Email' value={email} onChange={(e)=>setEmail(e.target.value)}/>
                     </div>
                     <div>
                         <h3>Password</h3>
                         <OutlinedInput
                             id="outlined-adornment-password"
                             type={type ? "text" : "password"}
+                            value={password} 
+                            onChange={(e)=>setPassword(e.target.value)}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -44,18 +60,19 @@ function Login() {
                         />
                     </div>
                 </div>
-                <NavLink to="/admin">
+                {/* <NavLink to="/admin">
                     <div className='loginButton'>
                         LOGIN
                     </div>
-                </NavLink>
+                </NavLink> */}
+                <button disabled={isLoading}>Log in</button>
                 <div className='lowerActions'>
                     <NavLink to="/forgot_password">
                         <p>Forgot Password?</p>
                     </NavLink>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 

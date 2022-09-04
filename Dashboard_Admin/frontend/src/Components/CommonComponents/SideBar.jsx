@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from "../NewImageFiles/Sidebar/Logo.svg";
 
+import { useLogout } from '../../hooks/useLogout'
+
 //Active Icons
 import ActiveOverview from "../NewImageFiles/Sidebar/ActiveOverview.svg";
 import ActiveOrganization from "../NewImageFiles/Sidebar/ActiveOrganization.svg";
@@ -27,6 +29,13 @@ import LogOut from "../NewImageFiles/Sidebar/Logout.svg";
 
 export default function SideBar() {
     const path = useLocation().pathname
+
+    const { logout } = useLogout()
+
+    const handleLogout = () => {
+        logout()
+    }
+
     return (
         <div id='sideBlur' className="sidebar">
             <div className="logo flex-row">
@@ -34,47 +43,47 @@ export default function SideBar() {
                 <p>DRIMS </p>
             </div>
             <div className="navbar">
-                <NavLink to="/admin/overview">
+                <NavLink to="/overview">
                     <div className="flex-row navLinks">
-                        <img src={(path === "/admin/overview") ? ActiveOverview : Overview} alt="" />
+                        <img src={(path === "/overview") ? ActiveOverview : Overview} alt="" />
                         <p>Overview</p>
                     </div>
                 </NavLink>
-                <NavLink to="/admin/organization">
+                <NavLink to="/organization">
                     <div className="flex-row navLinks">
-                        <img src={(path === "/admin/organization") ? ActiveOrganization : Organization} alt="" />
+                        <img src={(path === "/organization") ? ActiveOrganization : Organization} alt="" />
                         Organization
                     </div>
                 </NavLink>
-                <NavLink to="/admin/residents">
+                <NavLink to="/residents">
                     <div className="flex-row navLinks">
-                        <img src={(path === "/admin/residents") ? ActiveResident : Residents} alt="" />
+                        <img src={(path === "/residents") ? ActiveResident : Residents} alt="" />
                         Residents
                     </div>
 
                 </NavLink>
-                <NavLink to="/admin/announcement">
+                <NavLink to="/announcement">
                     <div className="flex-row navLinks">
-                        <img src={(path === "/admin/announcement") ? ActiveAnnouncement : Announcement} alt="" />
+                        <img src={(path === "/announcement") ? ActiveAnnouncement : Announcement} alt="" />
                         Announcements
                     </div>
 
                 </NavLink>
-                <NavLink to="/admin/events">
+                <NavLink to="/events">
                     <div className="flex-row navLinks">
-                        <img src={(path === "/admin/events") ? ActiveEvent : Events} alt="" />
+                        <img src={(path === "/events") ? ActiveEvent : Events} alt="" />
                         Events
                     </div>
                 </NavLink>
-                <NavLink to="/admin/project">
+                <NavLink to="/project">
                     <div className="flex-row navLinks">
-                        <img src={(path === "/admin/project") ? ActiveProject : Projects} alt="" />
+                        <img src={(path === "/project") ? ActiveProject : Projects} alt="" />
                         Projects
                     </div>
                 </NavLink>
-                <NavLink to="/admin/messages">
+                <NavLink to="/messages">
                     <div className="flex-row navLinks">
-                        <img src={(path === "/admin/messages") ? ActiveMessage : Messages} alt="" />
+                        <img src={(path === "/messages") ? ActiveMessage : Messages} alt="" />
                         Messages
                         <div className="messageNotif">
                             1
@@ -82,20 +91,20 @@ export default function SideBar() {
                     </div>
                 </NavLink>
                 <div className="lowerNav">
-                    <NavLink to="/admin/help">
+                    <NavLink to="/help">
                         <div className="flex-row navLinks">
-                            <img src={(path === "/admin/help") ? ActiveHelp : Help} alt="" />
+                            <img src={(path === "/help") ? ActiveHelp : Help} alt="" />
                             Help
                         </div>
                     </NavLink>
-                    <NavLink to="/admin/activity_logs">
+                    <NavLink to="/activity_logs">
                         <div className="flex-row navLinks">
-                            <img src={(path === "/admin/activity_logs") ? ActiveActivityLogs : Activity} alt="" />
+                            <img src={(path === "/activity_logs") ? ActiveActivityLogs : Activity} alt="" />
                             Activity Logs
                         </div>
                     </NavLink>
                     <NavLink to="/login">
-                        <div className="flex-row navLinks">
+                        <div className="flex-row navLinks" onClick={handleLogout}>
                             <img src={LogOut} alt="" />
                             Logout
                         </div>

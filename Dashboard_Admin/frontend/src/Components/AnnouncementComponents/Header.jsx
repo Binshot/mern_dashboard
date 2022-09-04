@@ -14,8 +14,11 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 
-function Header(props) {
+import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
+function Header() {
+
     const [AddmodalShown, toggleAddModal] = useState(false);
+    const { dispatch } = useAnnouncementContext()
 
     //FOR SNACKBAR
     const [snackbar, toggleSnackbar] = useState(false);
@@ -34,44 +37,66 @@ function Header(props) {
             </IconButton>
         </React.Fragment>
     );
+    const [announcementTitle, setTitle] = useState('')
+    const [announcementDetail, setDescription] = useState('')
+    const [error, setError] = useState(null)
 
-    const date = new Date()
+    // const handleSubmit = () => {
+    //     const announcement = { id, title, description, dateSched, timeSched }
+    //     // console.log(announcement)
 
-    const day = ("0" + date.getDate()).slice(-2)
-    const month = ("0" + (date.getMonth() + 1)).slice(-2)
-    const hour = ("0" + date.getHours()).slice(-2)
-    const minutes = ("0" + date.getMinutes()).slice(-2)
-    const currentDate = `${date.getFullYear()}-${month}-${day}`
-    const currentTime = `${hour}:${minutes}`
+    //     toggleAddModal(false)
+    //     document.getElementById("topBlur").className = "topbar flex-row";
+    //     document.getElementById("sideBlur").className = "sidebar";
+    //     document.getElementById("contentBlur").className = "resident";
+    //     document.getElementById("headerBlur").className = "header";
+    //     toggleSnackbar(true)
 
-    const id = props.length + 1
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [dateSched, setDate] = useState(currentDate)
-    const [timeSched, setTime] = useState(currentTime)
+    //     props.get(announcement)
+    //     //insert data to json file
+    //     // fetch('http://localhost:8002/Announcement', {
+    //     //     method: 'POST',
+    //     //     headers: { "Content-Type": "application/json" },
+    //     //     body: JSON.stringify(announcement)
+    //     // }).then(() => {
+    //     //     console.log('new announcement added');
+    //     //     window.location.reload(false);
+    //     //     toggleSnackbar(true)
+    //     // })
+    // }
+    const handleSubmit = async (e) => {
+        e.preventDefault()
 
-    const handleSubmit = () => {
-        const announcement = { id, title, description, dateSched, timeSched }
-        // console.log(announcement)
+        const announcement = { announcementTitle, announcementDetail }
 
         toggleAddModal(false)
         document.getElementById("topBlur").className = "topbar flex-row";
         document.getElementById("sideBlur").className = "sidebar";
         document.getElementById("contentBlur").className = "resident";
         document.getElementById("headerBlur").className = "header";
-        toggleSnackbar(true)
 
-        props.get(announcement)
-        //insert data to json file
-        // fetch('http://localhost:8002/Announcement', {
-        //     method: 'POST',
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify(announcement)
-        // }).then(() => {
-        //     console.log('new announcement added');
-        //     window.location.reload(false);
-        //     toggleSnackbar(true)
-        // })
+
+        const response = await fetch('https://drims-demo.herokuapp.com/api/announcements/', {
+            method: 'POST',
+            body: JSON.stringify(announcement),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        console.log(JSON.stringify(announcement))
+        const json = await response.json()
+
+        if (!response.ok) {
+            console.log(announcement)
+            setError(json.error)
+        }
+        if (response.ok) {
+            toggleSnackbar(true)
+            setError(null)
+            console.log('new announcement added:', json)
+            dispatch({ type: 'CREATE_ANNOUNCEMENT', payload: json })
+        }
+
     }
 
     return (
@@ -96,6 +121,7 @@ function Header(props) {
                                     inputProps={{
                                         maxLength: 80
                                     }}
+                                    value={announcementTitle}
                                     onChange={(e) => setTitle(e.target.value)}
                                     required
                                 />
@@ -111,50 +137,21 @@ function Header(props) {
                                     inputProps={{
                                         maxLength: 400
                                     }}
+                                    value={announcementDetail}
                                     onChange={(e) => setDescription(e.target.value)}
                                     required
                                 />
                             </div>
-
-                            <div className="flex-row space-between">
-                                <div className="flex-column inputs">
-                                    <h4>Schedule Date Post</h4>
-                                    <TextField
-                                        id="date"
-                                        type="date"
-                                        value={dateSched}
-                                        placeholder="Choose Date"
-                                        onChange={(e) => setDate(e.target.value)}
-                                        sx={{ width: 338 }}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                        disabled={action === "view" ? true : false}
-                                        required
-                                    />
-                                </div>
-                                <div className="flex-column inputs">
-                                    <h4>Schedule Time Post</h4>
-                                    <TextField
-                                        id="time"
-                                        type="time"
-                                        required
-                                        value={timeSched}
-                                        onChange={(e) => setTime(e.target.value)}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                        sx={{ width: 338 }}
-                                    />
-                                </div>
-                            </div>
                         </div>
-                        <div className="rightAlign ModalButtons">
+                        {/*Button*/}
+                        <div className="rightAlign ModalButtons" style={{ marginTop: "23px" }}>
                             <button
                                 type="button"
                                 className="borderedButton"
                                 onClick={() => {
                                     toggleAddModal(false)
+                                    setDescription('')
+                                    setTitle('')
                                     document.getElementById("topBlur").className = "topbar flex-row";
                                     document.getElementById("sideBlur").className = "sidebar";
                                     document.getElementById("contentBlur").className = "resident";
@@ -172,10 +169,14 @@ function Header(props) {
 
             <Snackbar
                 open={snackbar}
-                onClose={() => { toggleSnackbar(false) }}
+                onClose={() => {
+                    toggleSnackbar(false)
+                    setDescription('')
+                    setTitle('')
+                }}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 autoHideDuration={5000}
-                message={`${title} has been added!`}
+                message={`${announcementTitle} has been added!`}
                 ContentProps={{
                     sx: {
                         background: "#35CA3B",

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import NextPage from '@mui/icons-material/ArrowForwardIos';
 import PrevPage from '@mui/icons-material/ArrowBackIos';
 
-function ResidentsPageNumber({ residentsPerPage, totalResidents, paginate }) {
+function ResidentsPageNumber({ announcementsPerPage, totalAnnouncement, paginate }) {
     const [currentPage, setCurrentPage] = useState(1);
 
     const getPaginationGroup = () => {
@@ -31,7 +31,7 @@ function ResidentsPageNumber({ residentsPerPage, totalResidents, paginate }) {
                 className="prevButton"
             />
             {getPaginationGroup().map((item, index) => (
-                (item <= Math.ceil(totalResidents / residentsPerPage)) && (
+                (item <= Math.ceil(totalAnnouncement / announcementsPerPage)) && (
                     <button
                         key={index}
                         className={currentPage === item ? 'pageNumber activeNumber' : 'pageNumber'}
@@ -42,8 +42,8 @@ function ResidentsPageNumber({ residentsPerPage, totalResidents, paginate }) {
 
             ))}
             <NextPage
-                style={currentPage === Math.ceil(totalResidents / residentsPerPage) ? { fill: "#D0D1FB" } : { fill: "#0C1096", cursor: "pointer" }}
-                onClick={currentPage === Math.ceil(totalResidents / residentsPerPage) ? null : nextPage}
+                style={currentPage === Math.ceil(totalAnnouncement / announcementsPerPage) ? { fill: "#D0D1FB" } : { fill: "#0C1096", cursor: "pointer" }}
+                onClick={currentPage === Math.ceil(totalAnnouncement / announcementsPerPage) ? null : nextPage}
                 className="nextButton"
             />
         </nav>

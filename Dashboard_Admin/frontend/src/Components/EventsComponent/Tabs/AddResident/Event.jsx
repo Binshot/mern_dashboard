@@ -8,6 +8,10 @@ function PersonalInformation() {
     const [startTime, setStartTime] = useState('')
     const [endTime, setEndTime] = useState('')
 
+    console.log(startDate)
+    console.log(endDate)
+    console.log(startTime)
+    console.log(endTime)
     return (
         <div className="tab">
             <div style={{ marginBottom: "16px" }}>
@@ -38,7 +42,7 @@ function PersonalInformation() {
 
                             <div className="upload">Upload</div>
                         </div>
-                        <input type="file" />
+                        <input type="file" accept="image/*" />
                     </label>
                 </div>
                 <div className="flex-row space-between marginBottom" style={{ marginBottom: "16px" }}>

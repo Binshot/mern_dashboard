@@ -13,7 +13,7 @@ function MainPage() {
             <div className='container'>
                 <Topbar />
                 <div className='contents'>
-                {pathname === "/admin" && <Navigate to={"/admin/overview"} replace={true}/>}
+                {pathname === "/" && <Navigate to={"/overview"} replace={true}/>}
                 <Outlet />
                 </div>
             </div>

@@ -37,7 +37,7 @@ function PersonalInformation() {
 
                                 <div className="upload">Upload</div>
                             </div>
-                            <input type="file" />
+                            <input type="file" accept="image/*" />
                         </label>
 
                     </div>
