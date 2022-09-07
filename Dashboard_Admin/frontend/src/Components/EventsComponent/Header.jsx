@@ -5,7 +5,8 @@ import AddIcon from "../NewImageFiles/Sidebar/Events.svg"
 import SearchIcon from '@mui/icons-material/Search';
 import Print from "../NewImageFiles/Topbar/Print.svg"
 
-import ModalTabs from "./Tabs/tab"
+import Box from '@mui/material/Box';
+import uploadEventBanner from "../NewImageFiles/Event/uploadEventBanner.svg"
 
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from "@mui/material/TextField";
@@ -16,10 +17,12 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 
-function Header(props) {
+//Context
+import { useEventContext } from "../../hooks/useEventContext"
+function Header() {
     const [AddmodalShown, toggleAddModal] = useState(false);
 
-    const tagOption = ['Business', 'Work', 'Legal'];
+    const tagOption = ['Business', 'Work', 'Legal', 'Community'];
 
     //FOR SNACKBAR
     const [snackbar, toggleSnackbar] = useState(false);
@@ -39,38 +42,63 @@ function Header(props) {
         </React.Fragment>
     );
 
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [tag, setTag] = useState('')
-    const [location, setLocation] = useState('')
-    const [startDate, setStartDate] = useState('')
-    const [endDate, setEndDate] = useState('')
-    const [startTime, setStartTime] = useState('')
-    const [endTime, setEndTime] = useState('')
+    const [eventTitle, setEventTitle] = useState("");
+    const [eventDescription, setEventDescription] = useState("");
+    const [eventTag, setEventTag] = useState("");
+    const [eventLocation, setEventLocation] = useState("");
+    const [dateFrom, setDateFrom] = useState("");
+    const [dateTo, setDateTo] = useState("");
+    const [timeFrom, setTimeFrom] = useState("");
+    const [timeTo, setTimeTo] = useState("");
+    const [file, setFile] = useState(null);
 
-    const handleSubmit = () => {
-        const date = { startDate, endDate }
-        const time = { startTime, endTime }
-        const event = { title, description, tag, location, date, time }
-        console.log(event)
+    const [addEventLoading, setAddEventLoading] = useState(false)
+    //context dispatch
+    const { dispatch } = useEventContext()
 
-        toggleAddModal(false)
-        document.getElementById("topBlur").className = "topbar flex-row";
-        document.getElementById("sideBlur").className = "sidebar";
-        document.getElementById("ResidentcontentBlur").className = "resident";
-        document.getElementById("headerBlur").className = "header";
-        toggleSnackbar(true)
-        props.get(event)
-        //insert data to json file
-        // fetch('http://localhost:8003/Events', {
-        //     method: 'POST',
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify(event)
-        // }).then(() => {
-        //     toggleSnackbar(true)
-        //     console.log('new announcement added');
-        //     window.location.reload(false);
-        // })
+    const handleSubmit = async (e) => {
+        setAddEventLoading(true)
+        e.preventDefault();
+
+        var eventImage = "";
+        if (eventTitle && file) {
+            const fileExtension = file.name.substring(file.name.lastIndexOf('.'));
+            const regex = /[!*'();:@&=+$,/?%#\\[\]\s]/gm;
+            const fileName = eventTitle.replaceAll(regex, "+").toLowerCase();
+            eventImage = fileName + fileExtension;
+        }
+
+        const eventObj = {
+            eventTitle, eventDescription, eventTag, eventLocation, dateFrom, dateTo, timeFrom, timeTo, eventImage
+        };
+
+        const formData = new FormData();
+        formData.append('eventInfo', JSON.stringify(eventObj));
+        formData.append('file', file);
+
+        try {
+            const response = await fetch('https://drims-demo.herokuapp.com/api/events/', {
+                method: 'POST',
+                body: formData
+            })
+            const json = await response.json();
+            console.log(json);
+
+            if (response.ok) {
+                toggleSnackbar(true)
+                console.log('new event added:', json)
+                toggleAddModal(false)
+                document.getElementById("topBlur").className = "topbar flex-row";
+                document.getElementById("sideBlur").className = "sidebar";
+                document.getElementById("ResidentcontentBlur").className = "resident";
+                document.getElementById("headerBlur").className = "header";
+                setAddEventLoading(false)
+                dispatch({ type: 'CREATE_EVENT', payload: json })
+
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -83,14 +111,14 @@ function Header(props) {
                 <form onSubmit={handleSubmit}>
                     <div className="eventModals">
                         <h2 className="marginBottom">Add Event</h2>
-                        <div>
+                        <Box sx={{ width: '100%', height: '400px', overflow: 'auto', paddingRight: '10px', mb: 4, borderBottom: 1, borderColor: '#9C9C9C' }}>
                             <div className="flex-column">
                                 <h4>Tittle</h4>
                                 <input
                                     type="text"
                                     placeholder="Input Title"
                                     required
-                                    onChange={(e) => setTitle(e.target.value)}
+                                    onChange={(e) => setEventTitle(e.target.value)}
                                     className='marginBottom'
                                 />
                             </div>
@@ -105,7 +133,7 @@ function Header(props) {
                                         renderInput={(params) => <TextField {...params} placeholder="Choose Tag" />}
                                         required
                                         onChange={(event, newValue) => {
-                                            setTag(newValue);
+                                            setEventTag(newValue);
                                         }}
                                     />
                                 </div>
@@ -115,30 +143,103 @@ function Header(props) {
                                         id="outlined-multiline-static"
                                         placeholder="Input Location"
                                         sx={{ width: 330 }}
-                                        onChange={(e) => setLocation(e.target.value)}
+                                        onChange={(e) => setEventLocation(e.target.value)}
                                     />
                                 </div>
                             </div>
+                            <div style={{ marginBottom: "16px" }}>
+                                <h4>Description</h4>
+                                <TextField
+                                    id="outlined-multiline-static"
+                                    placeholder="Input Description"
+                                    multiline
+                                    rows={6}
+                                    fullWidth
+                                    inputProps={{
+                                        maxLength: 400
+                                    }}
+                                    onChange={(e) => setEventDescription(e.target.value)}
+                                />
+                            </div>
+                            <h4>Events Banner</h4>
+                            <div className="uploadArticleBanner" style={{ marginBottom: "16px" }}>
+                                <label className="fileUpload">
+                                    <div className="flex-row fileUploadContent">
+                                        <div className="flex-row">
+                                            <img src={uploadEventBanner} alt="" />
+                                            <div className="flex-column">
+                                                <h4>Upload an image or drag and drop here</h4>
+                                                <p>JPG or PNG, smaller than 10MB</p>
+                                            </div>
+                                        </div>
 
-                        </div>
-                        {/* <div style={{ marginBottom: "16px" }}>
-                            <h4>Description</h4>
-                            <TextField
-                                id="outlined-multiline-static"
-                                placeholder="Input Description"
-                                multiline
-                                rows={5}
-                                fullWidth
-                                inputProps={{
-                                    maxLength: 400
-                                }}
-                            />
-                        </div> */}
-                        <div>
-                            <ModalTabs action="add" />
-                        </div>
+                                        <div className="upload">Upload</div>
+                                    </div>
+                                    <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0])} />
+                                </label>
+                            </div>
+                            <div className="flex-row space-between marginBottom" style={{ marginBottom: "16px" }}>
+                                <div>
+                                    <h4>Start Date</h4>
+                                    <TextField
+                                        id="date"
+                                        type="date"
+                                        sx={{ width: '330px' }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        required
+                                        onChange={(e) => setDateFrom(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <h4>End Date</h4>
+                                    <TextField
+                                        id="date"
+                                        type="date"
+                                        sx={{ width: '330px' }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        required
+                                        onChange={(e) => setDateTo(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex-row space-between marginBottom" >
+                                <div>
+                                    <h4>Start Time</h4>
+                                    <TextField
+                                        id="time"
+                                        type="time"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        sx={{ width: '330px' }}
+                                        required
+                                        onChange={(e) => setTimeFrom(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <h4>End Time</h4>
+                                    <TextField
+                                        id="time"
+                                        type="time"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        sx={{ width: '330px' }}
+                                        required
+                                        onChange={(e) => setTimeTo(e.target.value)}
+                                    />
+                                </div>
+
+                            </div>
+
+                        </Box>
                         <div className="ModalButtons rightAlign">
                             <button
+                                disabled={addEventLoading}
                                 className="borderedButton"
                                 onClick={() => {
                                     toggleAddModal(false)
@@ -149,7 +250,7 @@ function Header(props) {
                                 }}>
                                 Cancel
                             </button>
-                            <button className="solidButton buttonBlue" type="submit">
+                            <button className={addEventLoading ? "solidButton disabled" : "solidButton buttonBlue"} type="submit" disabled={addEventLoading}>
                                 Add
                             </button>
                         </div>
@@ -162,7 +263,7 @@ function Header(props) {
                 onClose={() => { toggleSnackbar(false) }}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 autoHideDuration={5000}
-                message="{Announcement' Tittle} has been added!"
+                message={`${eventTitle} has been added!`}
                 ContentProps={{
                     sx: {
                         background: "#35CA3B",

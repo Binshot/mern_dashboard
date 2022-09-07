@@ -14,10 +14,13 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 
+//context
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
 function Header() {
 
     const [AddmodalShown, toggleAddModal] = useState(false);
+
+    //context dispatch
     const { dispatch } = useAnnouncementContext()
 
     //FOR SNACKBAR
@@ -41,29 +44,6 @@ function Header() {
     const [announcementDetail, setDescription] = useState('')
     const [error, setError] = useState(null)
 
-    // const handleSubmit = () => {
-    //     const announcement = { id, title, description, dateSched, timeSched }
-    //     // console.log(announcement)
-
-    //     toggleAddModal(false)
-    //     document.getElementById("topBlur").className = "topbar flex-row";
-    //     document.getElementById("sideBlur").className = "sidebar";
-    //     document.getElementById("contentBlur").className = "resident";
-    //     document.getElementById("headerBlur").className = "header";
-    //     toggleSnackbar(true)
-
-    //     props.get(announcement)
-    //     //insert data to json file
-    //     // fetch('http://localhost:8002/Announcement', {
-    //     //     method: 'POST',
-    //     //     headers: { "Content-Type": "application/json" },
-    //     //     body: JSON.stringify(announcement)
-    //     // }).then(() => {
-    //     //     console.log('new announcement added');
-    //     //     window.location.reload(false);
-    //     //     toggleSnackbar(true)
-    //     // })
-    // }
     const handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -87,7 +67,6 @@ function Header() {
         const json = await response.json()
 
         if (!response.ok) {
-            console.log(announcement)
             setError(json.error)
         }
         if (response.ok) {

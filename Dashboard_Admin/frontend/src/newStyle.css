@@ -45,7 +45,6 @@ body {
 
 .contents {
     padding: 24px 20px;
-    max-height: 70%;
 }
 
 .bgWhite {
@@ -210,6 +209,12 @@ input::-webkit-input-placeholder {
 .buttonBlue {
     background: #0C1096;
     border: 2px solid #0C1096;
+}
+
+.disabled {
+    background-color: #D0D1FB;
+    border: 2px solid #D0D1FB;
+    cursor: default;
 }
 
 .buttonBlue:hover {
@@ -608,10 +613,11 @@ input::-webkit-input-placeholder {
     height: 152px;
 }
 
-.updateProfileButtons{
+.updateProfileButtons {
     display: flex;
     flex-direction: column;
 }
+
 .updateProfileButtons button {
     width: 336px;
     height: 53px;
@@ -1042,36 +1048,74 @@ tfoot td {
 }
 
 @media screen and (min-width: 400px) {
+
+    /* title */
+    .Events_table td:nth-child(1) {
+        width: 90px;
+    }
+
+    /* date */
     .Events_table td:nth-child(2) {
         width: 105px;
     }
 
+    /* time */
     .Events_table td:nth-child(3) {
-        width: 75px;
+        width: 80px;
+    }
+
+    /* status */
+    .Events_table td:nth-child(4) {
+        width: 70px;
+    }
+
+    /* participants */
+    .Events_table td:nth-child(5) {
+        width: 90px;
+    }
+
+    /* action */
+    .Events_table td:last-child {
+        width: 200px;
     }
 }
 
 @media screen and (min-width: 1200px) {
-    .Events_table td:nth-child(2) {
-        width: 200px;
+
+    /* title */
+    .Events_table td:nth-child(1) {
+        width: 230px;
     }
 
+    /* date */
+    .Events_table td:nth-child(2) {
+        width: 105px;
+    }
+
+    /* time */
     .Events_table td:nth-child(3) {
-        width: 150px;
+        width: 80px;
+    }
+
+    /* status */
+    .Events_table td:nth-child(4) {
+        width: 80px;
+    }
+
+    /* participants */
+    .Events_table td:nth-child(5) {
+        width: 90px;
+    }
+
+    /* action */
+    .Events_table td:last-child {
+        width: 200px;
     }
 }
 
 td.actions:last-child {
     margin-right: 0;
 }
-
-/* .Events_table td:nth-child(2) {
-    width: 100px;
-}
-
-.Events_table td:nth-child(3) {
-    width: 100px;
-} */
 
 .eventModals h4 {
     margin-bottom: 8px;
@@ -1093,18 +1137,6 @@ td.actions:last-child {
 
 input[type="file"] {
     display: none;
-}
-
-.uploadArticleBanner .fileUpload {
-    cursor: pointer;
-    /* border: 1px solid #ccc;
-    display: inline-block;
-    padding: 12px 24px;
-    
-    color: #0C1096;
-    font-weight: bold;
-    border: 3px solid #0C1096;
-    border-radius: 6px; */
 }
 
 .fileUpload img {

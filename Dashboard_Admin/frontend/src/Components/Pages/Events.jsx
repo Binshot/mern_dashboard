@@ -1,16 +1,15 @@
 import Header from "../EventsComponent/Header"
 import ResidentsTable from "../EventsComponent/Table"
-import { useState } from "react";
-import EventsList from "../dummyDB/Events";
+import { EventContextProvider } from '../../context/EventsContext'
 function Events() {
-    const [eventList, setEventList] = useState(EventsList)
-    const getevent = event => setEventList(oldArray => [...oldArray, event])
 
     return (
-        <div className="content">
-            <Header get={getevent} />
-            <ResidentsTable list={eventList}  />
-        </div>
+        <EventContextProvider>
+            <div className="content">
+                <Header />
+                <ResidentsTable />
+            </div>
+        </EventContextProvider>
     );
 }
 

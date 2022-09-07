@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Residents from './TableContents';
 import PageNumber from './PageNumber';
-import useFetch from "../usFetch";
 
 import Modal from "../CommonComponents/Modal"
-import ModalTabs from "./Tabs/tab"
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from "@mui/material/TextField";
 
@@ -14,16 +12,53 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 
-const Table = (props) => {
-    // const { data: eventsList, error, isPending } = useFetch("http://localhost:8003/Events");
-    const eventsList = props.list
+import Box from '@mui/material/Box';
+import uploadEventBanner from "../NewImageFiles/Event/uploadEventBanner.svg"
+import { useEventContext } from "../../hooks/useEventContext"
+
+import format from 'date-fns/format'
+
+const Table = () => {
+
+    //get all announcement
+    const { events, dispatch } = useEventContext()
+
+    useEffect(() => {
+        const fetchWorkouts = async () => {
+            const response = await fetch('https://drims-demo.herokuapp.com/api/events/')
+            const json = await response.json()
+            if (response.ok) {
+                dispatch({ type: 'SET_EVENT', payload: json })
+            }
+        }
+
+        fetchWorkouts()
+    }, [dispatch])
+
     const [currentPage, setCurrentPage] = useState(1);
     const eventsPerPage = 5;
+
     //Get Id of selected Resident
-    const [eventsID, setEventsID] = useState(null);
-    const [title, setTitle] = useState('')
+    const [eventTitle, setEventTitle] = useState("");
+    const [eventDescription, setEventDescription] = useState("");
+    const [eventTag, setEventTag] = useState("");
+    const [eventLocation, setEventLocation] = useState("");
+    const [dateFrom, setDateFrom] = useState("");
+    const [dateTo, setDateTo] = useState("");
+    const [timeFrom, setTimeFrom] = useState("");
+    const [timeTo, setTimeTo] = useState("");
+    const [file, setFile] = useState(null);
+
+    //get Selected Event
+    const [selectedEvent, setSelectedEvent] = useState('')
+
+    //set loading state of update button
+    const [isLoading, setIsLoading] = useState(false)
+
     //Set action flag
     const [action, setAction] = useState("");
+
+    //set modal state
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -31,11 +66,7 @@ const Table = (props) => {
     const [snackbar, toggleSnackbar] = useState(false);
     const [Deletesnackbar, toggleDeletesnackbar] = useState(false);
 
-    const tag = [
-        { value: 'Business', label: 'Business' },
-        { value: 'Business', label: 'Business' },
-        { value: 'Business', label: 'Business' }
-    ];
+    const tag = ['Business', 'Work', 'Legal', 'Community'];
 
     const actionButton = (
         <React.Fragment>
@@ -60,11 +91,22 @@ const Table = (props) => {
         </React.Fragment>
     );
 
-    if (eventsList) {
+    // Delete Announcement
+    const handleDelete = async () => {
 
-        const events = eventsList
-        // console.log(events[eventsID-1].title)
+        const response = await fetch('https://drims-demo.herokuapp.com/api/events/'
+            + selectedEvent._id, {
+            method: 'DELETE'
+        })
+        const json = await response.json()
 
+        if (response.ok) {
+            dispatch({ type: 'DELETE_EVENT', payload: json })
+        }
+    }
+
+
+    if (events) {
         // Get current events
         let indexOfLastEvents = currentPage * eventsPerPage;
         let indexOfFirstEvents = indexOfLastEvents - eventsPerPage;
@@ -75,24 +117,11 @@ const Table = (props) => {
         const paginate = pageNumber => setCurrentPage(pageNumber);
 
         //get resident id
-        const getEventsID = id => setEventsID(id);
         const getAction = action => setAction(action);
         const getModal = modal => setShowModal(modal);
         const getDelete = del => setShowDeleteModal(del)
-        const getTitle = title => setTitle(title)
-        let setSelectedEvent = events.findIndex(res => res.id === eventsID)
+        const getSelectedEvent = event => setSelectedEvent(event)
 
-        //Delete Resident
-        const handleDelete = () => {
-            // console.log(eventsID)
-            // fetch('http://localhost:8003/Events/' + eventsID, {
-            //     method: 'DELETE'
-            // }).then(() => {
-            //     console.log('Resident Deleted');
-            //     window.location.reload(false);
-            // })
-
-        }
         return (
             <div>
 
@@ -104,39 +133,44 @@ const Table = (props) => {
                             setShowModal(false);
                         }}>
                         <div className="eventModals">
-                            <h2 className="marginBottom">{action === "view" ? "View Event" : "Update Event"}</h2>
-                            <div>
+                            <h2 className="marginBottom">{action === 'view' ? "View Event" : "Update Event"}</h2>
+                            <Box sx={{ width: '100%', height: '400px', overflow: 'auto', paddingRight: '10px', mb: 4, borderBottom: 1, borderColor: '#9C9C9C' }}>
                                 <div className="flex-column">
                                     <h4>Tittle</h4>
                                     <input
                                         type="text"
+                                        placeholder="Input Title"
+                                        required
+                                        defaultValue={selectedEvent.eventTitle}
+                                        onChange={(e) => setEventTitle(e.target.value)}
                                         className='marginBottom'
-                                        defaultValue={events[eventsID].title}
                                         disabled={action === 'view' ? true : false}
                                     />
-
                                 </div>
                                 <div className="flex-row space-between marginBottom">
                                     <div className="flex-column">
                                         <h4>Tag</h4>
-                                        {action === 'view' && (
-                                            <TextField
-                                                id="date"
+                                        {action !== 'view' ?
+                                            <Autocomplete
+                                                disablePortal
+                                                id="combo-box-demo"
+                                                options={tag}
                                                 sx={{ width: 330 }}
-                                                InputLabelProps={{
-                                                    shrink: true,
+                                                renderInput={(params) => <TextField {...params} />}
+                                                required
+                                                defaultValue={selectedEvent.eventTag}
+                                                onChange={(event, newValue) => {
+                                                    setEventTag(newValue);
                                                 }}
-                                                disabled
-                                                defaultValue={events[eventsID].tag}
                                             />
-                                        )}
-                                        <Autocomplete
-                                            options={tag}
-                                            sx={{ width: 330 }}
-                                            renderInput={(params) => <TextField {...params} placeholder="Choose Tag" />}
-                                            defaultValue={events[eventsID].tag}
-                                            hidden={action === 'view' ? true : false}
-                                        />
+                                            :
+                                            <TextField
+                                                id="outlined-multiline-static"
+                                                sx={{ width: 330 }}
+                                                value={selectedEvent.eventTag}
+                                                disabled={true}
+                                            />
+                                        }
                                     </div>
                                     <div className="flex-column">
                                         <h4>Location</h4>
@@ -144,17 +178,117 @@ const Table = (props) => {
                                             id="outlined-multiline-static"
                                             placeholder="Input Location"
                                             sx={{ width: 330 }}
-                                            defaultValue={events[eventsID].location}
+                                            defaultValue={selectedEvent.eventLocation}
+                                            onChange={(e) => setEventLocation(e.target.value)}
                                             disabled={action === 'view' ? true : false}
+
                                         />
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <ModalTabs action={action} startDate={events[eventsID].date.startDate} endDate={events[eventsID].date.endDate} startTime={events[eventsID].time.startTime} endTime={events[eventsID].time.endTime} />
-                            </div>
-                            <div className="ModalButtons rightAlign">
+                                <div style={{ marginBottom: "16px" }}>
+                                    <h4>Description</h4>
+                                    <TextField
+                                        id="outlined-multiline-static"
+                                        placeholder="Input Description"
+                                        multiline
+                                        rows={6}
+                                        fullWidth
+                                        defaultValue={selectedEvent.eventDescription}
+                                        onChange={(e) => setEventDescription(e.target.value)}
+                                        inputProps={{
+                                            maxLength: 400
+                                        }}
+                                        disabled={action === 'view' ? true : false}
 
+                                    />
+                                </div>
+                                <h4>Events Banner</h4>
+                                <div className="uploadArticleBanner" style={{ marginBottom: "16px" }}>
+                                    <label className="fileUpload" style={{cursor: "pointer"}}>
+                                        <div className="flex-row fileUploadContent">
+                                            <div className="flex-row">
+                                                <img src={uploadEventBanner} alt="" />
+                                                <div className="flex-column">
+                                                    <h4>Upload an image or drag and drop here</h4>
+                                                    <p>JPG or PNG, smaller than 10MB</p>
+                                                </div>
+                                            </div>
+                                            <div className="upload">Upload</div>
+                                        </div>
+                                        <input type="file" accept="image/*" />
+                                    </label>
+                                </div>
+                                <div className="flex-row space-between marginBottom" style={{ marginBottom: "16px" }}>
+                                    <div>
+                                        <h4>Start Date</h4>
+                                        <TextField
+                                            id="date"
+                                            type="date"
+                                            sx={{ width: '330px' }}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            required
+                                            defaultValue={format(new Date(selectedEvent.eventDateTime.from), 'yyyy-MM-dd')}
+                                            onChange={(e) => setDateFrom(e.target.value)}
+                                            disabled={action === 'view' ? true : false}
+
+                                        />
+                                    </div>
+                                    <div>
+                                        <h4>End Date</h4>
+                                        <TextField
+                                            id="date"
+                                            type="date"
+                                            sx={{ width: '330px' }}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            required
+                                            defaultValue={format(new Date(selectedEvent.eventDateTime['to']), 'yyyy-MM-dd')}
+                                            onChange={(e) => setDateTo(e.target.value)}
+                                            disabled={action === 'view' ? true : false}
+
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex-row space-between marginBottom" >
+                                    <div>
+                                        <h4>Start Time</h4>
+                                        <TextField
+                                            id="time"
+                                            type="time"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            sx={{ width: '330px' }}
+                                            defaultValue={format(new Date(selectedEvent.eventDateTime['from']), 'kk:mm')}
+                                            required
+                                            onChange={(e) => setTimeFrom(e.target.value)}
+                                            disabled={action === 'view' ? true : false}
+
+                                        />
+                                    </div>
+                                    <div>
+                                        <h4>End Time</h4>
+                                        <TextField
+                                            id="time"
+                                            type="time"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            sx={{ width: '330px' }}
+                                            required
+                                            defaultValue={format(new Date(selectedEvent.eventDateTime['to']), 'kk:mm')}
+                                            onChange={(e) => setTimeTo(e.target.value)}
+                                            disabled={action === 'view' ? true : false}
+
+                                        />
+                                    </div>
+
+                                </div>
+                            </Box>
+                            <div className="ModalButtons rightAlign">
                                 <button
                                     className="borderedButton"
                                     onClick={() => {
@@ -168,6 +302,7 @@ const Table = (props) => {
                                 </button>
                                 <button
                                     hidden={action === "view" ? true : false}
+                                    disabled={isLoading}
                                     className="solidButton buttonBlue"
                                     onClick={() => {
                                         setShowModal(false)
@@ -176,6 +311,7 @@ const Table = (props) => {
                                         document.getElementById("ResidentcontentBlur").className = "resident";
                                         document.getElementById("headerBlur").className = "header";
                                         toggleSnackbar(true)
+                                        setIsLoading(true)
                                     }}>
                                     Update
                                 </button>
@@ -183,7 +319,6 @@ const Table = (props) => {
                         </div>
                     </Modal>
                 )}
-
 
                 {/* Delete Resident */}
                 <Modal
@@ -217,7 +352,7 @@ const Table = (props) => {
                                     document.getElementById("ResidentcontentBlur").className = "resident";
                                     document.getElementById("headerBlur").className = "header";
                                     toggleDeletesnackbar(true)
-                                    eventsList.splice(setSelectedEvent, 1)
+                                    handleDelete()
                                 }}>
                                 Remove
                             </button>
@@ -225,12 +360,13 @@ const Table = (props) => {
                     </div>
                 </Modal>
 
+                {/* update snackbar */}
                 <Snackbar
                     open={snackbar}
                     onClose={() => { toggleSnackbar(false) }}
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     autoHideDuration={2000}
-                    message="{Resident's name} information has been added!"
+                    message={`${selectedEvent.eventTitle} information has been updated!`}
                     ContentProps={{
                         sx: {
                             background: "#DBB324",
@@ -241,12 +377,13 @@ const Table = (props) => {
                     }}
                     action={actionButton}
                 />
+                {/* delete snackbar */}
                 <Snackbar
                     open={Deletesnackbar}
                     onClose={() => { toggleDeletesnackbar(false) }}
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     autoHideDuration={2000}
-                    message={`${title} has been removed!`}
+                    message={`${selectedEvent.eventTitle} has been removed!`}
                     ContentProps={{
                         sx: {
                             background: "#D82727",
@@ -259,31 +396,30 @@ const Table = (props) => {
                 />
 
                 <div id='ResidentcontentBlur' className='resident'>
-                    {/* {isPending && <div>Loading...</div>}
-                    {error && <div>{error}</div>} */}
                     <table className='Events_table'>
                         <thead>
                             <tr>
                                 <td><h4>Title</h4> </td>
                                 <td><h4>Date</h4></td>
                                 <td><h4>Time</h4></td>
+                                <td><h4>Status</h4></td>
+                                <td><h4>No. of Participants</h4></td>
                                 <td><h4>ACTION</h4></td>
                             </tr>
                         </thead>
                         <tbody>
                             <Residents
                                 events={currentEvents}
-                                id={getEventsID}
                                 action={getAction}
                                 flag={getModal}
                                 del={getDelete}
-                                title={getTitle}
+                                selectedEvents={getSelectedEvent}
                             />
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colSpan={2}>
-                                    <h4>Total Announcement: {events.length}</h4>
+                                <td colSpan={4}>
+                                    <h4>Total Events: {events.length}</h4>
                                 </td>
                                 <td colSpan={2}>
                                     <PageNumber
