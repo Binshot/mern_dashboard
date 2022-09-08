@@ -8,19 +8,19 @@ import AddMember from "../NewImageFiles/ActionButton/AddFamilyMember.svg"
 import ToggleOn from "../NewImageFiles/ActionButton/Badge-Check.svg"
 import ToggleOff from "../NewImageFiles/ActionButton/Badge-Close.svg"
 
-const Residents = ({ residents, id, flag, action, del, lastName, firstName }) => {
+const Residents = ({ residents, flag, action, del, returnResident}) => {
     const [Toggle, setToggle] = useState(true)
     return (
-        <tr>
-            <td>{residents.name.lastName}, {residents.name.firstName}</td>
+        <tr key={residents._id}>
+            <td>{residents.lastName}, {residents.firstName}</td>
             <td>{Toggle ? <div><span className='dotGreen'></span> Activated</div> : <div><span className='dotRed'></span> Deactivated</div>}</td>
             <td className='residentActions actions'>
                 <div className='flex-row'>
                     <div style={{ marginRight: "16px" }} className="solidButton squareButton buttonGreen"
                         onClick={() => {
-                            id(residents.id)
                             flag(true)
                             action("view")
+                            returnResident(residents)
                             document.getElementById("sideBlur").className += " blur";
                             document.getElementById("topBlur").className += " blur";
                             document.getElementById("headerBlur").className += " blur";
@@ -41,11 +41,9 @@ const Residents = ({ residents, id, flag, action, del, lastName, firstName }) =>
                     </div>
                     <div style={{ marginRight: "16px" }} className="solidButton squareButton buttonBrown"
                         onClick={() => {
-                            id(residents.id)
                             flag(true)
                             action("edit")
-                            lastName(residents.name.lastName)
-                            firstName(residents.name.firstName)
+                            returnResident(residents)
                             document.getElementById("sideBlur").className += " blur";
                             document.getElementById("topBlur").className += " blur";
                             document.getElementById("headerBlur").className += " blur";
@@ -59,11 +57,9 @@ const Residents = ({ residents, id, flag, action, del, lastName, firstName }) =>
                     </div>
                     <div className='delete squareButton'
                         onClick={() => {
-                            id(residents.id)
                             del(true)
                             action("delete")
-                            lastName(residents.name.lastName)
-                            firstName(residents.name.firstName)
+                            returnResident(residents)
                             document.getElementById("sideBlur").className += " blur";
                             document.getElementById("topBlur").className += " blur";
                             document.getElementById("headerBlur").className += " blur";

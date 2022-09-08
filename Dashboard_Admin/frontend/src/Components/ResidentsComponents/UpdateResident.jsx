@@ -13,7 +13,6 @@ import Avatar from "../NewImageFiles/Resident/Avatar.svg"
 import ViewFamily from "./ViewFamilyInformation"
 
 //FOR SNACKBAR
-import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
@@ -59,26 +58,26 @@ function UpdateResident(props) {
     );
 
     //Resident data input
-    const [lastName, setLastName] = useState(residentData.name.lastName)
-    const [firstName, setFirstName] = useState(residentData.name.firstName)
-    const [middleName, setMiddleName] = useState(residentData.name.middleName)
-    const [role, setRole] = useState(residentData.role)
+    const [lastName, setLastName] = useState(residentData.lastName)
+    const [firstName, setFirstName] = useState(residentData.firstName)
+    const [middleName, setMiddleName] = useState(residentData.middleName)
+    // const [role, setRole] = useState(residentData.role)
     const [suffix, setSuffix] = useState(residentData.suffix)
     const [birthday, setBday] = useState(residentData.birthday)
-    const [birthPlace, setBirthplace] = useState(residentData.birthPlace)
+    const [birthPlace, setBirthplace] = useState(residentData.birthplace)
     const [gender, setGender] = useState(residentData.gender)
     const [religion, setReligion] = useState(residentData.religion)
     const [email, setEmail] = useState(residentData.email)
     const [phone, setPhone] = useState(residentData.phone)
     const [address, setAddress] = useState(residentData.address)
-    const [civilStatus, setCivilStatus] = useState('residentData.')
+    const [civilStatus, setCivilStatus] = useState(residentData.civilStatus)
     const [educationalAttainment, setEducationalAttainment] = useState(residentData.educationalAttainment)
     const [occupation, setOccupation] = useState(residentData.occupation)
     const [monthlyIncome, setMonthlyIncome] = useState(residentData.monthlyIncome)
-    const [sss, setSSS] = useState(residentData.govermentMemberships.sss)
-    const [gsis, setGSIS] = useState(residentData.govermentMemberships.gsis)
-    const [pagibig, setPagibig] = useState(residentData.govermentMemberships.pagibig)
-    const [philhealth, setPhilhealth] = useState(residentData.govermentMemberships.philHealth)
+    const [sss, setSSS] = useState(residentData.membership .sss)
+    const [gsis, setGSIS] = useState(residentData.membership .gsis)
+    const [pagibig, setPagibig] = useState(residentData.membership .pagibig)
+    const [philhealth, setPhilhealth] = useState(residentData.membership .philhealth)
 
     const handleSubmit = () => {
         props.setShown(false)
@@ -94,7 +93,7 @@ function UpdateResident(props) {
         residentData.name.lastName = lastName
         residentData.name.firstName = firstName
         residentData.name.middleName = middleName
-        residentData.role = role
+        // residentData.role = role
         residentData.suffix = suffix
         residentData.birthday = birthday
         residentData.birthPlace = birthPlace
@@ -107,10 +106,10 @@ function UpdateResident(props) {
         residentData.educationalAttainment = educationalAttainment
         residentData.occupation = occupation
         residentData.monthlyIncome = monthlyIncome
-        residentData.govermentMemberships.sss = sss
-        residentData.govermentMemberships.gsis = gsis
-        residentData.govermentMemberships.pagibig = pagibig
-        residentData.govermentMemberships.philHealth = philhealth
+        residentData.membership.sss = sss
+        residentData.membership.gsis = gsis
+        residentData.membership.pagibig = pagibig
+        residentData.membership.philhealth = philhealth
 
     }
 
@@ -331,14 +330,14 @@ function UpdateResident(props) {
                                                             <input
                                                                 type="text"
                                                                 required
-                                                                value="civilStatus"
+                                                                value={civilStatus}
                                                                 disabled
                                                             /> :
                                                             <Autocomplete
                                                                 style={{ width: "99%" }}
                                                                 disablePortal
                                                                 id="combo-box-demo"
-                                                                value={civilStatusOptions[setSelectedStatus]}
+                                                                value={civilStatus}
                                                                 options={civilStatusOptions}
                                                                 sx={{ width: '100%' }}
                                                                 renderInput={(params) => <TextField {...params} placeholder="Choose Civil Status" />}
@@ -353,17 +352,17 @@ function UpdateResident(props) {
                                                             <input
                                                                 type="text"
                                                                 required
-                                                                value={educationAttainment}
+                                                                value={educationalAttainment}
                                                                 disabled
                                                             /> :
                                                             <Autocomplete
                                                                 style={{ width: "99%" }}
                                                                 disablePortal
                                                                 id="combo-box-demo"
-                                                                value={educationAttainment[setSelectedEducation]}
+                                                                value={educationalAttainment}
                                                                 options={educationAttainment}
                                                                 sx={{ width: '100%' }}
-                                                                renderInput={(params) => <TextField {...params} placeholder="Choose Educational Background" />}
+                                                                renderInput={(params) => <TextField {...params}/>}
                                                                 onChange={(e, newValue) => setEducationalAttainment(newValue)}
                                                                 required
                                                             />
@@ -405,8 +404,8 @@ function UpdateResident(props) {
                                                                 onChange={(e) => setSSS(e.target.value)}
                                                                 required
                                                             >
-                                                                <FormControlLabel value="Yes" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
-                                                                <FormControlLabel value="No" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
+                                                                <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
+                                                                <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
                                                             </RadioGroup>
                                                         </FormControl>
                                                     </div>
@@ -420,8 +419,8 @@ function UpdateResident(props) {
                                                                 onChange={(e) => setGSIS(e.target.value)}
                                                                 required
                                                             >
-                                                                <FormControlLabel value="Yes" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
-                                                                <FormControlLabel value="No" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
+                                                                <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
+                                                                <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
                                                             </RadioGroup>
                                                         </FormControl>
                                                     </div>
@@ -437,8 +436,8 @@ function UpdateResident(props) {
                                                                 onChange={(e) => setPagibig(e.target.value)}
                                                                 required
                                                             >
-                                                                <FormControlLabel value="Yes" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
-                                                                <FormControlLabel value="No" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
+                                                                <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
+                                                                <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
                                                             </RadioGroup>
                                                         </FormControl>
                                                     </div>
@@ -452,8 +451,8 @@ function UpdateResident(props) {
                                                                 onChange={(e) => setPhilhealth(e.target.value)}
                                                                 required
                                                             >
-                                                                <FormControlLabel value="Yes" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
-                                                                <FormControlLabel value="No" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
+                                                                <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
+                                                                <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
                                                             </RadioGroup>
                                                         </FormControl>
                                                     </div>
@@ -475,7 +474,7 @@ function UpdateResident(props) {
                                                                 options={familyMember}
                                                                 sx={{ width: '100%' }}
                                                                 renderInput={(params) => <TextField {...params} placeholder="Choose Kind of Family Member" />}
-                                                                onChange={(e, newValue) => setRole(newValue)}
+                                                                // onChange={(e, newValue) => setRole(newValue)}
                                                                 required
                                                             />
                                                         </div>
@@ -496,8 +495,6 @@ function UpdateResident(props) {
                                         document.getElementById("sideBlur").className = "sidebar";
                                         document.getElementById("ResidentcontentBlur").className = "resident";
                                         document.getElementById("headerBlur").className = "header";
-                                        setValue(0)
-                                        props.returnID(null)
                                         toggleSnackbar(true)
                                     }}>
                                     {props.action === "view" ? "Exit" : "Cancel"}

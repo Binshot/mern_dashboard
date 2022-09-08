@@ -17,17 +17,13 @@ import Messages from "./Components/Pages/Messages"
 import Help from "./Components/Pages/Help";
 import ActivityLogs from "./Components/Pages/ActivityLogs"
 
-import DefaultPage from './defaultPage';
-
 export default function App() {
-  const flag = false
   
   const { user } = useAuthContext()
 
   return (
     <Router>
       <Routes>
-        {/* <Route exact path='/' element={<DefaultPage/>} /> */}
         <Route exact path="login" element={!user ? <Login /> : <Navigate to="/" />} />
         <Route exact path="forgot_password" element={!user ? <Forgot /> : <Navigate to="/" />} />
         <Route exact path="/" element={ user ? <MainPage /> : <Navigate to="login" /> }>

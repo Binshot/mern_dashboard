@@ -15,7 +15,15 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
+
+//context
+import { useResidentContext } from "../../hooks/userResidentContext"
+
 function AddResident(props) {
+
+    //context dispatch
+    const { dispatch } = useResidentContext()
+    const [error, setError] = useState(null)
 
     const genderOptions = ['Male', 'Female', 'Other'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
@@ -31,34 +39,37 @@ function AddResident(props) {
         setValue(value);
     }
 
-    //Resident data input
-    let id = props.length + 1
-    const [lastName, setLastName] = useState('')
     const [role, setRole] = useState('')
     const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
     const [middleName, setMiddleName] = useState('')
     const [suffix, setSuffix] = useState('')
     const [birthday, setBday] = useState('')
-    const [birthPlace, setBirthplace] = useState('')
-    const [gender, setGender] = useState('')
-    const [religion, setReligion] = useState('')
+    const [birthplace, setBirthplace] = useState('')
+    const [gender, setGender] = useState(null)
+    const [religion, setReligion] = useState(null)
     const [email, setEmail] = useState('')
-    const [phone, setPhone] = useState('')
+    const [contactNumber, setPhone] = useState('')
     const [address, setAddress] = useState('')
     const [civilStatus, setCivilStatus] = useState('')
-    const [educationAttainment, setEducationalAttainment] = useState('')
+    const [educationalAttainment, setEducationalAttainment] = useState('')
     const [occupation, setOccupation] = useState('')
     const [monthlyIncome, setMonthlyIncome] = useState('')
     const [sss, setSSS] = useState('')
     const [gsis, setGSIS] = useState('')
     const [pagibig, setPagibig] = useState('')
     const [philhealth, setPhilhealth] = useState('')
+
     const [snackbar, toggleSnackbar] = useState(false);
-    
-    const handleSubmit = () => {
-        const name = { lastName, firstName, middleName }
-        const govermentMemberships = { sss, gsis, pagibig, philhealth }
-        const res = { id, role, civilStatus, name, birthday, gender, birthPlace, religion, address, email, phone, educationAttainment, occupation, monthlyIncome, govermentMemberships }
+
+    const handleFamilyHeadSubmit = async (e) => {
+        console.log("Head Family")
+        e.preventDefault()
+
+        const resident = {
+            firstName, lastName, middleName, suffix, birthday, birthplace, gender, religion, email, contactNumber, address,
+            civilStatus, educationalAttainment, occupation, monthlyIncome, membership: { pagibig, sss, gsis, philhealth }
+        }
 
         props.setShown(false)
         toggleSnackbar(true)
@@ -66,19 +77,64 @@ function AddResident(props) {
         document.getElementById("sideBlur").className = "sidebar";
         document.getElementById("ResidentcontentBlur").className = "resident";
         document.getElementById("headerBlur").className = "header";
-        setValue(0)
-        
-        props.action !== "addMember" && props.resident(res)
-        //insert data to json file
-        // fetch('http://localhost:8003/Events', {
+
+        console.log(resident)
+
+        // const response = await fetch('https://drims-demo.herokuapp.com/api/residents/', {
         //     method: 'POST',
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify(event)
-        // }).then(() => {
-        //     toggleSnackbar(true)
-        //     console.log('new announcement added');
-        //     window.location.reload(false);
+        //     body: JSON.stringify(resident),
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
         // })
+
+        // const json = await response.json()
+
+        // if (!response.ok) {
+        //     setError(json.error)
+        // }
+        // if (response.ok) {
+        //     setError(null)
+        //     console.log('new Resident added:', json)
+        //     dispatch({ type: 'CREATE_RESIDENT', payload: json })
+        // }
+
+    }
+
+    const handleFamilyMemberSubmit = async (e) => {
+        e.preventDefault()
+
+        const resident = {
+            firstName, lastName, middleName, suffix, birthday, birthplace, gender, religion, email, contactNumber, address,
+            civilStatus, educationalAttainment, occupation, monthlyIncome, membership: { pagibig, sss, gsis, philhealth }
+        }
+
+        props.setShown(false)
+        toggleSnackbar(true)
+        document.getElementById("topBlur").className = "topbar flex-row";
+        document.getElementById("sideBlur").className = "sidebar";
+        document.getElementById("ResidentcontentBlur").className = "resident";
+        document.getElementById("headerBlur").className = "header";
+
+        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/', {
+            method: 'POST',
+            body: JSON.stringify(resident),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const json = await response.json()
+
+        if (!response.ok) {
+            setError(json.error)
+        }
+        if (response.ok) {
+            setError(null)
+            console.log('new Resident added:', json)
+            dispatch({ type: 'CREATE_RESIDENT', payload: json })
+        }
+
     }
     const action = (
         <React.Fragment>
@@ -114,10 +170,10 @@ function AddResident(props) {
                 }}
                 action={action}
             />
-            
+
             {props.shown ? (
                 <div className="modal-backdrop">
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={props.action === "addMember" ? handleFamilyMemberSubmit : handleFamilyHeadSubmit}>
                         <div className="addResidentModals modal-content">
                             <h2 className="marginBottom">{props.action === "addMember" ? "Add Family Member" : "Add Head of the Family"}</h2>
                             <div>
@@ -197,7 +253,7 @@ function AddResident(props) {
                                                             id="date"
                                                             type="date"
                                                             placeholder="Choose Birthday"
-                                                            sx={{ width: 338 }}
+                                                            sx={{ width: 343 }}
                                                             InputLabelProps={{
                                                                 shrink: true,
                                                             }}
@@ -211,7 +267,7 @@ function AddResident(props) {
                                                             type="text"
                                                             required
                                                             placeholder="Input Birth Place"
-                                                            value={birthPlace}
+                                                            value={birthplace}
                                                             onChange={(e) => setBirthplace(e.target.value)}
                                                         />
                                                     </div>
@@ -225,20 +281,24 @@ function AddResident(props) {
                                                             id="combo-box-demo"
                                                             options={genderOptions}
                                                             sx={{ width: '100%' }}
-                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Gender" required />}
+                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Gender" />}
+                                                            value={gender}
                                                             onChange={(event, e) => setGender(e)}
                                                         />
                                                     </div>
                                                     <div className="flex-column inputs">
                                                         <h4>Religion</h4>
                                                         <Autocomplete
-                                                            style={{ width: "99%" }}
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={religionOptions}
-                                                            sx={{ width: '100%' }}
-                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Religion" required />}
-                                                            onChange={(event, e) => setReligion(e)}
+                                                            sx={{ width: "99%" }}
+                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
+                                                            value={religion}
+                                                            onChange={(event, e) => {
+                                                                setReligion(e)
+                                                                console.log(e)
+                                                            }}
                                                         />
                                                     </div>
                                                 </div>
@@ -259,7 +319,7 @@ function AddResident(props) {
                                                             type="text"
                                                             required
                                                             placeholder="Input Contact Number"
-                                                            value={phone}
+                                                            value={contactNumber}
                                                             onChange={(e) => setPhone(e.target.value)}
                                                         />
                                                     </div>

@@ -7,7 +7,8 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import Print from "../NewImageFiles/Topbar/Print.svg"
 
-function Header(props) {
+function Header() {
+    
     const [AddmodalShown, toggleAddModal] = useState(false);
 
     //FOR SNACKBAR
@@ -15,11 +16,10 @@ function Header(props) {
     const [name, setName] = useState([])
 
     const getShown = get => toggleAddModal(get)
-    const getResident = get => (props.getSelectedRes(get), setName(get.name))
     const getSnack = get => toggleSnackbar(get)
     return (
         <div>
-            <AddResidentTab shown={AddmodalShown} setShown={getShown} resident={getResident} length={props.list.length} toggleSnack={getSnack} />
+            <AddResidentTab shown={AddmodalShown} setShown={getShown} toggleSnack={getSnack} />
 
             <div id='headerBlur' className='header'>
                 <div className="flex-row borderBottom2 topHeader">

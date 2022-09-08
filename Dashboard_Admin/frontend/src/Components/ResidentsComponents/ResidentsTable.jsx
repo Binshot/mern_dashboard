@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Residents from './ResidentsTableContents';
 import PageNumber from './ResidentsPageNumber';
-import useFetch from "../usFetch";
 
 import Modal from "../CommonComponents/Modal"
 //FOR SNACKBAR
@@ -13,16 +12,27 @@ import Button from '@mui/material/Button';
 import UpdateResident from "./UpdateResident"
 import AddFamilyMember from "./AddResident"
 
-const Table = (props) => {
-    // const { data: residentsList, error, isPending } = useFetch("http://localhost:8001/Residents");
-    const residentsList = props.list
+import { useResidentContext } from "../../hooks/userResidentContext"
+
+const Table = () => {
+    //get all resident
+    const { residents, dispatch } = useResidentContext()
+
+    useEffect(() => {
+        const fetchResidents = async () => {
+            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/')
+            const json = await response.json()
+            if (response.ok) {
+                dispatch({ type: 'SET_RESIDENT', payload: json })
+            }
+        }
+
+        fetchResidents()
+    }, [dispatch])
+
     const [currentPage, setCurrentPage] = useState(1);
     const residentsPerPage = 5;
-    //Get Id of selected Resident
-    const [residentID, setResidentID] = useState(0);
 
-    const [lastName, setLastName] = useState('')
-    const [firstName, setFirstName] = useState('')
     //Set action flag
     const [action, setAction] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -55,19 +65,9 @@ const Table = (props) => {
         </React.Fragment>
     );
 
-    //Delete Resident
-    // const handleDelete = () => {
-    // console.log(residentID)
-    //     fetch('http://localhost:8001/Residents/' + residentID, {
-    //         method: 'DELETE'
-    //     }).then(() => {
-    //         console.log('Resident Deleted');
-    //         window.location.reload(false);
-    //     })
-    // }
-    if (residentsList) {
+    const [selectedResident, setSelectedResident] = useState('')
 
-        const residents = residentsList
+    if (residents) {
 
         // Get current residents
         let indexOfLastResident = currentPage * residentsPerPage;
@@ -78,29 +78,23 @@ const Table = (props) => {
         // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
 
-        //get resident id
-        const getResidentID = id => setResidentID(id);
         const getAction = action => setAction(action);
         const getModal = modal => setShowModal(modal);
         const getDelete = del => setShowDeleteModal(del)
-        const getLastName = last => setLastName(last)
-        const getFirstName = first => setFirstName(first)
+        const getSelectedResident = resident => setSelectedResident(resident)
         const getSnack = snack => toggleSnackbar(snack)
-        const getID = get => setResidentID(get)
-        let setSelectedResident = residents.findIndex(res => res.id === residentID)
-        // const [toggle, setToggle] = useState(true)
-        // const getToggle = tog => setToggle(tog)
+
         return (
             <div>
                 {/* View or Update */}
                 {action !== "addMember" && (
-                    residents[residentID - 1] && (
+                    selectedResident && (
                         <UpdateResident
                             shown={showModal}
                             setShown={getModal}
-                            action={action} resident={residents[residentID - 1]}
+                            action={action} 
+                            resident={selectedResident}
                             length={residents.length}
-                            returnID={getID}
                             snackbar ={getSnack}
                         />
                     )
@@ -120,7 +114,7 @@ const Table = (props) => {
                     <div className="deleteModals">
                         <h2> Remove Resident?</h2>
                         <div>
-                            <p>{`Are you sure you want to remove ${lastName}, ${firstName}? All data removed are archived and can be restored.`}</p>
+                            <p>{`Are you sure you want to remove ${selectedResident.lastName}, ${selectedResident.firstName}? All data removed are archived and can be restored.`}</p>
                         </div>
                         <div className="rightAlign ModalButtons">
                             <button
@@ -143,7 +137,7 @@ const Table = (props) => {
                                     document.getElementById("sideBlur").className = "sidebar";
                                     document.getElementById("ResidentcontentBlur").className = "resident";
                                     document.getElementById("headerBlur").className = "header";
-                                    residentsList.splice(setSelectedResident, 1)
+                                    residents.splice(setSelectedResident, 1)
                                 }}>
                                 Remove
                             </button>
@@ -156,7 +150,7 @@ const Table = (props) => {
                     onClose={() => { toggleSnackbar(false) }}
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     autoHideDuration={2000}
-                    message={`${lastName}, ${firstName} has been updated!`}
+                    message={`${selectedResident.lastName}, ${selectedResident.firstName} has been updated!`}
                     ContentProps={{
                         sx: {
                             background: "#DBB324",
@@ -173,7 +167,7 @@ const Table = (props) => {
                     onClose={() => { toggleDeletesnackbar(false) }}
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     autoHideDuration={2000}
-                    message={`${lastName}, ${firstName} has been removed!`}
+                    message={`${selectedResident.lastName}, ${selectedResident.firstName} has been removed!`}
                     ContentProps={{
                         sx: {
                             background: "#D82727",
@@ -186,8 +180,6 @@ const Table = (props) => {
                 />
 
                 <div id='ResidentcontentBlur' className='resident'>
-                    {/* {isPending && <div>Loading...</div>}
-                    {error && <div>{error}</div>} */}
                     <table className='Residents_table'>
                         <thead>
                             <tr>
@@ -197,29 +189,17 @@ const Table = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {currentResidents.map((currentResidents, index) => {
+                            {currentResidents.map((currentResidents) => {
                                 return (
                                     <Residents
-                                        key={index}
                                         residents={currentResidents}
-                                        id={getResidentID}
                                         action={getAction}
                                         flag={getModal}
                                         del={getDelete}
-                                        lastName={getLastName}
-                                        firstName={getFirstName}
+                                        returnResident = {getSelectedResident}
                                     />
                                 )
                             })}
-                            {/* <Residents
-                                residents={currentResidents}
-                                id={getResidentID}
-                                action={getAction}
-                                flag={getModal}
-                                del={getDelete}
-                                lastName={getLastName}
-                                firstName={getFirstName}
-                            /> */}
                         </tbody>
                         <tfoot>
                             <tr>
