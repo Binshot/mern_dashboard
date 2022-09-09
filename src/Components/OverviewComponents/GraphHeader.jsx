@@ -3,6 +3,9 @@ import Print from "../NewImageFiles/Topbar/Print.svg"
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from "@mui/material/TextField";
 
+import PDFFile from './PDFFile';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+
 function GraphHeader() {
     const tagOption = ['Business', 'Work', 'Legal'];
 
@@ -10,9 +13,12 @@ function GraphHeader() {
         <div>
             <div className='flex-row graphHeader space-between'>
                 <h1>Report</h1>
-                <div className="rightAlign actions" style={{cursor: "pointer"}} >
+                <PDFDownloadLink document={<PDFFile/>} fileName="form">
+                    <button>Download</button>
+                </PDFDownloadLink>
+                {/* <div className="rightAlign actions" style={{cursor: "pointer"}} >
                     <img src={Print} alt="" className="export" />
-                </div>
+                </div> */}
             </div>
             <div className='flex-row' style={{ marginBottom: " 24px" }}>
                 <div style={{ width: "30%", marginRight: "24px" }}>

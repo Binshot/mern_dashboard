@@ -1,3 +1,4 @@
+import React from "react";
 import Header from "../OrganizationComponents/Header"
 import Officials from "../OrganizationComponents/Officials"
 

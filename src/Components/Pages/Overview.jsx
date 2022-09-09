@@ -3,6 +3,7 @@ import Activity from "../OverviewComponents/recentActivity"
 import Messages from "../OverviewComponents/RecentMessages"
 import Header from "../OverviewComponents/GraphHeader"
 import Graphs from "../OverviewComponents/Graphs"
+import React from "react";
 
 export default function Overview() {
     return (
