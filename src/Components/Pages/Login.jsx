@@ -23,7 +23,7 @@ function Login() {
     const {login, error, isLoading} = useLogin()
   
     const handleSubmit = async (e) => {
-      e.preventDefault()
+    //   e.preventDefault()
       console.log(email, password)
       await login(email, password)
     }
@@ -60,12 +60,12 @@ function Login() {
                         />
                     </div>
                 </div>
-                {/* <NavLink to="/admin">
-                    <div className='loginButton'>
+                <a>
+                    <div className='loginButton' onClick={()=>{ handleSubmit()}}>
                         LOGIN
                     </div>
-                </NavLink> */}
-                <button disabled={isLoading}>Log in</button>
+                </a>
+                {/* <button disabled={isLoading}>Log in</button> */}
                 <div className='lowerActions'>
                     <NavLink to="/forgot_password">
                         <p>Forgot Password?</p>
