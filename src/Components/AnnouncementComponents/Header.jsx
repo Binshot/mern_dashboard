@@ -42,7 +42,6 @@ function Header() {
     );
     const [announcementTitle, setTitle] = useState('')
     const [announcementDetail, setDescription] = useState('')
-    const [error, setError] = useState(null)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -66,12 +65,8 @@ function Header() {
         console.log(JSON.stringify(announcement))
         const json = await response.json()
 
-        if (!response.ok) {
-            setError(json.error)
-        }
         if (response.ok) {
             toggleSnackbar(true)
-            setError(null)
             console.log('new announcement added:', json)
             dispatch({ type: 'CREATE_ANNOUNCEMENT', payload: json })
         }

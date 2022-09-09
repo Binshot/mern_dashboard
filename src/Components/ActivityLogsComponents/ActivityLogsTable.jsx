@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Activities from './ActivityLogsTableContents';
 import PageNumber from './ActivityLogsPageNumber';
-import useFetch from "../usFetch";
 
 const Table = (props) => {
     // const { data: ActivityList, error, isPending } = useFetch("http://localhost:8004/Logs");
