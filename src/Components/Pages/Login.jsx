@@ -44,6 +44,7 @@ function Login() {
                         <h3>Password</h3>
                         <OutlinedInput
                             id="outlined-adornment-password"
+                            placeholder='Input Password'
                             type={type ? "text" : "password"}
                             value={password} 
                             onChange={(e)=>setPassword(e.target.value)}
