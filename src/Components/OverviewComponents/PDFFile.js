@@ -42,24 +42,29 @@ const PDFFile = () => {
   return (
     <Document>
       <Page style={styles.body}>
-        <Text style={styles.header} fixed></Text>
-        <Text style={styles.text}>
-          Oh right. I forgot about the battle. Wow, you got that off the
-          Internet? In my day, the Internet was only used to download
-          pornography. I don't know what you did, Fry, but once again, you
-          screwed up! Now all the planets are gonna start cracking wise about
-          our mamas. She also liked to shut up! We'll go deliver this crate like
-          professionals, and then we'll go home. In your time, yes, but nowadays
-          shut up! Besides, these are adult stemcells, harvested from perfectly
-          healthy adults whom I killed for their stemcells. And I'm his friend
-          Jesus.
+        <Text fixed>
+        <h2>Residents</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Birthday</th>
+                <th>Address</th>
+                <th>Occupation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sample Name</td>
+                <td>Sample Age</td>
+                <td>Sample Birthday</td>
+                <td>Sample Address</td>
+                <td>Sample Occupation</td>
+              </tr>
+            </tbody>
+          </table>
         </Text>
-        <Text
-          style={styles.pageNumber}
-          render={({ pageNumber, totalPages }) =>
-            `${pageNumber} / ${totalPages}`
-          }
-        />
       </Page>
     </Document>
   );
