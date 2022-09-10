@@ -3,9 +3,6 @@ import Print from "../NewImageFiles/Topbar/Print.svg"
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from "@mui/material/TextField";
 
-import PDFFile from './PDFFile';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-
 import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from './ComponentToPrint';
 

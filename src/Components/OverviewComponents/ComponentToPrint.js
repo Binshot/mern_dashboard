@@ -136,7 +136,9 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                     </tr>
                 </tbody>
                 <tfoot>
-                    <td colspan="5">Total Residents: 8</td>
+                    <tr>
+                        <td colSpan="5">Total Residents: 8</td>
+                    </tr>
                 </tfoot>
             </table>
         </div>
