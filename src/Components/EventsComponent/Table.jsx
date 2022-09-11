@@ -16,7 +16,7 @@ import Box from '@mui/material/Box';
 import uploadEventBanner from "../NewImageFiles/Event/uploadEventBanner.svg"
 import { useEventContext } from "../../hooks/useEventContext"
 
-import format from 'date-fns/format'
+import { compareAsc, format } from 'date-fns'
 
 const Table = () => {
 

@@ -33,6 +33,7 @@ function ResidentsPageNumber({ announcementsPerPage, totalAnnouncement, paginate
             {getPaginationGroup().map((item, index) => (
                 (item <= Math.ceil(totalAnnouncement / announcementsPerPage)) && (
                     <button
+                        style={{ cursor: "default" }}
                         key={index}
                         className={currentPage === item ? 'pageNumber activeNumber' : 'pageNumber'}
                     >

@@ -15,7 +15,7 @@ const announcement = ({ announcement, id, flag, action, title, description, del 
                     <td>{format(new Date(announcement.announcementDateTime),'hh:mm aa')} </td>
                     <td className='residentActions actions'>
                         <div className='flex-row'>
-                            <div style={{ marginRight: "16px" }} className="solidButton squareButton buttonGreen"
+                            <button style={{ marginRight: "16px" }} className="solidButton squareButton buttonGreen"
                                 onClick={() => {
                                     id(announcement._id)
                                     flag(true)
@@ -28,8 +28,8 @@ const announcement = ({ announcement, id, flag, action, title, description, del 
                                     document.getElementById("contentBlur").className += " blur";
                                 }}>
                                 <img src={View} alt="" />
-                            </div>
-                            <div style={{ marginRight: "16px" }} className="solidButton squareButton buttonBlue"
+                            </button>
+                            <button style={{ marginRight: "16px" }} className="solidButton squareButton buttonBlue"
                                 onClick={() => {
                                     id(announcement._id)
                                     flag(true)
@@ -42,8 +42,8 @@ const announcement = ({ announcement, id, flag, action, title, description, del 
                                     document.getElementById("contentBlur").className += " blur";
                                 }} >
                                 <img src={Update} alt="" />
-                            </div>
-                            <div className='delete squareButton'
+                            </button>
+                            <button className='delete squareButton'
                                 onClick={() => {
                                     id(announcement._id)
                                     title(announcement.announcementTitle)
@@ -55,8 +55,7 @@ const announcement = ({ announcement, id, flag, action, title, description, del 
                                     document.getElementById("contentBlur").className += " blur";
                                 }} >
                                 <img src={Delete} alt=""/>
-                            </div>
-
+                            </button>
                         </div>
                     </td>
                 </tr>

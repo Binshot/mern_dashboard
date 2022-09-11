@@ -1,24 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import View from "../NewImageFiles/ActionButton/View.svg"
 import Update from "../NewImageFiles/ActionButton/Update.svg"
 import Delete from "../NewImageFiles/ActionButton/Delete.svg"
 
-import format from 'date-fns/format'
+import { compareAsc, format } from 'date-fns'
 
 const Events = ({ events, flag, action, del, selectedEvents }) => {
     return (
         events.map(events => {
+            // console.log(new Date("2022-09-14T11:00:00.000"))
+            // console.log(events.eventDateTime.from.split(/[-:.TZ]/gm))
+            // console.log(format(new Date(...(events.eventDateTime.from.split(/[-:.TZ]/gm))), 'hh:mm aa'))
+
+            // console.log(compareAsc(new Date("2022-09-12T08:00:00.000"), new Date()))
+
+            const dateOne = compareAsc(new Date("events.eventDateTime.from"), new Date())
+            const dateTwo = compareAsc(new Date("events.eventDateTime.to"), new Date())
+            
+            const [status, setStatus] = useState(null)
+
+            if (status) {
+                if (dateOne === -1 && dateTwo === -1)
+                    setStatus("Finished")
+                else if (dateOne === 1 && dateTwo === 1)
+                    setStatus("Planned")
+                else
+                    setStatus("Ongoing")
+            }
+
             return (
                 <tr key={events._id}>
                     <td>{events.eventTitle}</td>
                     <td>{format(new Date(events.eventDateTime.from), 'MMM dd, yyyy')} - {format(new Date(events.eventDateTime.to), 'MMM dd, yyyy')}</td>
                     <td>{format(new Date(events.eventDateTime.from), 'hh:mm aa')} - {format(new Date(events.eventDateTime.to), 'hh:mm aa')}</td>
-                    <td>Ongoing</td>
+                    <td>{status}</td>
                     <td>{events.noOfParticipants}</td>
                     <td className='residentActions actions'>
                         <div className='flex-row'>
-                            <div style={{ marginRight: "16px" }} className="solidButton squareButton buttonGreen"
+                            <button style={{ marginRight: "16px" }} className="solidButton squareButton buttonGreen"
                                 onClick={() => {
                                     flag(true)
                                     action("view")
@@ -29,8 +49,8 @@ const Events = ({ events, flag, action, del, selectedEvents }) => {
                                     document.getElementById("ResidentcontentBlur").className += " blur";
                                 }}>
                                 <img src={View} alt="" />
-                            </div>
-                            <div style={{ marginRight: "16px" }} className="solidButton squareButton buttonBlue"
+                            </button>
+                            <button style={{ marginRight: "16px" }} className="solidButton squareButton buttonBlue"
                                 onClick={() => {
                                     flag(true)
                                     action("edit")
@@ -41,8 +61,8 @@ const Events = ({ events, flag, action, del, selectedEvents }) => {
                                     document.getElementById("ResidentcontentBlur").className += " blur";
                                 }}>
                                 <img src={Update} alt="" />
-                            </div>
-                            <div className='delete squareButton'
+                            </button>
+                            <button className='delete squareButton'
                                 onClick={() => {
                                     selectedEvents(events)
                                     del(true)
@@ -53,7 +73,7 @@ const Events = ({ events, flag, action, del, selectedEvents }) => {
                                     document.getElementById("ResidentcontentBlur").className += " blur";
                                 }} >
                                 <img src={Delete} alt="" />
-                            </div>
+                            </button>
                         </div>
                     </td>
                 </tr>

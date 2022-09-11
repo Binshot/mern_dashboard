@@ -18,6 +18,8 @@ import Button from '@mui/material/Button';
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
 function Header() {
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const [AddmodalShown, toggleAddModal] = useState(false);
 
     //context dispatch
@@ -44,16 +46,10 @@ function Header() {
     const [announcementDetail, setDescription] = useState('')
 
     const handleSubmit = async (e) => {
+        setIsLoading(true)
         e.preventDefault()
 
         const announcement = { announcementTitle, announcementDetail }
-
-        toggleAddModal(false)
-        document.getElementById("topBlur").className = "topbar flex-row";
-        document.getElementById("sideBlur").className = "sidebar";
-        document.getElementById("contentBlur").className = "resident";
-        document.getElementById("headerBlur").className = "header";
-
 
         const response = await fetch('https://drims-demo.herokuapp.com/api/announcements/', {
             method: 'POST',
@@ -65,10 +61,18 @@ function Header() {
         console.log(JSON.stringify(announcement))
         const json = await response.json()
 
+
         if (response.ok) {
+            toggleAddModal(false)
+            document.getElementById("topBlur").className = "topbar flex-row";
+            document.getElementById("sideBlur").className = "sidebar";
+            document.getElementById("contentBlur").className = "resident";
+            document.getElementById("headerBlur").className = "header";
+            setIsLoading(false)
             toggleSnackbar(true)
             console.log('new announcement added:', json)
             dispatch({ type: 'CREATE_ANNOUNCEMENT', payload: json })
+
         }
 
     }
@@ -120,6 +124,7 @@ function Header() {
                         {/*Button*/}
                         <div className="rightAlign ModalButtons" style={{ marginTop: "23px" }}>
                             <button
+                                disabled={isLoading}
                                 type="button"
                                 className="borderedButton"
                                 onClick={() => {
@@ -133,7 +138,7 @@ function Header() {
                                 }}>
                                 Cancel
                             </button>
-                            <button className="solidButton buttonBlue" type="submit">
+                            <button className="solidButton buttonBlue" type="submit" disabled={isLoading}>
                                 Add
                             </button>
                         </div>
@@ -190,10 +195,10 @@ function Header() {
                             document.getElementById("contentBlur").className += " blur";
                         }}>
                         <img src={Print} alt="" className="export" style={{ cursor: "pointer" }} />
-                        <div className="solidButton add buttonBlue">
+                        <button className="solidButton add buttonBlue">
                             <img src={AddIcon} alt="" />
                             <p>Add Announcement</p>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>

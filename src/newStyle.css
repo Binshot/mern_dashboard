@@ -180,7 +180,6 @@ input::-webkit-input-placeholder {
     font-size: 16px;
     font-weight: 500;
     color: white;
-    cursor: pointer;
 }
 
 .delete {
@@ -190,7 +189,6 @@ input::-webkit-input-placeholder {
     border: 2px solid #808080;
     border-radius: 6px;
     background: white;
-    cursor: pointer;
 }
 
 .delete:hover {
@@ -211,15 +209,22 @@ input::-webkit-input-placeholder {
     border: 2px solid #0C1096;
 }
 
-.disabled {
+.buttonBlue:disabled {
     background-color: #D0D1FB;
     border: 2px solid #D0D1FB;
-    cursor: default;
 }
 
-.buttonBlue:hover {
+.buttonBlue:hover:not([disabled]) {
     background: #7175F4;
     border: 2px solid #7175F4;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: default;
 }
 
 .buttonGreen {
@@ -259,12 +264,17 @@ input::-webkit-input-placeholder {
     border: 2px solid #808080;
     border-radius: 6px;
     background: white;
-    cursor: pointer;
     width: 100px;
     height: 50px;
 }
 
-.borderedButton:hover {
+.borderedButton:disabled {
+    color: #D4D4D4;
+    border: 2px solid #D4D4D4;
+    cursor: default;
+}
+
+.borderedButton:hover:not([disabled]) {
     color: #B8B8B8;
     border: 2px solid #B8B8B8;
 }
@@ -322,7 +332,8 @@ input::-webkit-input-placeholder {
     font-size: 18px;
     margin-top: 32px;
     border-radius: 10px;
-    cursor: pointer;
+    border: none;
+    width: 100%;
 }
 
 .loginButton:hover {
@@ -335,7 +346,6 @@ input::-webkit-input-placeholder {
 
 .loginForm a {
     text-decoration: none;
-    cursor: pointer;
     color: white;
 }
 
@@ -350,6 +360,16 @@ input::-webkit-input-placeholder {
 
 .lowerActions p:hover {
     color: #7175F4;
+}
+
+.error {
+    padding: 10px;
+    background: #ffefef;
+    border: 1px solid var(--error);
+    color: var(--error);
+    border-radius: 4px;
+    margin-top: 20px;
+    text-align: center;
 }
 
 
@@ -629,6 +649,26 @@ input::-webkit-input-placeholder {
     margin-bottom: 16px;
     text-decoration: none;
     border: none;
+}
+
+.profileModals{
+    width: 340px;
+    padding: 24px;
+}
+
+.profileModalButtons{
+    margin-top: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profileModalButtons button{
+    height: 50px;
+}
+
+.profileModalButtons .solidButton, .profileModalButtons .borderedButton{
+    width: 160px;
 }
 
 /* ================== OVERVIEW =========================== */
@@ -1001,6 +1041,16 @@ tfoot td {
     margin-bottom: 24px;
     padding: 24px;
 }
+
+/* ================== ANNOUNCEMENT =========================== */
+
+.Announcement_table td:nth-child(2), .Announcement_table td:nth-child(3){
+    width: 100px;
+}
+.Announcement_table td:nth-child(4){
+    width: 180px;
+}
+
 
 /* ================== ANNOUNCEMENT MODAL=========================== */
 

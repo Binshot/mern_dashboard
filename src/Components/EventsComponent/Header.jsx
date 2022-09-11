@@ -19,8 +19,11 @@ import Button from '@mui/material/Button';
 
 //Context
 import { useEventContext } from "../../hooks/useEventContext"
+
+import format from 'date-fns/format'
 function Header() {
     const [AddmodalShown, toggleAddModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
 
     const tagOption = ['Business', 'Work', 'Legal', 'Community'];
 
@@ -52,12 +55,11 @@ function Header() {
     const [timeTo, setTimeTo] = useState("");
     const [file, setFile] = useState(null);
 
-    const [addEventLoading, setAddEventLoading] = useState(false)
     //context dispatch
     const { dispatch } = useEventContext()
 
     const handleSubmit = async (e) => {
-        setAddEventLoading(true)
+        setIsLoading(true)
         e.preventDefault();
 
         var eventImage = "";
@@ -92,7 +94,7 @@ function Header() {
                 document.getElementById("sideBlur").className = "sidebar";
                 document.getElementById("ResidentcontentBlur").className = "resident";
                 document.getElementById("headerBlur").className = "header";
-                setAddEventLoading(false)
+                setIsLoading(false)
                 dispatch({ type: 'CREATE_EVENT', payload: json })
 
             }
@@ -130,7 +132,7 @@ function Header() {
                                         id="combo-box-demo"
                                         options={tagOption}
                                         sx={{ width: 330 }}
-                                        renderInput={(params) => <TextField {...params} placeholder="Choose Tag" />}
+                                        renderInput={(params) => <TextField {...params} placeholder="Choose Tag" required />}
                                         required
                                         onChange={(event, newValue) => {
                                             setEventTag(newValue);
@@ -142,6 +144,7 @@ function Header() {
                                     <TextField
                                         id="outlined-multiline-static"
                                         placeholder="Input Location"
+                                        required
                                         sx={{ width: 330 }}
                                         onChange={(e) => setEventLocation(e.target.value)}
                                     />
@@ -155,6 +158,7 @@ function Header() {
                                     multiline
                                     rows={6}
                                     fullWidth
+                                    required
                                     inputProps={{
                                         maxLength: 400
                                     }}
@@ -175,7 +179,7 @@ function Header() {
 
                                         <div className="upload">Upload</div>
                                     </div>
-                                    <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0])} />
+                                    <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0])} required />
                                 </label>
                             </div>
                             <div className="flex-row space-between marginBottom" style={{ marginBottom: "16px" }}>
@@ -189,6 +193,7 @@ function Header() {
                                             shrink: true,
                                         }}
                                         required
+                                        defaultValue={format(new Date(), 'yyyy-MM-dd')}
                                         onChange={(e) => setDateFrom(e.target.value)}
                                     />
                                 </div>
@@ -217,6 +222,7 @@ function Header() {
                                         }}
                                         sx={{ width: '330px' }}
                                         required
+                                        defaultValue={format(new Date(), 'HH:mm')}
                                         onChange={(e) => setTimeFrom(e.target.value)}
                                     />
                                 </div>
@@ -239,7 +245,7 @@ function Header() {
                         </Box>
                         <div className="ModalButtons rightAlign">
                             <button
-                                disabled={addEventLoading}
+                                disabled={isLoading}
                                 className="borderedButton"
                                 onClick={() => {
                                     toggleAddModal(false)
@@ -250,7 +256,7 @@ function Header() {
                                 }}>
                                 Cancel
                             </button>
-                            <button className={addEventLoading ? "solidButton disabled" : "solidButton buttonBlue"} type="submit" disabled={addEventLoading}>
+                            <button className="solidButton buttonBlue" type="submit" disabled={isLoading}>
                                 Add
                             </button>
                         </div>
@@ -303,10 +309,10 @@ function Header() {
                             document.getElementById("ResidentcontentBlur").className += " blur";
                         }}>
                         <img src={Print} alt="" className="export" style={{ cursor: "pointer" }} />
-                        <div className="solidButton add buttonBlue">
+                        <button className="solidButton add buttonBlue">
                             <img src={AddIcon} alt="" />
                             <p>Add Event</p>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>

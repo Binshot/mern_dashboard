@@ -16,9 +16,9 @@ function ForgotPassword() {
                     </div>
                 </div>
                 <NavLink to="/login">
-                    <div className='loginButton'>
+                    <button className='loginButton'>
                         SEND
-                    </div>
+                    </button>
                 </NavLink>
                 <div className='lowerActions'>
                     <NavLink to="/login">

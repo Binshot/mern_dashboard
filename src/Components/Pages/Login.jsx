@@ -20,14 +20,14 @@ function Login() {
     //For Login Auth
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const {login, error, isLoading} = useLogin()
-  
+    const { login, error, isLoading } = useLogin()
+
     const handleSubmit = async (e) => {
-    //   e.preventDefault()
-      console.log(email, password)
-      await login(email, password)
+          e.preventDefault()
+        console.log(email, password)
+        await login(email, password)
     }
-  
+
     return (
         <form className='login' onSubmit={handleSubmit}>
             <div className='loginForm'>
@@ -38,16 +38,23 @@ function Login() {
                 <div className='loginInputContainer'>
                     <div>
                         <h3>Email</h3>
-                        <input type="email" placeholder='Input Email' value={email} onChange={(e)=>setEmail(e.target.value)}/>
+                        <input
+                            type="email"
+                            placeholder='Input Email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
                     </div>
                     <div>
                         <h3>Password</h3>
                         <OutlinedInput
                             id="outlined-adornment-password"
+                            required
                             placeholder='Input Password'
                             type={type ? "text" : "password"}
-                            value={password} 
-                            onChange={(e)=>setPassword(e.target.value)}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -61,12 +68,8 @@ function Login() {
                         />
                     </div>
                 </div>
-                <a>
-                    <div className='loginButton' onClick={()=>{ handleSubmit()}}>
-                        LOGIN
-                    </div>
-                </a>
-                {/* <button disabled={isLoading}>Log in</button> */}
+                {error && <div className="error">{error}</div>}
+                <button disabled={isLoading} className='loginButton'> LOGIN</button>
                 <div className='lowerActions'>
                     <NavLink to="/forgot_password">
                         <p>Forgot Password?</p>
