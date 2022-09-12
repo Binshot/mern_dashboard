@@ -186,7 +186,7 @@ function Header() {
                                             </div>
                                         </div>
 
-                                        <button className="upload">Upload</button>
+                                        <button className="upload" type="button">Upload</button>
                                     </div>
                                     <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0])} required />
                                 </label>
