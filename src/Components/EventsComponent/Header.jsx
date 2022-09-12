@@ -186,7 +186,7 @@ function Header() {
                                             </div>
                                         </div>
 
-                                        <button className="upload" type="button">Upload</button>
+                                        <div className="upload" style={{ cursor: "pointer" }}>Upload</div>
                                     </div>
                                     <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0])} required />
                                 </label>
@@ -257,6 +257,9 @@ function Header() {
 
                         </Box>
                         <div className="ModalButtons rightAlign">
+                            <button className="solidButton buttonBlue" type="submit" disabled={isLoading}>
+                                Add
+                            </button>
                             <button
                                 disabled={isLoading}
                                 className="borderedButton"
@@ -269,9 +272,7 @@ function Header() {
                                 }}>
                                 Cancel
                             </button>
-                            <button className="solidButton buttonBlue" type="submit" disabled={isLoading}>
-                                Add
-                            </button>
+
                         </div>
                     </div>
                 </form>
