@@ -13,23 +13,12 @@ const Events = ({ events, flag, action, del, selectedEvents }) => {
             const dateOne = compareAsc(new Date(events.eventDateTime.from.substr(0, 23)), new Date())
             const dateTwo = compareAsc(new Date(events.eventDateTime.to.substr(0, 23)), new Date())
 
-            const [status, setStatus] = useState(null)
-
-            if (!status) {
-                if (dateOne === -1 && dateTwo === -1)
-                    setStatus("Finished")
-                else if (dateOne === 1 && dateTwo === 1)
-                    setStatus("Planned")
-                else
-                    setStatus("Ongoing")
-            }
-
             return (
                 <tr key={events._id}>
                     <td>{events.eventTitle}</td>
-                    <td>{format(new Date(events.eventDateTime.from.substr(0, 23)), 'MMM dd, yyyy')} - {format(new Date(events.eventDateTime.to.substr(0, 23)), 'MMM dd, yyyy')}</td>
+                    <td>{format(new Date(events.eventDateTime.from), 'MMM dd, yyyy')} - {format(new Date(events.eventDateTime.to), 'MMM dd, yyyy')}</td>
                     <td>{format(new Date(events.eventDateTime.from.substr(0, 23)), 'hh:mm aa')} - {format(new Date(events.eventDateTime.to.substr(0, 23)), 'hh:mm aa')}</td>
-                    <td>{status}</td>
+                    <td>{dateOne === -1 && dateTwo === -1 ? "Finished" : dateOne === 1 && dateTwo === 1 ? "Planned" : "Ongoing"}</td>
                     <td>{events.noOfParticipants}</td>
                     <td className='residentActions actions'>
                         <div className='flex-row'>

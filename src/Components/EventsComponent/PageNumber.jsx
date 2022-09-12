@@ -33,6 +33,7 @@ function EventsPageNumber({ eventsPerPage, totalEvents, paginate }) {
             {getPaginationGroup().map((item, index) => (
                 (item <= Math.ceil(totalEvents / eventsPerPage)) && (
                     <button
+                        style={{ cursor: "default" }}
                         key={index}
                         className={currentPage === item ? 'pageNumber activeNumber' : 'pageNumber'}
                     >

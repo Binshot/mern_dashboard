@@ -24,6 +24,7 @@ function AddResident(props) {
     //context dispatch
     const { dispatch } = useResidentContext()
     const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     const genderOptions = ['Male', 'Female', 'Other'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
@@ -40,30 +41,70 @@ function AddResident(props) {
     }
 
     const [role, setRole] = useState('')
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [middleName, setMiddleName] = useState('')
-    const [suffix, setSuffix] = useState('')
-    const [birthday, setBday] = useState('')
-    const [birthplace, setBirthplace] = useState('')
+    const [firstName, setFirstName] = useState(null)
+    const [lastName, setLastName] = useState(null)
+    const [middleName, setMiddleName] = useState(null)
+    const [suffix, setSuffix] = useState("")
+    const [birthday, setBday] = useState(null)
+    const [birthplace, setBirthplace] = useState(null)
     const [gender, setGender] = useState(null)
     const [religion, setReligion] = useState(null)
-    const [email, setEmail] = useState('')
-    const [contactNumber, setPhone] = useState('')
-    const [address, setAddress] = useState('')
-    const [civilStatus, setCivilStatus] = useState('')
-    const [educationalAttainment, setEducationalAttainment] = useState('')
-    const [occupation, setOccupation] = useState('')
-    const [monthlyIncome, setMonthlyIncome] = useState('')
-    const [sss, setSSS] = useState('')
-    const [gsis, setGSIS] = useState('')
-    const [pagibig, setPagibig] = useState('')
-    const [philhealth, setPhilhealth] = useState('')
+    const [email, setEmail] = useState(null)
+    const [contactNumber, setPhone] = useState(null)
+    const [address, setAddress] = useState(null)
+    const [civilStatus, setCivilStatus] = useState(null)
+    const [educationalAttainment, setEducationalAttainment] = useState(null)
+    const [occupation, setOccupation] = useState(null)
+    const [monthlyIncome, setMonthlyIncome] = useState(null)
+    const [sss, setSSS] = useState(null)
+    const [gsis, setGSIS] = useState(null)
+    const [pagibig, setPagibig] = useState(null)
+    const [philhealth, setPhilhealth] = useState(null)
 
     const [snackbar, toggleSnackbar] = useState(false);
 
     const handleFamilyHeadSubmit = async (e) => {
+        setLoading(true)
         console.log("Head Family")
+        e.preventDefault()
+
+        const resident = {
+            firstName, lastName, middleName, suffix, birthday, birthplace, gender, religion, email, contactNumber, address,
+            civilStatus, educationalAttainment, occupation, monthlyIncome, membership: { pagibig, sss, gsis, philhealth }
+        }
+
+        console.log(resident)
+
+        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/', {
+            method: 'POST',
+            body: JSON.stringify(resident),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const json = await response.json()
+
+        if (!response.ok) {
+            setError(json.error)
+            setLoading(false)
+        }
+        if (response.ok) {
+            setError(null)
+            setLoading(false)
+            console.log('new Resident added:', json)
+            dispatch({ type: 'CREATE_RESIDENT', payload: json })
+            props.setShown(false)
+            toggleSnackbar(true)
+            document.getElementById("topBlur").className = "topbar flex-row";
+            document.getElementById("sideBlur").className = "sidebar";
+            document.getElementById("ResidentcontentBlur").className = "resident";
+            document.getElementById("headerBlur").className = "header";
+        }
+
+    }
+
+    const handleFamilyMemberSubmit = async (e) => {
         e.preventDefault()
 
         const resident = {
@@ -77,8 +118,6 @@ function AddResident(props) {
         document.getElementById("sideBlur").className = "sidebar";
         document.getElementById("ResidentcontentBlur").className = "resident";
         document.getElementById("headerBlur").className = "header";
-
-        console.log(resident)
 
         // const response = await fetch('https://drims-demo.herokuapp.com/api/residents/', {
         //     method: 'POST',
@@ -100,42 +139,6 @@ function AddResident(props) {
         // }
 
     }
-
-    const handleFamilyMemberSubmit = async (e) => {
-        e.preventDefault()
-
-        const resident = {
-            firstName, lastName, middleName, suffix, birthday, birthplace, gender, religion, email, contactNumber, address,
-            civilStatus, educationalAttainment, occupation, monthlyIncome, membership: { pagibig, sss, gsis, philhealth }
-        }
-
-        props.setShown(false)
-        toggleSnackbar(true)
-        document.getElementById("topBlur").className = "topbar flex-row";
-        document.getElementById("sideBlur").className = "sidebar";
-        document.getElementById("ResidentcontentBlur").className = "resident";
-        document.getElementById("headerBlur").className = "header";
-
-        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/', {
-            method: 'POST',
-            body: JSON.stringify(resident),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-
-        const json = await response.json()
-
-        if (!response.ok) {
-            setError(json.error)
-        }
-        if (response.ok) {
-            setError(null)
-            console.log('new Resident added:', json)
-            dispatch({ type: 'CREATE_RESIDENT', payload: json })
-        }
-
-    }
     const action = (
         <React.Fragment>
             <Button size="small" onClick={() => { toggleSnackbar(false) }}>
@@ -151,6 +154,33 @@ function AddResident(props) {
             </IconButton>
         </React.Fragment>
     );
+
+    const cancelForm = () => {
+        props.setShown(false)
+        document.getElementById("topBlur").className = "topbar flex-row";
+        document.getElementById("sideBlur").className = "sidebar";
+        document.getElementById("ResidentcontentBlur").className = "resident";
+        document.getElementById("headerBlur").className = "header";
+        setFirstName(null)
+        setLastName(null)
+        setMiddleName(null)
+        setSuffix("")
+        setBday(null)
+        setBirthplace(null)
+        setGender(null)
+        setReligion(null)
+        setEmail(null)
+        setPhone(null)
+        setAddress(null)
+        setCivilStatus(null)
+        setEducationalAttainment(null)
+        setOccupation(null)
+        setMonthlyIncome(null)
+        setSSS(null)
+        setGSIS(null)
+        setPagibig(null)
+        setPhilhealth(null)
+    }
 
     return (
         <div>
@@ -173,7 +203,7 @@ function AddResident(props) {
 
             {props.shown ? (
                 <div className="modal-backdrop">
-                    <form onSubmit={props.action === "addMember" ? handleFamilyMemberSubmit : handleFamilyHeadSubmit}>
+                    <form onSubmit={props.action === "addMember" ? handleFamilyMemberSubmit : handleFamilyHeadSubmit} on>
                         <div className="addResidentModals modal-content">
                             <h2 className="marginBottom">{props.action === "addMember" ? "Add Family Member" : "Add Head of the Family"}</h2>
                             <div>
@@ -257,7 +287,7 @@ function AddResident(props) {
                                                             InputLabelProps={{
                                                                 shrink: true,
                                                             }}
-                                                            value={birthday}
+                                                            value={birthday}//format this
                                                             onChange={(e) => setBday(e.target.value)}
                                                         />
                                                     </div>
@@ -295,10 +325,7 @@ function AddResident(props) {
                                                             sx={{ width: "99%" }}
                                                             renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
                                                             value={religion}
-                                                            onChange={(event, e) => {
-                                                                setReligion(e)
-                                                                console.log(e)
-                                                            }}
+                                                            onChange={(event, e) => setReligion(e)}
                                                         />
                                                     </div>
                                                 </div>
@@ -347,6 +374,7 @@ function AddResident(props) {
                                                             options={civilStatusOptions}
                                                             sx={{ width: '100%' }}
                                                             renderInput={(params) => <TextField {...params} placeholder="Choose Civil Status" required />}
+                                                            value={civilStatus}
                                                             onChange={(event, e) => setCivilStatus(e)}
                                                         />
                                                     </div>
@@ -357,6 +385,7 @@ function AddResident(props) {
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={educationAttainmentOptions}
+                                                            value={educationalAttainment}
                                                             sx={{ width: '100%' }}
                                                             renderInput={(params) => <TextField {...params} placeholder="Choose Educational Background" required />}
                                                             onChange={(event, e) => setEducationalAttainment(e)}
@@ -393,10 +422,11 @@ function AddResident(props) {
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
                                                                 required
+                                                                value={sss}
                                                                 onChange={(e) => setSSS(e.target.value)}
                                                             >
-                                                                <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-                                                                <FormControlLabel value="No" control={<Radio />} label="No" />
+                                                                <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                                                                <FormControlLabel value="false" control={<Radio />} label="No" />
                                                             </RadioGroup>
                                                         </FormControl>
                                                     </div>
@@ -407,10 +437,11 @@ function AddResident(props) {
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
                                                                 required
+                                                                value={gsis}
                                                                 onChange={(e) => setGSIS(e.target.value)}
                                                             >
-                                                                <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-                                                                <FormControlLabel value="No" control={<Radio />} label="No" />
+                                                                <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                                                                <FormControlLabel value="false" control={<Radio />} label="No" />
                                                             </RadioGroup>
                                                         </FormControl>
                                                     </div>
@@ -423,10 +454,11 @@ function AddResident(props) {
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
                                                                 required
+                                                                value={pagibig}
                                                                 onChange={(e) => setPagibig(e.target.value)}
                                                             >
-                                                                <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-                                                                <FormControlLabel value="No" control={<Radio />} label="No" />
+                                                                <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                                                                <FormControlLabel value="false" control={<Radio />} label="No" />
                                                             </RadioGroup>
                                                         </FormControl>
                                                     </div>
@@ -437,10 +469,11 @@ function AddResident(props) {
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
                                                                 required
+                                                                value={philhealth}
                                                                 onChange={(e) => setPhilhealth(e.target.value)}
                                                             >
-                                                                <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-                                                                <FormControlLabel value="No" control={<Radio />} label="No" />
+                                                                <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                                                                <FormControlLabel value="false" control={<Radio />} label="No" />
                                                             </RadioGroup>
                                                         </FormControl>
                                                     </div>
@@ -469,23 +502,45 @@ function AddResident(props) {
                                 </Box>
                             </div>
                             <div className="rightAlign ModalButtons">
-                                <button
-                                    type="reset"
-                                    className="borderedButton"
-                                    onClick={() => {
-                                        props.setShown(false)
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("ResidentcontentBlur").className = "resident";
-                                        document.getElementById("headerBlur").className = "header";
-                                    }}>
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="solidButton buttonBlue">
-                                    Add
-                                </button>
+                                {value === 2 ?
+                                    <button
+                                        disabled={loading}
+                                        type="submit"
+                                        className="solidButton buttonBlue">
+                                        Add
+                                    </button> :
+                                    <button
+                                        disabled={loading}
+                                        type='button'
+                                        className="solidButton buttonBlue"
+                                        onClick={() => {
+                                            setValue(value + 1)
+                                        }}>
+                                        Next
+                                    </button>
+                                }
+                                {value === 0 ?
+                                    <button
+                                        disabled={loading}
+                                        type="reset"
+                                        className="borderedButton"
+                                        onClick={() => {
+                                            cancelForm()
+                                        }}>
+                                        Cancel
+                                    </button> :
+                                    <button
+                                        disabled={loading}
+                                        type='button'
+                                        className="borderedButton"
+                                        onClick={() => {
+                                            setValue(value - 1)
+                                        }}>
+                                        Back
+                                    </button>
+                                }
+                                {error && <div className="error">{error}</div>}
+
                             </div>
                         </div>
                     </form>

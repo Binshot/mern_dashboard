@@ -212,17 +212,6 @@ const Table = () => {
                         </div>
                         <div className="rightAlign ModalButtons">
                             <button
-                                className="borderedButton"
-                                onClick={() => {
-                                    setShowDeleteModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("contentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
-                                }}>
-                                Cancel
-                            </button>
-                            <button
                                 className="solidButton buttonRed"
                                 onClick={() => {
                                     setShowDeleteModal(false)
@@ -234,6 +223,17 @@ const Table = () => {
                                     toggleDeletesnackbar(true)
                                 }}>
                                 Remove
+                            </button>
+                            <button
+                                className="borderedButton"
+                                onClick={() => {
+                                    setShowDeleteModal(false)
+                                    document.getElementById("topBlur").className = "topbar flex-row";
+                                    document.getElementById("sideBlur").className = "sidebar";
+                                    document.getElementById("contentBlur").className = "resident";
+                                    document.getElementById("headerBlur").className = "header";
+                                }}>
+                                Cancel
                             </button>
                         </div>
                     </div>

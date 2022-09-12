@@ -16,7 +16,7 @@ const Residents = ({ residents, flag, action, del, returnResident}) => {
             <td>{Toggle ? <div><span className='dotGreen'></span> Activated</div> : <div><span className='dotRed'></span> Deactivated</div>}</td>
             <td className='residentActions actions'>
                 <div className='flex-row'>
-                    <div style={{ marginRight: "16px" }} className="solidButton squareButton buttonGreen"
+                    <button style={{ marginRight: "16px" }} className="solidButton squareButton buttonGreen"
                         onClick={() => {
                             flag(true)
                             action("view")
@@ -27,8 +27,8 @@ const Residents = ({ residents, flag, action, del, returnResident}) => {
                             document.getElementById("ResidentcontentBlur").className += " blur";
                         }}>
                         <img src={View} alt="" />
-                    </div>
-                    <div style={{ marginRight: "16px" }} className="solidButton squareButton buttonBlue"
+                    </button>
+                    <button style={{ marginRight: "16px" }} className="solidButton squareButton buttonBlue"
                         onClick={() => {
                             flag(true)
                             action("addMember")
@@ -38,8 +38,8 @@ const Residents = ({ residents, flag, action, del, returnResident}) => {
                             document.getElementById("ResidentcontentBlur").className += " blur";
                         }} >
                         <img src={AddMember} alt="" />
-                    </div>
-                    <div style={{ marginRight: "16px" }} className="solidButton squareButton buttonBrown"
+                    </button>
+                    <button style={{ marginRight: "16px" }} className="solidButton squareButton buttonBrown"
                         onClick={() => {
                             flag(true)
                             action("edit")
@@ -50,12 +50,12 @@ const Residents = ({ residents, flag, action, del, returnResident}) => {
                             document.getElementById("ResidentcontentBlur").className += " blur";
                         }}>
                         <img src={Update} alt="" />
-                    </div>
-                    <div style={{ marginRight: "16px" }} className={Toggle ? "solidButton squareButton buttonRed" : "solidButton squareButton buttonGreen"}
+                    </button>
+                    <button style={{ marginRight: "16px" }} className={Toggle ? "solidButton squareButton buttonRed" : "solidButton squareButton buttonGreen"}
                         onClick={() => setToggle(!Toggle)}>
                         <img src={Toggle ? ToggleOff : ToggleOn} alt="" />
-                    </div>
-                    <div className='delete squareButton'
+                    </button>
+                    <button className='delete squareButton'
                         onClick={() => {
                             del(true)
                             action("delete")
@@ -66,8 +66,7 @@ const Residents = ({ residents, flag, action, del, returnResident}) => {
                             document.getElementById("ResidentcontentBlur").className += " blur";
                         }} >
                         <img src={Delete} />
-                    </div>
-
+                    </button>
                 </div>
             </td>
         </tr>

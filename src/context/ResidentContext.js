@@ -10,15 +10,16 @@ export const residentsReducer = (state, action) => {
       }
     case 'CREATE_RESIDENT':
       return {
-        residents: [action.payload, ...state.events]
+        residents: [action.payload, ...state.residents]
       }
     case 'DELETE_RESIDENT':
+      console.log(state.residents.filter(w => w._id !== action.payload._id))
       return {
-        residents: state.events.filter(w => w._id !== action.payload._id)
+        residents: state.residents.filter(w => w._id !== action.payload._id)
       }
     case 'UPDATE_RESIDENT':
       return {
-        residents: state.events.map((announcement) => (announcement._id === action.payload._id) ? action.payload : announcement)
+        residents: state.residents.map((res) => (res._id === action.payload._id) ? action.payload : res)
       }
     default:
       return state

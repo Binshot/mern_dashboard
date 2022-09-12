@@ -372,6 +372,17 @@ button:disabled {
     text-align: center;
 }
 
+.ModalButtons .error {
+    padding: 10px;
+    background: #ffefef;
+    border: 1px solid var(--error);
+    color: var(--error);
+    border-radius: 4px;
+    margin-right: 100px;
+    margin-top: 0;
+    text-align: center;
+}
+
 
 /* ================== MODALS =========================== */
 
@@ -432,7 +443,8 @@ button:disabled {
 }
 
 .ModalButtons {
-    float: right;
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 .ModalButtons .solidButton {
@@ -651,23 +663,24 @@ button:disabled {
     border: none;
 }
 
-.profileModals{
+.profileModals {
     width: 340px;
     padding: 24px;
 }
 
-.profileModalButtons{
+.profileModalButtons {
     margin-top: 23px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.profileModalButtons button{
+.profileModalButtons button {
     height: 50px;
 }
 
-.profileModalButtons .solidButton, .profileModalButtons .borderedButton{
+.profileModalButtons .solidButton,
+.profileModalButtons .borderedButton {
     width: 160px;
 }
 
@@ -992,7 +1005,7 @@ tfoot td {
 
 .deleteModals {
     width: 350px;
-    height: 190px;
+    height: fit-content;
     padding: 24px 24px 0 24px
 }
 
@@ -1044,10 +1057,12 @@ tfoot td {
 
 /* ================== ANNOUNCEMENT =========================== */
 
-.Announcement_table td:nth-child(2), .Announcement_table td:nth-child(3){
+.Announcement_table td:nth-child(2),
+.Announcement_table td:nth-child(3) {
     width: 100px;
 }
-.Announcement_table td:nth-child(4){
+
+.Announcement_table td:nth-child(4) {
     width: 180px;
 }
 
@@ -1255,4 +1270,25 @@ input[type="file"] {
 
 .ActivityLogs_table td:first-child {
     width: 200px;
+}
+
+/* ================== PDF Template =========================== */
+
+.PDFTemplate {
+    margin: 10px;
+}
+
+.PDFTemplate h2 {
+    margin-top: 0;
+}
+
+.PDFTemplate table tr:first-child {
+    font-weight: bold;
+    padding: 8px 24px
+}
+
+.PDFTemplate table td {
+    padding: 8px 24px;
+    border-bottom: 1px solid #9C9C9C;
+    font-size: 16px;
 }

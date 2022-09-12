@@ -42,7 +42,7 @@ function Header() {
                     </div>
                     <div className="flex-row center">
                         <img src={Print} alt="" className="export " style={{ cursor: "pointer" }} />
-                        <div className="solidButton add buttonBlue"
+                        <button className="solidButton add buttonBlue"
                             onClick={() => {
                                 toggleAddModal(true)
                                 document.getElementById("sideBlur").className += " blur";
@@ -52,7 +52,7 @@ function Header() {
                             }}>
                             <img src={AddIcon} alt="" className="deleteSVG" />
                             <p>Add Head of the Family</p>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>

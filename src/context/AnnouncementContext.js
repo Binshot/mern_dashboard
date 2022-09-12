@@ -13,7 +13,6 @@ export const announcementsReducer = (state, action) => {
         announcements: [action.payload, ...state.announcements]
       }
     case 'DELETE_ANNOUNCEMENT':
-      console.log(state.announcements.filter(w => w._id !== action.payload._id))
       return {
         announcements: state.announcements.filter(w => w._id !== action.payload._id)
       }

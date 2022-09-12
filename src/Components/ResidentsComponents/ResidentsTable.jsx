@@ -67,6 +67,24 @@ const Table = () => {
 
     const [selectedResident, setSelectedResident] = useState('')
 
+    //Handle Delete Head of The Family
+    // Delete Announcement
+    const handleDelete = async () => {
+
+        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/'
+            + selectedResident._id, {
+            method: 'DELETE'
+        })
+        const json = await response.json()
+
+        if (response.ok) {
+            console.log("deleted")
+            dispatch({ type: 'DELETE_RESIDENT', payload: json })
+        } else{
+            console.log("not Delete")
+        }
+    }
+
     if (residents) {
 
         // Get current residents
@@ -92,10 +110,10 @@ const Table = () => {
                         <UpdateResident
                             shown={showModal}
                             setShown={getModal}
-                            action={action} 
+                            action={action}
                             resident={selectedResident}
                             length={residents.length}
-                            snackbar ={getSnack}
+                            snackbar={getSnack}
                         />
                     )
                 )}
@@ -114,9 +132,24 @@ const Table = () => {
                     <div className="deleteModals">
                         <h2> Remove Resident?</h2>
                         <div>
-                            <p>{`Are you sure you want to remove ${selectedResident.lastName}, ${selectedResident.firstName}? All data removed are archived and can be restored.`}</p>
+                            <p>Are you sure you want to remove <span style={{ fontWeight: "bold" }}>{selectedResident.lastName}, </span>
+                                <span style={{ fontWeight: "bold" }}>{selectedResident.firstName}</span>? All data such as their family members
+                                and account information won't be restored.</p>
                         </div>
                         <div className="rightAlign ModalButtons">
+                            <button
+                                className="solidButton buttonRed"
+                                onClick={() => {
+                                    setShowDeleteModal(false)
+                                    toggleDeletesnackbar(true)
+                                    document.getElementById("topBlur").className = "topbar flex-row";
+                                    document.getElementById("sideBlur").className = "sidebar";
+                                    document.getElementById("ResidentcontentBlur").className = "resident";
+                                    document.getElementById("headerBlur").className = "header";
+                                    handleDelete()
+                                }}>
+                                Remove
+                            </button>
                             <button
                                 className="borderedButton"
                                 onClick={() => {
@@ -127,19 +160,6 @@ const Table = () => {
                                     document.getElementById("headerBlur").className = "header";
                                 }}>
                                 Cancel
-                            </button>
-                            <button
-                                className="solidButton buttonRed"
-                                onClick={() => {
-                                    setShowDeleteModal(false)
-                                    toggleDeletesnackbar(true)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("ResidentcontentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
-                                    residents.splice(setSelectedResident, 1)
-                                }}>
-                                Remove
                             </button>
                         </div>
                     </div>
@@ -192,11 +212,12 @@ const Table = () => {
                             {currentResidents.map((currentResidents) => {
                                 return (
                                     <Residents
+                                        key={currentResidents._id}
                                         residents={currentResidents}
                                         action={getAction}
                                         flag={getModal}
                                         del={getDelete}
-                                        returnResident = {getSelectedResident}
+                                        returnResident={getSelectedResident}
                                     />
                                 )
                             })}
@@ -208,7 +229,7 @@ const Table = () => {
                                 </td>
                                 <td colSpan={2}>
                                     <PageNumber
-                                        residentsPerPage={residentsPerPage}//ResidentPerPage
+                                        residentsPerPage={residentsPerPage}
                                         totalResidents={residents.length}
                                         paginate={paginate}
                                     />

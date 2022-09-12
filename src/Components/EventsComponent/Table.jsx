@@ -290,17 +290,6 @@ const Table = () => {
                             </Box>
                             <div className="ModalButtons rightAlign">
                                 <button
-                                    className="borderedButton"
-                                    onClick={() => {
-                                        setShowModal(false)
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("ResidentcontentBlur").className = "resident";
-                                        document.getElementById("headerBlur").className = "header";
-                                    }}>
-                                    Cancel
-                                </button>
-                                <button
                                     hidden={action === "view" ? true : false}
                                     disabled={isLoading}
                                     className="solidButton buttonBlue"
@@ -314,6 +303,17 @@ const Table = () => {
                                         setIsLoading(true)
                                     }}>
                                     Update
+                                </button>
+                                <button
+                                    className="borderedButton"
+                                    onClick={() => {
+                                        setShowModal(false)
+                                        document.getElementById("topBlur").className = "topbar flex-row";
+                                        document.getElementById("sideBlur").className = "sidebar";
+                                        document.getElementById("ResidentcontentBlur").className = "resident";
+                                        document.getElementById("headerBlur").className = "header";
+                                    }}>
+                                    Cancel
                                 </button>
                             </div>
                         </div>
@@ -333,17 +333,6 @@ const Table = () => {
                         </div>
                         <div className="rightAlign ModalButtons">
                             <button
-                                className="borderedButton"
-                                onClick={() => {
-                                    setShowDeleteModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("ResidentcontentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
-                                }}>
-                                Cancel
-                            </button>
-                            <button
                                 className="solidButton buttonRed"
                                 onClick={() => {
                                     setShowDeleteModal(false)
@@ -355,6 +344,17 @@ const Table = () => {
                                     handleDelete()
                                 }}>
                                 Remove
+                            </button>
+                            <button
+                                className="borderedButton"
+                                onClick={() => {
+                                    setShowDeleteModal(false)
+                                    document.getElementById("topBlur").className = "topbar flex-row";
+                                    document.getElementById("sideBlur").className = "sidebar";
+                                    document.getElementById("ResidentcontentBlur").className = "resident";
+                                    document.getElementById("headerBlur").className = "header";
+                                }}>
+                                Cancel
                             </button>
                         </div>
                     </div>

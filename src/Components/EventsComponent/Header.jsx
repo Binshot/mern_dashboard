@@ -86,6 +86,10 @@ function Header() {
             const json = await response.json();
             console.log(json);
 
+            if (!response.ok) {
+                setIsLoading(false)
+            }
+
             if (response.ok) {
                 toggleSnackbar(true)
                 console.log('new event added:', json)
@@ -122,6 +126,7 @@ function Header() {
                                     required
                                     onChange={(e) => setEventTitle(e.target.value)}
                                     className='marginBottom'
+                                    disabled={isLoading}
                                 />
                             </div>
                             <div className="flex-row space-between marginBottom">
@@ -137,6 +142,7 @@ function Header() {
                                         onChange={(event, newValue) => {
                                             setEventTag(newValue);
                                         }}
+                                        disabled={isLoading}
                                     />
                                 </div>
                                 <div className="flex-column">
@@ -147,6 +153,8 @@ function Header() {
                                         required
                                         sx={{ width: 330 }}
                                         onChange={(e) => setEventLocation(e.target.value)}
+                                        disabled={isLoading}
+
                                     />
                                 </div>
                             </div>
@@ -163,6 +171,7 @@ function Header() {
                                         maxLength: 400
                                     }}
                                     onChange={(e) => setEventDescription(e.target.value)}
+                                    disabled={isLoading}
                                 />
                             </div>
                             <h4>Events Banner</h4>
@@ -177,7 +186,7 @@ function Header() {
                                             </div>
                                         </div>
 
-                                        <div className="upload">Upload</div>
+                                        <button className="upload">Upload</button>
                                     </div>
                                     <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0])} required />
                                 </label>
@@ -193,8 +202,9 @@ function Header() {
                                             shrink: true,
                                         }}
                                         required
-                                        defaultValue={format(new Date(), 'yyyy-MM-dd')}
+                                        value={dateFrom}
                                         onChange={(e) => setDateFrom(e.target.value)}
+                                        disabled={isLoading}
                                     />
                                 </div>
                                 <div>
@@ -208,6 +218,7 @@ function Header() {
                                         }}
                                         required
                                         onChange={(e) => setDateTo(e.target.value)}
+                                        disabled={isLoading}
                                     />
                                 </div>
                             </div>
@@ -222,8 +233,9 @@ function Header() {
                                         }}
                                         sx={{ width: '330px' }}
                                         required
-                                        defaultValue={format(new Date(), 'HH:mm')}
+                                        value={timeFrom}
                                         onChange={(e) => setTimeFrom(e.target.value)}
+                                        disabled={isLoading}
                                     />
                                 </div>
                                 <div>
@@ -237,6 +249,7 @@ function Header() {
                                         sx={{ width: '330px' }}
                                         required
                                         onChange={(e) => setTimeTo(e.target.value)}
+                                        disabled={isLoading}
                                     />
                                 </div>
 

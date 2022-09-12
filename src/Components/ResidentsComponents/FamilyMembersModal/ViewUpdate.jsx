@@ -12,9 +12,7 @@ import Upload from "../../NewImageFiles/Resident/UploadAvatar.svg"
 import Avatar from "../../NewImageFiles/Resident/Avatar.svg"
 
 function ViewUpdate(props) {
-    // console.log(props.resident[props.id])
     let residentData = props.resident
-    // console.log(residentData)
     const genderOptions = ['Male', 'Female', 'Other'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed'];
