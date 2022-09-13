@@ -13,13 +13,22 @@ export const residentsReducer = (state, action) => {
         residents: [action.payload, ...state.residents]
       }
     case 'DELETE_RESIDENT':
-      console.log(state.residents.filter(w => w._id !== action.payload._id))
       return {
         residents: state.residents.filter(w => w._id !== action.payload._id)
       }
     case 'UPDATE_RESIDENT':
       return {
         residents: state.residents.map((res) => (res._id === action.payload._id) ? action.payload : res)
+      }
+    case 'CREATE_RESIDENT_MEMBER':
+      return {
+        residents: state.residents.map((res) => (res._id === action.payload.updateHead._id) ? action.payload.updateHead : res),
+        residents: [action.payload.resident, ...state.residents]
+      }
+    case 'DELETE_RESIDENT_MEMBER':
+      return {
+        residents: state.residents.map((res) => (res._id === action.payload.updatedHead._id) ? action.payload.updatedHead : res),
+        residents: state.residents.filter(w => w._id !== action.payload.resident._id)
       }
     default:
       return state

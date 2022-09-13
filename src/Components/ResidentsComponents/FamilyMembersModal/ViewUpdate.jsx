@@ -11,8 +11,12 @@ import { Tabs } from '@mui/material';
 import Upload from "../../NewImageFiles/Resident/UploadAvatar.svg"
 import Avatar from "../../NewImageFiles/Resident/Avatar.svg"
 
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+
+import format from 'date-fns/format';
+
 function ViewUpdate(props) {
-    let residentData = props.resident
     const genderOptions = ['Male', 'Female', 'Other'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed'];
@@ -39,7 +43,7 @@ function ViewUpdate(props) {
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const [address, setAddress] = useState('')
-    const [civilStatus, setCivilStatus] = useState('residentData.')
+    const [civilStatus, setCivilStatus] = useState('props.resident.')
     const [educationalAttainment, setEducationalAttainment] = useState('')
     const [occupation, setOccupation] = useState('')
     const [monthlyIncome, setMonthlyIncome] = useState('')
@@ -49,41 +53,29 @@ function ViewUpdate(props) {
     const [philhealth, setPhilhealtg] = useState('')
 
     const handleSubmit = () => {
-        // const date = { startDate, endDate }
-        // const time = { startTime, endTime }
-        // const event = { title, description, tag, location, date, time }
-        // console.log(event)
-
         props.setShown(false)
-        // document.getElementById("topBlur").className = "topbar flex-row";
-        // document.getElementById("sideBlur").className = "sidebar";
-        // document.getElementById("ResidentcontentBlur").className = "resident";
-        // document.getElementById("headerBlur").className = "header";
-        // setValue(0)
-
-        //insert data to json file
-        // fetch('http://localhost:8003/Events', {
-        //     method: 'POST',
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify(event)
-        // }).then(() => {
-        //     toggleSnackbar(true)
-        //     console.log('new announcement added');
-        //     window.location.reload(false);
-        // })
     }
-
-    let setSelectedGender = genderOptions.findIndex(sex => sex === residentData.gender)
-    let setSelectedReligion = religionOptions.findIndex(rel => rel === residentData.religion)
-    let setSelectedStatus = civilStatusOptions.findIndex(stat => stat === residentData.civilStatus)
-    let setSelectedEducation = educationAttainment.findIndex(educ => educ === residentData.educationAttainment)
-    let setSelectedRole = familyMember.findIndex(role => role === residentData.role)
-
+    const xButton = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                    props.setShown(false)
+                }}>
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    )
     return props.shown ? (
         <div className="FamModal">
             {/* <form onSubmit={handleSubmit}> */}
             <div className="residentModals modal-content">
-                <h2 className="marginBottom">{props.action === "view" ? "View Family Member" : "Update Family Member"} </h2>
+                <div className='modalHeader'>
+                    <h2 className="marginBottom">{props.action === "view" ? "View Family Member" : "Update Family Member"} </h2>
+                    {xButton}
+                </div>
                 <div>
                     <div className="flex-column center">
                         <div className='profileAvatar' style={{ marginBottom: "24px" }}>
@@ -98,18 +90,19 @@ function ViewUpdate(props) {
                             )}
 
                         </div>
-                        <h4>Name</h4>
-                        <p>Family Role</p>
+                        <h4>{props.resident.lastName}, {props.resident.firstName} </h4>
+                        {/* <p>{props.resident.relationship}</p> */}
+                        <p>Relationship</p>
                     </div>
 
-                    <Box sx={{ width: '100%', height: '350px', mb: 2, borderBottom: 1, borderColor: '#9C9C9C' }}>
+                    <Box sx={{ width: '100%', height: '338px', mb: 2, borderBottom: 1, borderColor: '#9C9C9C' }}>
                         <Box sx={{ borderBottom: 1, borderColor: '#9C9C9C' }}>
                             <Tabs value={value} onChange={handleTabChange}>
                                 <Tab label="Personal Information" />
                                 <Tab label="Background Information" />
                             </Tabs>
                         </Box>
-                        <Box sx={{ height: '250px', overflow: 'auto', padding: "24px 0" }}>
+                        <Box sx={{ height: '240px', overflow: 'auto', padding: "24px 0" }}>
                             {value === 0 && (
                                 <div className="flex-column tab">
                                     <div className="flex-row space-between">
@@ -117,7 +110,7 @@ function ViewUpdate(props) {
                                             <h4>Last Name</h4>
                                             <input
                                                 type="text"
-                                                // defaultValue={residentData.name.lastName}
+                                                defaultValue={props.resident.lastName}
                                                 onChange={(e) => setLastName(e.target.value)}
                                                 disabled={props.action === "view" ? true : false}
                                             />
@@ -126,7 +119,7 @@ function ViewUpdate(props) {
                                             <h4>First Name</h4>
                                             <input
                                                 type="text"
-                                                // defaultValue={residentData.name.firstName}
+                                                defaultValue={props.resident.firstName}
                                                 onChange={(e) => setFirstName(e.target.value)}
                                                 disabled={props.action === "view" ? true : false}
                                             />
@@ -137,7 +130,7 @@ function ViewUpdate(props) {
                                             <h4>Middle Name</h4>
                                             <input
                                                 type="text"
-                                                // defaultValue={residentData.name.middleName}
+                                                defaultValue={props.resident.middleName}
                                                 onChange={(e) => setMiddleName(e.target.value)}
                                                 disabled={props.action === "view" ? true : false}
                                             />
@@ -146,7 +139,7 @@ function ViewUpdate(props) {
                                             <h4>Suffix (If Applicable)</h4>
                                             <input
                                                 type="text"
-                                                // defaultValue={suffix}
+                                                defaultValue={props.resident.suffix}
                                                 onChange={(e) => setSuffix(e.target.value)}
                                                 disabled={props.action === "view" ? true : false}
                                             />
@@ -158,7 +151,7 @@ function ViewUpdate(props) {
                                             {props.action === "view" ?
                                                 <input
                                                     type="text"
-                                                    // defaultValue={residentData.birthday}
+                                                    defaultValue={format(new Date(props.resident.birthday), "MMMM dd, yyyy")}
                                                     disabled
                                                 /> :
                                                 <TextField
@@ -168,7 +161,7 @@ function ViewUpdate(props) {
                                                     InputLabelProps={{
                                                         shrink: true,
                                                     }}
-                                                    // defaultValue={residentData.birthday}
+                                                    defaultValue={props.resident.birthday}
                                                     onChange={(e) => setBday(e.target.value)}
                                                 />
                                             }
@@ -177,7 +170,7 @@ function ViewUpdate(props) {
                                             <h4>Birth Place</h4>
                                             <input
                                                 type="text"
-                                                // defaultValue={residentData.birthPlace}
+                                                defaultValue={props.resident.birthplace}
                                                 onChange={(e) => setBirthplace(e.target.value)}
                                                 disabled={props.action === "view" ? true : false}
                                             />
@@ -189,14 +182,14 @@ function ViewUpdate(props) {
                                             {props.action === "view" ?
                                                 <input
                                                     type="text"
-                                                    // defaultValue={residentData.gender}
+                                                    defaultValue={props.resident.gender}
                                                     disabled
                                                 /> :
                                                 <Autocomplete
                                                     style={{ width: "99%" }}
                                                     disablePortal
                                                     id="combo-box-demo"
-                                                    // defaultValue={genderOptions[setSelectedGender]}
+                                                    defaultValue={props.resident.gender}
                                                     options={genderOptions}
                                                     sx={{ width: '100%' }}
                                                     renderInput={(params) => <TextField {...params} />}
@@ -208,14 +201,14 @@ function ViewUpdate(props) {
                                             {props.action === "view" ?
                                                 <input
                                                     type="text"
-                                                    // defaultValue={residentData.religion}
+                                                    defaultValue={props.resident.religion}
                                                     disabled
                                                 /> :
                                                 <Autocomplete
                                                     style={{ width: "99%" }}
                                                     disablePortal
                                                     id="combo-box-demo"
-                                                    // defaultValue={religionOptions[setSelectedReligion]}
+                                                    defaultValue={props.resident.religion}
                                                     options={religionOptions}
                                                     sx={{ width: '100%' }}
                                                     renderInput={(params) => <TextField {...params} />}
@@ -228,7 +221,7 @@ function ViewUpdate(props) {
                                             <h4>Email Address</h4>
                                             <input
                                                 type="text"
-                                                // defaultValue={residentData.email}
+                                                defaultValue={props.resident.email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 disabled={props.action === "view" ? true : false}
                                             />
@@ -237,7 +230,7 @@ function ViewUpdate(props) {
                                             <h4>Contact Number</h4>
                                             <input
                                                 type="text"
-                                                // defaultValue={residentData.phone}
+                                                defaultValue={props.resident.contactNumber}
                                                 onChange={(e) => setPhone(e.target.value)}
                                                 disabled={props.action === "view" ? true : false}
                                             />
@@ -247,7 +240,7 @@ function ViewUpdate(props) {
                                     <input
                                         style={{ width: "95%" }}
                                         type="text"
-                                        // defaultValue={residentData.address}
+                                        defaultValue={props.resident.address}
                                         onChange={(e) => setAddress(e.target.value)}
                                         disabled={props.action === "view" ? true : false}
                                     />
@@ -261,14 +254,14 @@ function ViewUpdate(props) {
                                             {props.action === "view" ?
                                                 <input
                                                     type="text"
-                                                    // defaultValue="civilStatus"
+                                                    defaultValue={props.resident.civilStatus}
                                                     disabled
                                                 /> :
                                                 <Autocomplete
                                                     style={{ width: "99%" }}
                                                     disablePortal
                                                     id="combo-box-demo"
-                                                    // defaultValue={civilStatusOptions[setSelectedStatus]}
+                                                    defaultValue={props.resident.civilStatus}
                                                     options={civilStatusOptions}
                                                     sx={{ width: '100%' }}
                                                     renderInput={(params) => <TextField {...params} />}
@@ -280,14 +273,14 @@ function ViewUpdate(props) {
                                             {props.action === "view" ?
                                                 <input
                                                     type="text"
-                                                    // defaultValue={residentData.educationAttainment}
+                                                    defaultValue={props.resident.educationalAttainment}
                                                     disabled
                                                 /> :
                                                 <Autocomplete
                                                     style={{ width: "99%" }}
                                                     disablePortal
                                                     id="combo-box-demo"
-                                                    // defaultValue={educationAttainment[setSelectedEducation]}
+                                                    defaultValue={props.resident.educationalAttainment}
                                                     options={educationAttainment}
                                                     sx={{ width: '100%' }}
                                                     renderInput={(params) => <TextField {...params} />}
@@ -300,7 +293,7 @@ function ViewUpdate(props) {
                                             <h4>Occupation</h4>
                                             <input
                                                 type="text"
-                                                // defaultValue={residentData.occupation}
+                                                defaultValue={props.resident.occupation}
                                                 onChange={(e) => setOccupation(e.target.value)}
                                                 disabled={props.action === "view" ? true : false}
                                             />
@@ -309,7 +302,7 @@ function ViewUpdate(props) {
                                             <h4>Monthly Income</h4>
                                             <input
                                                 type="text"
-                                                // defaultValue={residentData.monthlyIncome}
+                                                defaultValue={props.resident.monthlyIncome}
                                                 onChange={(e) => setMonthlyIncome(e.target.value)}
                                                 disabled={props.action === "view" ? true : false}
                                             />
@@ -322,10 +315,10 @@ function ViewUpdate(props) {
                                                 <RadioGroup
                                                     aria-labelledby="demo-radio-buttons-group-label"
                                                     name="radio-buttons-group"
-                                                // defaultValue={residentData.govermentMemberships.sss}
+                                                    defaultValue={props.resident.membership.sss}
                                                 >
-                                                    <FormControlLabel value="Yes" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
-                                                    <FormControlLabel value="No" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
+                                                    <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
+                                                    <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
                                                 </RadioGroup>
                                             </FormControl>
                                         </div>
@@ -335,10 +328,10 @@ function ViewUpdate(props) {
                                                 <RadioGroup
                                                     aria-labelledby="demo-radio-buttons-group-label"
                                                     name="radio-buttons-group"
-                                                // defaultValue={residentData.govermentMemberships.gsis}
+                                                    defaultValue={props.resident.membership.gsis}
                                                 >
-                                                    <FormControlLabel value="Yes" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
-                                                    <FormControlLabel value="No" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
+                                                    <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
+                                                    <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
                                                 </RadioGroup>
                                             </FormControl>
                                         </div>
@@ -350,10 +343,10 @@ function ViewUpdate(props) {
                                                 <RadioGroup
                                                     aria-labelledby="demo-radio-buttons-group-label"
                                                     name="radio-buttons-group"
-                                                // defaultValue={residentData.govermentMemberships.pagibig}
+                                                    defaultValue={props.resident.membership.pagibig}
                                                 >
-                                                    <FormControlLabel value="Yes" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
-                                                    <FormControlLabel value="No" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
+                                                    <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
+                                                    <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
                                                 </RadioGroup>
                                             </FormControl>
                                         </div>
@@ -363,10 +356,10 @@ function ViewUpdate(props) {
                                                 <RadioGroup
                                                     aria-labelledby="demo-radio-buttons-group-label"
                                                     name="radio-buttons-group"
-                                                // defaultValue={residentData.govermentMemberships.philHealth}
+                                                    defaultValue={props.resident.membership.philhealth}
                                                 >
-                                                    <FormControlLabel value="Yes" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
-                                                    <FormControlLabel value="No" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
+                                                    <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
+                                                    <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
                                                 </RadioGroup>
                                             </FormControl>
                                         </div>
@@ -377,20 +370,6 @@ function ViewUpdate(props) {
                     </Box>
                 </div>
                 <div className="rightAlign ModalButtons">
-                    <button
-                        type="reset"
-                        className="borderedButton"
-                        onClick={() => {
-                            props.setShown(false)
-                            // document.getElementById("topBlur").className = "topbar flex-row";
-                            // document.getElementById("sideBlur").className = "sidebar";
-                            // document.getElementById("ResidentcontentBlur").className = "resident";
-                            // document.getElementById("headerBlur").className = "header";
-                            setValue(0)
-                        }}>
-                        {props.action === "view" ? "Exit" : "Cancel"}
-
-                    </button>
                     {props.action !== "view" && (
                         <button
                             // type="submit"
@@ -406,7 +385,20 @@ function ViewUpdate(props) {
                             Update
                         </button>
                     )}
+                    <button
+                        type="reset"
+                        className="borderedButton"
+                        onClick={() => {
+                            props.setShown(false)
+                            // document.getElementById("topBlur").className = "topbar flex-row";
+                            // document.getElementById("sideBlur").className = "sidebar";
+                            // document.getElementById("ResidentcontentBlur").className = "resident";
+                            // document.getElementById("headerBlur").className = "header";
+                            setValue(0)
+                        }}>
+                        {props.action === "view" ? "Exit" : "Cancel"}
 
+                    </button>
                 </div>
             </div>
             {/* </form> */}

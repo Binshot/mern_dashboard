@@ -17,7 +17,6 @@ import Button from '@mui/material/Button';
 
 function Header(props) {
     const [AddmodalShown, toggleAddModal] = useState(false);
-    // const { data: officialList } = useFetch("http://localhost:8001/Residents");
     const officialList = props.list
     const [resid, setId] = useState(0)
 
@@ -169,6 +168,11 @@ function Header(props) {
                         </div>
                         <div className="ModalButtons">
                             <button
+                                type="submit"
+                                className="solidButton buttonBlue">
+                                Add
+                            </button>
+                            <button
                                 type="reset"
                                 className="borderedButton"
                                 onClick={() => {
@@ -181,11 +185,6 @@ function Header(props) {
                                     setFlag(false)
                                 }}>
                                 Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                className="solidButton buttonBlue">
-                                Add
                             </button>
                         </div>
                     </div>

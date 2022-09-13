@@ -17,9 +17,9 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 
-function UpdateResident(props) {
-    let residentData = props.resident
+import format from 'date-fns/format';
 
+function UpdateResident(props) {
     const genderOptions = ['Male', 'Female', 'Other'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed'];
@@ -28,8 +28,8 @@ function UpdateResident(props) {
         'Master’s Degree', 'Doctorate or Higher'];
     const familyMember = ['Father', 'Mother'];
 
+    // for tabs
     const [value, setValue] = React.useState(0);
-
     function handleTabChange(event, value) {
         setValue(value);
     }
@@ -50,34 +50,33 @@ function UpdateResident(props) {
                 color="inherit"
                 onClick={() => {
                     toggleSnackbar(false)
-                }}
-            >
+                }}>
                 <CloseIcon fontSize="small" />
             </IconButton>
         </React.Fragment>
     );
 
     //Resident data input
-    const [lastName, setLastName] = useState(residentData.lastName)
-    const [firstName, setFirstName] = useState(residentData.firstName)
-    const [middleName, setMiddleName] = useState(residentData.middleName)
-    // const [role, setRole] = useState(residentData.role)
-    const [suffix, setSuffix] = useState(residentData.suffix)
-    const [birthday, setBday] = useState(residentData.birthday)
-    const [birthPlace, setBirthplace] = useState(residentData.birthplace)
-    const [gender, setGender] = useState(residentData.gender)
-    const [religion, setReligion] = useState(residentData.religion)
-    const [email, setEmail] = useState(residentData.email)
-    const [phone, setPhone] = useState(residentData.phone)
-    const [address, setAddress] = useState(residentData.address)
-    const [civilStatus, setCivilStatus] = useState(residentData.civilStatus)
-    const [educationalAttainment, setEducationalAttainment] = useState(residentData.educationalAttainment)
-    const [occupation, setOccupation] = useState(residentData.occupation)
-    const [monthlyIncome, setMonthlyIncome] = useState(residentData.monthlyIncome)
-    const [sss, setSSS] = useState(residentData.membership .sss)
-    const [gsis, setGSIS] = useState(residentData.membership .gsis)
-    const [pagibig, setPagibig] = useState(residentData.membership .pagibig)
-    const [philhealth, setPhilhealth] = useState(residentData.membership .philhealth)
+    const [lastName, setLastName] = useState(props.resident.lastName)
+    const [firstName, setFirstName] = useState(props.resident.firstName)
+    const [middleName, setMiddleName] = useState(props.resident.middleName)
+    // const [role, setRole] = useState(props.resident.role)
+    const [suffix, setSuffix] = useState(props.resident.suffix)
+    const [birthday, setBday] = useState(props.resident.birthday)
+    const [birthPlace, setBirthplace] = useState(props.resident.birthplace)
+    const [gender, setGender] = useState(props.resident.gender)
+    const [religion, setReligion] = useState(props.resident.religion)
+    const [email, setEmail] = useState(props.resident.email)
+    const [phone, setPhone] = useState(props.resident.contactNumber)
+    const [address, setAddress] = useState(props.resident.address)
+    const [civilStatus, setCivilStatus] = useState(props.resident.civilStatus)
+    const [educationalAttainment, setEducationalAttainment] = useState(props.resident.educationalAttainment)
+    const [occupation, setOccupation] = useState(props.resident.occupation)
+    const [monthlyIncome, setMonthlyIncome] = useState(props.resident.monthlyIncome)
+    const [sss, setSSS] = useState(props.resident.membership.sss)
+    const [gsis, setGSIS] = useState(props.resident.membership.gsis)
+    const [pagibig, setPagibig] = useState(props.resident.membership.pagibig)
+    const [philhealth, setPhilhealth] = useState(props.resident.membership.philhealth)
 
     const handleSubmit = () => {
         props.setShown(false)
@@ -90,44 +89,57 @@ function UpdateResident(props) {
         setValue(0)
         props.returnID(null)
 
-        residentData.name.lastName = lastName
-        residentData.name.firstName = firstName
-        residentData.name.middleName = middleName
-        // residentData.role = role
-        residentData.suffix = suffix
-        residentData.birthday = birthday
-        residentData.birthPlace = birthPlace
-        residentData.gender = gender
-        residentData.religion = religion
-        residentData.email = email
-        residentData.phone = phone
-        residentData.address = address
-        residentData.civilStatus = civilStatus
-        residentData.educationalAttainment = educationalAttainment
-        residentData.occupation = occupation
-        residentData.monthlyIncome = monthlyIncome
-        residentData.membership.sss = sss
-        residentData.membership.gsis = gsis
-        residentData.membership.pagibig = pagibig
-        residentData.membership.philhealth = philhealth
+        props.resident.name.lastName = lastName
+        props.resident.name.firstName = firstName
+        props.resident.name.middleName = middleName
+        // props.resident.role = role
+        props.resident.suffix = suffix
+        props.resident.birthday = birthday
+        props.resident.birthPlace = birthPlace
+        props.resident.gender = gender
+        props.resident.religion = religion
+        props.resident.email = email
+        props.resident.phone = phone
+        props.resident.address = address
+        props.resident.civilStatus = civilStatus
+        props.resident.educationalAttainment = educationalAttainment
+        props.resident.occupation = occupation
+        props.resident.monthlyIncome = monthlyIncome
+        props.resident.membership.sss = sss
+        props.resident.membership.gsis = gsis
+        props.resident.membership.pagibig = pagibig
+        props.resident.membership.philhealth = philhealth
 
     }
 
-    let setSelectedGender = genderOptions.findIndex(sex => sex === residentData.gender)
-    let setSelectedReligion = religionOptions.findIndex(rel => rel === residentData.religion)
-    let setSelectedStatus = civilStatusOptions.findIndex(stat => stat === residentData.civilStatus)
-    let setSelectedEducation = educationAttainment.findIndex(educ => educ === residentData.educationAttainment)
-    let setSelectedRole = familyMember.findIndex(role => role === residentData.role)
-
+    const xButton = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                    props.setShown(false)
+                    document.getElementById("topBlur").className = "topbar flex-row";
+                    document.getElementById("sideBlur").className = "sidebar";
+                    document.getElementById("ResidentcontentBlur").className = "resident";
+                    document.getElementById("headerBlur").className = "header";
+                    toggleSnackbar(true)
+                }}>
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    )
     return (
         <div>
-
             {props.shown ? (
                 <div className="modal-backdrop">
-
                     <form onSubmit={handleSubmit}>
                         <div className="residentModals modal-content">
-                            <h2 className="marginBottom">{props.action === "view" ? "View Head of the Family" : "Update Head of the Family"} </h2>
+                            <div className='modalHeader'>
+                                <h2 className="marginBottom">{props.action === "view" ? "View Head of the Family" : "Update Head of the Family"} </h2>
+                                {xButton}
+                            </div>
                             <div>
                                 <div className="flex-column center">
                                     <div className='profileAvatar' style={{ marginBottom: "24px" }}>
@@ -143,9 +155,8 @@ function UpdateResident(props) {
 
                                     </div>
                                     <h4>{lastName}, {firstName} {middleName}</h4>
-                                    <p>{residentData.role}</p>
+                                    <p>{props.resident.role}</p>
                                 </div>
-
                                 <Box sx={{ width: '100%', height: '348px', mb: 4, borderBottom: 1, borderColor: '#9C9C9C' }}>
                                     <Box sx={{ borderBottom: 1, borderColor: '#9C9C9C' }}>
                                         <Tabs value={value} onChange={handleTabChange}>
@@ -210,7 +221,7 @@ function UpdateResident(props) {
                                                             <input
                                                                 type="text"
                                                                 required
-                                                                value={birthday}
+                                                                value={format(new Date(birthday), "MMMM dd, yyyy")}
                                                                 disabled
                                                             /> :
                                                             <TextField
@@ -253,7 +264,7 @@ function UpdateResident(props) {
                                                                 style={{ width: "99%" }}
                                                                 disablePortal
                                                                 id="combo-box-demo"
-                                                                value={genderOptions[setSelectedGender]}
+                                                                value={gender}
                                                                 options={genderOptions}
                                                                 sx={{ width: '100%' }}
                                                                 renderInput={(params) => <TextField {...params} />}
@@ -275,7 +286,7 @@ function UpdateResident(props) {
                                                                 style={{ width: "99%" }}
                                                                 disablePortal
                                                                 id="combo-box-demo"
-                                                                value={religionOptions[setSelectedReligion]}
+                                                                value={religion}
                                                                 options={religionOptions}
                                                                 sx={{ width: '100%' }}
                                                                 renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
@@ -362,7 +373,7 @@ function UpdateResident(props) {
                                                                 value={educationalAttainment}
                                                                 options={educationAttainment}
                                                                 sx={{ width: '100%' }}
-                                                                renderInput={(params) => <TextField {...params}/>}
+                                                                renderInput={(params) => <TextField {...params} />}
                                                                 onChange={(e, newValue) => setEducationalAttainment(newValue)}
                                                                 required
                                                             />
@@ -462,7 +473,10 @@ function UpdateResident(props) {
                                         {value === 2 && (
                                             <div className="flex-column tab">
                                                 {props.action === "view" ?
-                                                    <ViewFamily list={residentData} /> :
+                                                    <ViewFamily
+                                                        list={props.allResidents.filter(head => head.headOfFamily_id == props.resident._id)}
+                                                        familyHead={props.resident}
+                                                    /> :
                                                     <div className="flex-row space-between">
                                                         <div className="flex-column inputs">
                                                             <h4>Family Member</h4>
@@ -470,7 +484,7 @@ function UpdateResident(props) {
                                                                 style={{ width: "99%" }}
                                                                 disablePortal
                                                                 id="combo-box-demo"
-                                                                value={familyMember[setSelectedRole]}
+                                                                value="Father"
                                                                 options={familyMember}
                                                                 sx={{ width: '100%' }}
                                                                 renderInput={(params) => <TextField {...params} placeholder="Choose Kind of Family Member" />}
@@ -486,6 +500,13 @@ function UpdateResident(props) {
                                 </Box>
                             </div>
                             <div className="rightAlign ModalButtons">
+                                {props.action !== "view" && (
+                                    <button
+                                        type="submit"
+                                        className="solidButton buttonBlue">
+                                        Update
+                                    </button>
+                                )}
                                 <button
                                     type="button"
                                     className="borderedButton"
@@ -496,18 +517,10 @@ function UpdateResident(props) {
                                         document.getElementById("ResidentcontentBlur").className = "resident";
                                         document.getElementById("headerBlur").className = "header";
                                         toggleSnackbar(true)
+                                        setValue(0)
                                     }}>
                                     {props.action === "view" ? "Exit" : "Cancel"}
-
                                 </button>
-                                {props.action !== "view" && (
-                                    <button
-                                        type="submit"
-                                        className="solidButton buttonBlue">
-                                        Update
-                                    </button>
-                                )}
-
                             </div>
                         </div>
                     </form>

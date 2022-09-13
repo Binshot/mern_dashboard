@@ -171,17 +171,6 @@ const Table = () => {
                         </div>
                         <div className="rightAlign ModalButtons" style={{ marginTop: "23px" }}>
                             <button
-                                className="borderedButton"
-                                onClick={() => {
-                                    setShowModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("contentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
-                                }}>
-                                Cancel
-                            </button>
-                            <button
                                 className="solidButton buttonBlue"
                                 hidden={action === "view" ? "hidden" : ""}
                                 onClick={() => {
@@ -194,6 +183,17 @@ const Table = () => {
                                     toggleSnackbar(true)
                                 }}>
                                 Update
+                            </button>
+                            <button
+                                className="borderedButton"
+                                onClick={() => {
+                                    setShowModal(false)
+                                    document.getElementById("topBlur").className = "topbar flex-row";
+                                    document.getElementById("sideBlur").className = "sidebar";
+                                    document.getElementById("contentBlur").className = "resident";
+                                    document.getElementById("headerBlur").className = "header";
+                                }}>
+                                Cancel
                             </button>
                         </div>
                     </div>

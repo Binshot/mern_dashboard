@@ -1,6 +1,6 @@
 import './newStyle.css';
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate  } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 import { useAuthContext } from './hooks/useAuthContext'
 
@@ -17,27 +17,29 @@ import Project from "./Components/Pages/Projects"
 import Messages from "./Components/Pages/Messages"
 import Help from "./Components/Pages/Help";
 import ActivityLogs from "./Components/Pages/ActivityLogs"
+import ResetPassword from './Components/Pages/ResetPassword';
 
 export default function App() {
-  
+
   const { user } = useAuthContext()
 
   return (
     <Router>
       <Routes>
+        <Route exact path="reset-password/:id/:token" element={<ResetPassword />} />
         <Route exact path="login" element={!user ? <Login /> : <Navigate to="/" />} />
         <Route exact path="forgot_password" element={!user ? <Forgot /> : <Navigate to="/" />} />
-        <Route exact path="/" element={ user ? <MainPage /> : <Navigate to="login" /> }>
+        <Route exact path="/" element={user ? <MainPage /> : <Navigate to="login" />}>
           <Route exact path="overview" element={user ? <Overview /> : <Navigate to="/login" />} />
           <Route exact path="settings" element={user ? <Settings /> : <Navigate to="/login" />} />
           <Route exact path="organization" element={user ? <Organization /> : <Navigate to="/login" />} />
-          <Route exact path="residents" element={user ?<Residents /> : <Navigate to="/login" />} />
-          <Route exact path="announcement" element={user ?<Announcement /> : <Navigate to="/login" />} />
-          <Route exact path="events" element={user ?<Events /> : <Navigate to="/login" />} />
-          <Route exact path="project" element={user ?<Project /> : <Navigate to="/login" />} />
-          <Route exact path="messages" element={user ?<Messages /> : <Navigate to="/login" />} />
-          <Route exact path="help" element={user ?<Help /> : <Navigate to="/login" />} />
-          <Route exact path="activity_logs" element={user ?<ActivityLogs /> : <Navigate to="/login" />} />
+          <Route exact path="residents" element={user ? <Residents /> : <Navigate to="/login" />} />
+          <Route exact path="announcement" element={user ? <Announcement /> : <Navigate to="/login" />} />
+          <Route exact path="events" element={user ? <Events /> : <Navigate to="/login" />} />
+          <Route exact path="project" element={user ? <Project /> : <Navigate to="/login" />} />
+          <Route exact path="messages" element={user ? <Messages /> : <Navigate to="/login" />} />
+          <Route exact path="help" element={user ? <Help /> : <Navigate to="/login" />} />
+          <Route exact path="activity_logs" element={user ? <ActivityLogs /> : <Navigate to="/login" />} />
         </Route>
       </Routes>
     </Router>

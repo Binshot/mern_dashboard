@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import avatar from "../NewImageFiles/Resident/Avatar.svg"
 import View from "../NewImageFiles/ActionButton/View.svg"
 import Update from "../NewImageFiles/ActionButton/Update.svg"
@@ -13,18 +14,25 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
+
+//context
+import { useResidentContext } from "../../hooks/userResidentContext"
+
 function ViewFamilyInformation(props) {
-    const item = [1, 2, 3, 4, 5]
-    // const item = null
+
+    const { dispatch } = useResidentContext()
+    const [loading, setLoading] = useState(false)
 
     const [showFamilyModal, setshowFamilyModal] = useState(false)
-    const setShowFamilyModal = show => setshowFamilyModal(show)
+    const getShowFamilyModal = show => setshowFamilyModal(show)
     const [FamAction, setFamAction] = useState(null)
     const [showDeleteModal, setShowDeleteModal] = useState(null);
 
     //FOR SNACKBAR
     const [snackbar, toggleSnackbar] = useState(false);
     const [Deletesnackbar, toggleDeletesnackbar] = useState(false);
+
+    const [selectedFamMember, setSelectedFamMember] = useState(null)
 
     const actionButton = (
         <React.Fragment>
@@ -48,52 +56,70 @@ function ViewFamilyInformation(props) {
             </IconButton>
         </React.Fragment>
     );
+    const navigate = useNavigate();
+
+    // handle family member delete
+    const handleDelete = async () => {
+        setLoading(true)
+        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/'
+            + selectedFamMember._id, {
+            method: 'DELETE'
+        })
+
+        const json = await response.json()
+
+        if (response.ok) {
+            toggleDeletesnackbar(true)
+            setLoading(false)
+            setShowDeleteModal(false)
+            dispatch({ type: 'DELETE_RESIDENT_MEMBER', payload: json })
+        } else {
+            setLoading(false)
+        }
+    }
     return (
         <div>
-            <FamilyModal shown={showFamilyModal} setShown={setShowFamilyModal} action={FamAction} resident={props.list} />
+            {/* view or update family member */}
+            {selectedFamMember && (
+                <FamilyModal shown={showFamilyModal} setShown={getShowFamilyModal} action={FamAction} resident={selectedFamMember} />
+            )}
 
             {/* Delete Resident */}
-            <Modal shown={showDeleteModal} >
+            {selectedFamMember && (
+                <Modal shown={showDeleteModal} >
                     <div className="deleteModals">
                         <h2> Remove Family Member?</h2>
                         <div>
-                            <p>{`Are you sure you want to remove [Member's Name]? All data removed are archived and can be restored.`}</p>
+                            <p>
+                                Are you sure you want to remove <span style={{ fontWeight: "bold" }}>{selectedFamMember.lastName}, {selectedFamMember.firstName}</span>? All data removed are archived
+                                and can be restored.
+                            </p>
                         </div>
                         <div className="rightAlign ModalButtons">
                             <button
-                                className="borderedButton"
-                                onClick={() => {
-                                    setShowDeleteModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("ResidentcontentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
-                                }}>
-                                Cancel
+                                className="solidButton buttonRed"
+                                onClick={() => handleDelete()}
+                                disabled={loading}>
+                                Remove
                             </button>
                             <button
-                                className="solidButton buttonRed"
-                                onClick={() => {
-                                    setShowDeleteModal(false)
-                                    toggleDeletesnackbar(true)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("ResidentcontentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
-                                    // residentsList.splice(residentID - 1, 1)
-                                }}>
-                                Remove
+                                className="borderedButton"
+                                onClick={() => setShowDeleteModal(false)}
+                                disabled={loading}>
+                                Cancel
                             </button>
                         </div>
                     </div>
                 </Modal>
+            )}
 
+            {selectedFamMember && (
                 <Snackbar
                     open={snackbar}
                     onClose={() => { toggleSnackbar(false) }}
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     autoHideDuration={2000}
-                    message="{Resident's name} information has been updated!"
+                    message={`${selectedFamMember.lastName}, ${selectedFamMember.firstName} information has been updated!`}
                     ContentProps={{
                         sx: {
                             background: "#DBB324",
@@ -104,12 +130,14 @@ function ViewFamilyInformation(props) {
                     }}
                     action={actionButton}
                 />
+            )}
+            {selectedFamMember && (
                 <Snackbar
                     open={Deletesnackbar}
                     onClose={() => { toggleDeletesnackbar(false) }}
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     autoHideDuration={2000}
-                    message={`[Member's Name] has been removed!`}
+                    message={`${selectedFamMember.lastName}, ${selectedFamMember.firstName} has been removed!`}
                     ContentProps={{
                         sx: {
                             background: "#D82727",
@@ -120,60 +148,54 @@ function ViewFamilyInformation(props) {
                     }}
                     action={actionButton}
                 />
+            )}
 
             <div>
-                {props.list ? (
+                {props.list.length !== 0 ? (
                     <div className='flex-column'>
-                        {item.map((value) => {
+                        {props.list.map((res) => {
                             return (
-                                <div className='flex-row viewFamilyMemberContainer' key={value}>
+                                <div className='flex-row viewFamilyMemberContainer' key={res._id}>
                                     <img src={avatar} alt="" style={{ height: "100px", width: "100px", marginRight: "16px" }} />
                                     <div className='flex-column' style={{ justifyContent: "center", flexGrow: "1" }}>
-                                        <h4>Name</h4>
-                                        <h5 style={{ fontSize: "14px", color: "#9C9C9C", fontWeight: "normal" }}>Position</h5>
+                                        <h4>{res.lastName + ", " + res.firstName + " " + res.middleName}</h4>
+                                        <h5 style={{ fontSize: "14px", color: "#9C9C9C", fontWeight: "normal" }}>
+                                            {props.familyHead.familyMembers.filter(member => member.member_id == res._id).map(a => {
+                                                return a.relationship
+                                            })}
+                                        </h5>
                                     </div>
                                     <div className='flex-row actions' style={{ alignContent: "center", justifyContent: "center" }}>
-                                        <div style={{ marginRight: "16px" }} className="solidButton squareButton buttonGreen"
+                                        <button
+                                            style={{ marginRight: "16px" }}
+                                            className="solidButton squareButton buttonGreen"
+                                            type='button'
                                             onClick={() => {
-                                                // id(residents.id)
+                                                setSelectedFamMember(res)
                                                 setFamAction("view")
                                                 setshowFamilyModal(true)
-                                                // document.getElementById("sideBlur").className += " blur";
-                                                // document.getElementById("topBlur").className += " blur";
-                                                // document.getElementById("headerBlur").className += " blur";
-                                                // document.getElementById("contentBlur").className += " blur";
                                             }}>
                                             <img src={View} alt="" />
-                                        </div>
-                                        <div style={{ marginRight: "16px" }} className="solidButton squareButton buttonBlue"
+                                        </button>
+                                        <button
+                                            style={{ marginRight: "16px" }}
+                                            className="solidButton squareButton buttonBlue"
+                                            type='button'
                                             onClick={() => {
-                                                // id(residents.id)
+                                                setSelectedFamMember(res)
                                                 setshowFamilyModal(true)
                                                 setFamAction("edit")
-                                                // title(residents.title)
-                                                // description(residents.description)
-                                                // date(residents.dateSched)
-                                                // time(residents.timeSched)
-                                                // document.getElementById("sideBlur").className += " blur";
-                                                // document.getElementById("topBlur").className += " blur";
-                                                // document.getElementById("headerBlur").className += " blur";
-                                                // document.getElementById("contentBlur").className += " blur";
                                             }} >
                                             <img src={Update} alt="" />
-                                        </div>
-                                        <div className='delete squareButton'
+                                        </button>
+                                        <button className='delete squareButton'
+                                            type='button'
                                             onClick={() => {
-                                                // id(residents.id)
-                                                // title(residents.title)
+                                                setSelectedFamMember(res)
                                                 setShowDeleteModal(true)
-                                                // action("delete")
-                                                // document.getElementById("sideBlur").className += " blur";
-                                                // document.getElementById("topBlur").className += " blur";
-                                                // document.getElementById("headerBlur").className += " blur";
-                                                // document.getElementById("contentBlur").className += " blur";
-                                            }} >
+                                            }}>
                                             <img src={Delete} alt="" />
-                                        </div>
+                                        </button>
                                     </div>
                                 </div>
                             )
@@ -184,8 +206,10 @@ function ViewFamilyInformation(props) {
                         <div className='flex-row' style={{ justifyContent: "center", flexGrow: "1" }} >
                             <img src={Woman} alt="" style={{ width: "140px", marginBottom: "10px" }} />
                         </div>
-                        <p style={{ fontSize: "20px", lineHeight: "140%", textAlign: "center" }}>There are no relatives for [Resident’s name]. <br />
-                            Relatives are listed if the Head of the family added their own family members</p>
+                        <p style={{ fontSize: "20px", lineHeight: "140%", textAlign: "center" }}>
+                            There are no relatives for <span style={{ fontWeight: "bold" }}>{props.familyHead.lastName}, {props.familyHead.firstName}</span>. <br />
+                            Relatives are listed if the Head of the family added their own family members
+                        </p>
                     </div>
                 }
             </div>

@@ -133,91 +133,6 @@ function Officials(props) {
                                         onChange={(e, newValue) => setPosition(newValue)}
                                     />
                                 </div>
-                                <div className="addOfficialDetails">
-                                    <div className="modalheader">
-                                        <label className='label'>Detailed Information</label><br />
-                                    </div>
-                                    <div className="details">
-                                        <div className="addOfficialDetailsHeader">
-                                            <img src={Officials[id].avatar} alt="" className="modalAvatar" />
-                                        </div>
-                                        <div className="topAlign">
-                                            <div className="flex-row marginBottom marginTop">
-                                                <h3>Details</h3>
-                                            </div>
-                                            <div className="flex-row borderBottom1 paddingBottom">
-                                                <h4 style={{ width: "30%", textAlign: "left" }}>Birthday:</h4>
-                                                <p style={{ textAlign: "left" }}>{bday}</p>
-                                            </div>
-                                            <div className="flex-row borderBottom1 marginTop paddingBottom">
-                                                <h4 style={{ width: "30%", textAlign: "left" }}>Address:</h4>
-                                                <p style={{ width: "70%", textAlign: "left" }}>{address}</p>
-                                            </div>
-                                            <div className="flex-row borderBottom1 marginTop paddingBottom">
-                                                <h4 style={{ width: "30%", textAlign: "left" }}>Email:</h4>
-                                                <p style={{ textAlign: "left" }}>{email}</p>
-                                            </div>
-                                            <div className="flex-row marginTop paddingBottom">
-                                                <h4 style={{ width: "30%", textAlign: "left" }}>Phone No.:</h4>
-                                                <p style={{ textAlign: "left" }}>{phone}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="ModalButtons">
-                                <button
-                                    className="borderedButton"
-                                    onClick={() => {
-                                        toggleUpdateModal(false)
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("contentBlur").className = "flex-row";
-                                        document.getElementById("headerBlur").className = "header";
-                                    }}>
-                                    Cancel
-                                </button>
-                                <button
-                                    className="solidButton buttonBlue"
-                                    onClick={() => {
-                                        toggleUpdateModal(false)
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("contentBlur").className = "flex-row";
-                                        document.getElementById("headerBlur").className = "header";
-                                        toggleSnackbar(true)
-                                        officialList[id].typeOfMember = position
-                                    }}>
-                                    Update
-                                </button>
-                            </div>
-                        </div>
-                    </Modal>
-                )}
-                {updateModalShown && (
-                    <Modal
-                        shown={updateModalShown}
-                        close={() => {
-                            toggleUpdateModal(false);
-                        }}>
-                        <div className="Editmodal officalModal">
-                            <h2 className="marginBottom">Update Official</h2>
-                            <h4>Resident's Name</h4>
-                            <div className="flex-row addOfficial space-between">
-                                <div className="selects">
-                                    <input type="text" value={nameOfMember} disabled style={{ marginTop: "8px", width: "90%" }} />
-                                    <h4>Position</h4>
-                                    <Autocomplete
-                                        style={{ width: "99%" }}
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        value={position}
-                                        options={positionOptions}
-                                        sx={{ width: '100%' }}
-                                        renderInput={(params) => <TextField {...params} />}
-                                        onChange={(e, newValue) => setPosition(newValue)}
-                                    />
-                                </div>
 
                                 <div className="addOfficialDetails">
                                     <div className="modalheader">
@@ -253,18 +168,6 @@ function Officials(props) {
                                 </div>
                             </div>
                             <div className="ModalButtons">
-
-                                <button
-                                    className="borderedButton"
-                                    onClick={() => {
-                                        toggleUpdateModal(false)
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("contentBlur").className = "flex-row";
-                                        document.getElementById("headerBlur").className = "header";
-                                    }}>
-                                    Cancel
-                                </button>
                                 <button
                                     className="solidButton buttonBlue"
                                     onClick={() => {
@@ -277,6 +180,17 @@ function Officials(props) {
                                         officialList[id].typeOfMember = position
                                     }}>
                                     Update
+                                </button>
+                                <button
+                                    className="borderedButton"
+                                    onClick={() => {
+                                        toggleUpdateModal(false)
+                                        document.getElementById("topBlur").className = "topbar flex-row";
+                                        document.getElementById("sideBlur").className = "sidebar";
+                                        document.getElementById("contentBlur").className = "flex-row";
+                                        document.getElementById("headerBlur").className = "header";
+                                    }}>
+                                    Cancel
                                 </button>
                             </div>
                         </div>

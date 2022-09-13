@@ -19,6 +19,8 @@ import Button from '@mui/material/Button';
 //context
 import { useResidentContext } from "../../hooks/userResidentContext"
 
+import format from 'date-fns/format';
+
 function AddResident(props) {
 
     //context dispatch
@@ -26,13 +28,13 @@ function AddResident(props) {
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
 
-    const genderOptions = ['Male', 'Female', 'Other'];
+    const genderOptions = ['Male', 'Female'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed'];
     const educationAttainmentOptions = ['No Formal Education', 'Elementary', 'High School',
         'General Education Development', 'Vocational Qualificiation', 'Bachelor’s Degree',
         'Master’s Degree', 'Doctorate or Higher'];
-    const familyMember = ['Father', 'Mother'];
+    const familyMember = ["Husband" , "Wife", "Daughter", "Son" ];
 
     const [value, setValue] = React.useState(0);
 
@@ -40,40 +42,37 @@ function AddResident(props) {
         setValue(value);
     }
 
-    const [role, setRole] = useState('')
-    const [firstName, setFirstName] = useState(null)
-    const [lastName, setLastName] = useState(null)
-    const [middleName, setMiddleName] = useState(null)
+    const [relationship, setRelationship] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [middleName, setMiddleName] = useState('')
     const [suffix, setSuffix] = useState("")
-    const [birthday, setBday] = useState(null)
-    const [birthplace, setBirthplace] = useState(null)
+    const [birthday, setBday] = useState('')
+    const [birthplace, setBirthplace] = useState('')
     const [gender, setGender] = useState(null)
     const [religion, setReligion] = useState(null)
-    const [email, setEmail] = useState(null)
-    const [contactNumber, setPhone] = useState(null)
-    const [address, setAddress] = useState(null)
+    const [email, setEmail] = useState('')
+    const [contactNumber, setPhone] = useState('')
+    const [address, setAddress] = useState('')
     const [civilStatus, setCivilStatus] = useState(null)
     const [educationalAttainment, setEducationalAttainment] = useState(null)
-    const [occupation, setOccupation] = useState(null)
-    const [monthlyIncome, setMonthlyIncome] = useState(null)
-    const [sss, setSSS] = useState(null)
-    const [gsis, setGSIS] = useState(null)
-    const [pagibig, setPagibig] = useState(null)
-    const [philhealth, setPhilhealth] = useState(null)
+    const [occupation, setOccupation] = useState('')
+    const [monthlyIncome, setMonthlyIncome] = useState('')
+    const [sss, setSSS] = useState('')
+    const [gsis, setGSIS] = useState('')
+    const [pagibig, setPagibig] = useState('')
+    const [philhealth, setPhilhealth] = useState('')
 
     const [snackbar, toggleSnackbar] = useState(false);
 
     const handleFamilyHeadSubmit = async (e) => {
         setLoading(true)
-        console.log("Head Family")
         e.preventDefault()
 
         const resident = {
             firstName, lastName, middleName, suffix, birthday, birthplace, gender, religion, email, contactNumber, address,
             civilStatus, educationalAttainment, occupation, monthlyIncome, membership: { pagibig, sss, gsis, philhealth }
         }
-
-        console.log(resident)
 
         const response = await fetch('https://drims-demo.herokuapp.com/api/residents/', {
             method: 'POST',
@@ -109,51 +108,66 @@ function AddResident(props) {
 
         const resident = {
             firstName, lastName, middleName, suffix, birthday, birthplace, gender, religion, email, contactNumber, address,
-            civilStatus, educationalAttainment, occupation, monthlyIncome, membership: { pagibig, sss, gsis, philhealth }
+            civilStatus, educationalAttainment, occupation, monthlyIncome, membership: { pagibig, sss, gsis, philhealth }, relationship
         }
 
-        props.setShown(false)
-        toggleSnackbar(true)
-        document.getElementById("topBlur").className = "topbar flex-row";
-        document.getElementById("sideBlur").className = "sidebar";
-        document.getElementById("ResidentcontentBlur").className = "resident";
-        document.getElementById("headerBlur").className = "header";
+        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/add-member/' + props.headID, {
+            method: 'POST',
+            body: JSON.stringify(resident),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
 
-        // const response = await fetch('https://drims-demo.herokuapp.com/api/residents/', {
-        //     method: 'POST',
-        //     body: JSON.stringify(resident),
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
+        const json = await response.json()
 
-        // const json = await response.json()
+        console.log(json)
+        if (!response.ok) {
+            setError(json.error)
+        }
+        if (response.ok) {
+            setError(null)
+            console.log('new Resident added:', json)
+            dispatch({ type: 'CREATE_RESIDENT_MEMBER', payload: json })
 
-        // if (!response.ok) {
-        //     setError(json.error)
-        // }
-        // if (response.ok) {
-        //     setError(null)
-        //     console.log('new Resident added:', json)
-        //     dispatch({ type: 'CREATE_RESIDENT', payload: json })
-        // }
-
+            props.setShown(false)
+            toggleSnackbar(true)
+            document.getElementById("topBlur").className = "topbar flex-row";
+            document.getElementById("sideBlur").className = "sidebar";
+            document.getElementById("ResidentcontentBlur").className = "resident";
+            document.getElementById("headerBlur").className = "header";
+        }
     }
+    const xButton = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => { cancelForm() }}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    )
+
     const action = (
         <React.Fragment>
             <Button size="small" onClick={() => { toggleSnackbar(false) }}>
                 <p style={{ color: "white", margin: 0 }}>View</p>
             </Button>
             <IconButton
-                size="small"
+                size="medium"
                 aria-label="close"
                 color="inherit"
                 onClick={() => { toggleSnackbar(false) }}
             >
-                <CloseIcon fontSize="small" />
+                <CloseIcon fontSize="medium" />
             </IconButton>
         </React.Fragment>
     );
+
+
 
     const cancelForm = () => {
         props.setShown(false)
@@ -161,25 +175,25 @@ function AddResident(props) {
         document.getElementById("sideBlur").className = "sidebar";
         document.getElementById("ResidentcontentBlur").className = "resident";
         document.getElementById("headerBlur").className = "header";
-        setFirstName(null)
-        setLastName(null)
-        setMiddleName(null)
+        setFirstName('')
+        setLastName('')
+        setMiddleName('')
         setSuffix("")
-        setBday(null)
-        setBirthplace(null)
+        setBday('')
+        setBirthplace('')
         setGender(null)
         setReligion(null)
-        setEmail(null)
-        setPhone(null)
-        setAddress(null)
+        setEmail('')
+        setPhone('')
+        setAddress('')
         setCivilStatus(null)
         setEducationalAttainment(null)
-        setOccupation(null)
-        setMonthlyIncome(null)
-        setSSS(null)
-        setGSIS(null)
-        setPagibig(null)
-        setPhilhealth(null)
+        setOccupation('')
+        setMonthlyIncome('')
+        setSSS('')
+        setGSIS('')
+        setPagibig('')
+        setPhilhealth('')
     }
 
     return (
@@ -203,9 +217,12 @@ function AddResident(props) {
 
             {props.shown ? (
                 <div className="modal-backdrop">
-                    <form onSubmit={props.action === "addMember" ? handleFamilyMemberSubmit : handleFamilyHeadSubmit} on>
+                    <form onSubmit={props.action === "addMember" ? handleFamilyMemberSubmit : handleFamilyHeadSubmit}>
                         <div className="addResidentModals modal-content">
-                            <h2 className="marginBottom">{props.action === "addMember" ? "Add Family Member" : "Add Head of the Family"}</h2>
+                            <div className='modalHeader'>
+                                <h2>{props.action === "addMember" ? "Add Family Member" : "Add Head of the Family"}</h2>
+                                {xButton}
+                            </div>
                             <div>
                                 <div className="flex-column center">
                                     <div className='profileAvatar' style={{ marginBottom: "24px" }}>
@@ -287,7 +304,8 @@ function AddResident(props) {
                                                             InputLabelProps={{
                                                                 shrink: true,
                                                             }}
-                                                            value={birthday}//format this
+
+                                                            // value={birthday ? format(new Date(birthday), "yyyy-MM-dd") : " "}
                                                             onChange={(e) => setBday(e.target.value)}
                                                         />
                                                     </div>
@@ -492,7 +510,7 @@ function AddResident(props) {
                                                             options={familyMember}
                                                             sx={{ width: '100%' }}
                                                             renderInput={(params) => <TextField {...params} placeholder="Choose Kind of Family Member" required />}
-                                                            onChange={(event, e) => setRole(e)}
+                                                            onChange={(event, e) => setRelationship(e)}
                                                         />
                                                     </div>
                                                 </div>

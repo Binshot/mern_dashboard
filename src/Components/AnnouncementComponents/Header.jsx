@@ -123,6 +123,9 @@ function Header() {
                         </div>
                         {/*Button*/}
                         <div className="rightAlign ModalButtons" style={{ marginTop: "23px" }}>
+                            <button className="solidButton buttonBlue" type="submit" disabled={isLoading}>
+                                Add
+                            </button>
                             <button
                                 disabled={isLoading}
                                 type="button"
@@ -137,9 +140,6 @@ function Header() {
                                     document.getElementById("headerBlur").className = "header";
                                 }}>
                                 Cancel
-                            </button>
-                            <button className="solidButton buttonBlue" type="submit" disabled={isLoading}>
-                                Add
                             </button>
                         </div>
                     </div>

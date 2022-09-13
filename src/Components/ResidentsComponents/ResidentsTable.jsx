@@ -67,8 +67,26 @@ const Table = () => {
 
     const [selectedResident, setSelectedResident] = useState('')
 
+    const xButton = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                    setShowDeleteModal(false)
+                    document.getElementById("topBlur").className = "topbar flex-row";
+                    document.getElementById("sideBlur").className = "sidebar";
+                    document.getElementById("ResidentcontentBlur").className = "resident";
+                    document.getElementById("headerBlur").className = "header";
+                }}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    )
+
     //Handle Delete Head of The Family
-    // Delete Announcement
     const handleDelete = async () => {
 
         const response = await fetch('https://drims-demo.herokuapp.com/api/residents/'
@@ -80,7 +98,7 @@ const Table = () => {
         if (response.ok) {
             console.log("deleted")
             dispatch({ type: 'DELETE_RESIDENT', payload: json })
-        } else{
+        } else {
             console.log("not Delete")
         }
     }
@@ -114,13 +132,14 @@ const Table = () => {
                             resident={selectedResident}
                             length={residents.length}
                             snackbar={getSnack}
+                            allResidents={residents}
                         />
                     )
                 )}
 
                 {/* Add Family Member */}
                 {action === "addMember" && (
-                    <AddFamilyMember shown={showModal} setShown={getModal} action={action} />
+                    <AddFamilyMember shown={showModal} setShown={getModal} action={action} headID={selectedResident._id}/>
                 )}
 
                 {/* Delete Resident */}
@@ -130,7 +149,10 @@ const Table = () => {
                         setShowDeleteModal(false);
                     }}>
                     <div className="deleteModals">
-                        <h2> Remove Resident?</h2>
+                        <div className='modalHeader'>
+                            <h2> Remove Resident?</h2>
+                            {xButton}
+                        </div>
                         <div>
                             <p>Are you sure you want to remove <span style={{ fontWeight: "bold" }}>{selectedResident.lastName}, </span>
                                 <span style={{ fontWeight: "bold" }}>{selectedResident.firstName}</span>? All data such as their family members
@@ -209,11 +231,11 @@ const Table = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {currentResidents.map((currentResidents) => {
+                            {currentResidents.filter(head => head.isHeadOfFamily == true).map((filteredHead) => {
                                 return (
                                     <Residents
-                                        key={currentResidents._id}
-                                        residents={currentResidents}
+                                        key={filteredHead._id}
+                                        residents={filteredHead}
                                         action={getAction}
                                         flag={getModal}
                                         del={getDelete}
@@ -225,12 +247,12 @@ const Table = () => {
                         <tfoot>
                             <tr>
                                 <td>
-                                    <h4>Total Residents: {residents.length}</h4>
+                                    <h4>Total Residents: {residents.filter(head => head.isHeadOfFamily == true).length}</h4>
                                 </td>
                                 <td colSpan={2}>
                                     <PageNumber
                                         residentsPerPage={residentsPerPage}
-                                        totalResidents={residents.length}
+                                        totalResidents={residents.filter(head => head.isHeadOfFamily == true).length}
                                         paginate={paginate}
                                     />
                                 </td>

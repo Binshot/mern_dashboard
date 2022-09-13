@@ -21,6 +21,7 @@ import Button from '@mui/material/Button';
 import { useEventContext } from "../../hooks/useEventContext"
 
 import format from 'date-fns/format'
+
 function Header() {
     const [AddmodalShown, toggleAddModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
@@ -202,6 +203,7 @@ function Header() {
                                             shrink: true,
                                         }}
                                         required
+                                        placeholder="Input start Date"
                                         value={dateFrom}
                                         onChange={(e) => setDateFrom(e.target.value)}
                                         disabled={isLoading}

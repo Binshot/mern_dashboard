@@ -32,6 +32,7 @@ const Residents = ({ residents, flag, action, del, returnResident}) => {
                         onClick={() => {
                             flag(true)
                             action("addMember")
+                            returnResident(residents)
                             document.getElementById("sideBlur").className += " blur";
                             document.getElementById("topBlur").className += " blur";
                             document.getElementById("headerBlur").className += " blur";
