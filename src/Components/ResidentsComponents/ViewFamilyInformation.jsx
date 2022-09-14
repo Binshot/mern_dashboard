@@ -56,7 +56,9 @@ function ViewFamilyInformation(props) {
             </IconButton>
         </React.Fragment>
     );
-    const navigate = useNavigate();
+
+    const [memberRelationship, setFamilyRelationship] = useState('')
+    console.log(memberRelationship)
 
     // handle family member delete
     const handleDelete = async () => {
@@ -81,7 +83,12 @@ function ViewFamilyInformation(props) {
         <div>
             {/* view or update family member */}
             {selectedFamMember && (
-                <FamilyModal shown={showFamilyModal} setShown={getShowFamilyModal} action={FamAction} resident={selectedFamMember} />
+                <FamilyModal 
+                shown={showFamilyModal} 
+                setShown={getShowFamilyModal} 
+                action={FamAction} 
+                resident={selectedFamMember} 
+                relation={memberRelationship}/>
             )}
 
             {/* Delete Resident */}
@@ -174,6 +181,9 @@ function ViewFamilyInformation(props) {
                                                 setSelectedFamMember(res)
                                                 setFamAction("view")
                                                 setshowFamilyModal(true)
+                                                setFamilyRelationship(props.familyHead.familyMembers.filter(member => member.member_id == res._id).map(a => {
+                                                    return a.relationship
+                                                }))
                                             }}>
                                             <img src={View} alt="" />
                                         </button>

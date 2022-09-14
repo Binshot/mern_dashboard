@@ -91,8 +91,7 @@ function ViewUpdate(props) {
 
                         </div>
                         <h4>{props.resident.lastName}, {props.resident.firstName} </h4>
-                        {/* <p>{props.resident.relationship}</p> */}
-                        <p>Relationship</p>
+                        <p>{props.relation}</p>
                     </div>
 
                     <Box sx={{ width: '100%', height: '338px', mb: 2, borderBottom: 1, borderColor: '#9C9C9C' }}>
