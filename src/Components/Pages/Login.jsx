@@ -8,6 +8,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import VisibilityOn from '@mui/icons-material/Visibility';
 
 import { useLogin } from "../../hooks/useLogin"
+import { TextField } from '@mui/material';
 
 function Login() {
     const [type, setType] = useState(false)
@@ -19,11 +20,10 @@ function Login() {
     //For Login Auth
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { login, error, isLoading } = useLogin()
+    const { login, error, isLoading, emptyFields } = useLogin()
 
     const handleSubmit = async (e) => {
-          e.preventDefault()
-        console.log(email, password)
+        e.preventDefault()
         await login(email, password)
     }
 
@@ -35,39 +35,35 @@ function Login() {
                     <p>Enter your details to login to your account</p>
                 </div>
                 <div className='loginInputContainer'>
-                    <div>
-                        <h3>Email</h3>
-                        <input
-                            type="email"
-                            placeholder='Input Email'
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div>
-                        <h3>Password</h3>
-                        <OutlinedInput
-                            id="outlined-adornment-password"
-                            required
-                            placeholder='Input Password'
-                            type={type ? "text" : "password"}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                    >
-                                        {type ? <VisibilityOn /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                        />
-                    </div>
+                    <h3>Email</h3>
+                    <TextField
+                        error={emptyFields.includes('Email') ? true : false}
+                        id={'outlined-error'}
+                        placeholder='Input Email'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <h3>Password</h3>
+                    <OutlinedInput
+                        error={emptyFields.includes('Password') ? true : false}
+                        id="outlined-adornment-password"
+                        placeholder='Input Password'
+                        type={type ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                >
+                                    {type ? <VisibilityOn /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
                 </div>
-                {error && <div className="error">{error}</div>}
+                {error && <div className="divError">{error}</div>}
                 <button disabled={isLoading} className='loginButton'> LOGIN</button>
                 <div className='lowerActions'>
                     <NavLink to="/forgot_password">

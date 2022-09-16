@@ -70,13 +70,13 @@ const Table = () => {
 
     const actionButton = (
         <React.Fragment>
-            <Button size="small"
+            {/* <Button size="small"
                 onClick={() => {
                     toggleSnackbar(false)
                     toggleDeletesnackbar(false)
                 }}>
                 <p style={{ color: "white", margin: 0 }}>Undo</p>
-            </Button>
+            </Button> */}
             <IconButton
                 size="small"
                 aria-label="close"

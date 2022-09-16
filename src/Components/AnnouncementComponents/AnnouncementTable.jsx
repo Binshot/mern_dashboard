@@ -9,7 +9,6 @@ import TextField from "@mui/material/TextField";
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
 
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
 
@@ -49,13 +48,13 @@ const Table = () => {
 
     const actionButton = (
         <React.Fragment>
-            <Button size="small"
+            {/* <Button size="small"
                 onClick={() => {
                     toggleSnackbar(false)
                     toggleDeletesnackbar(false)
                 }}>
                 <p style={{ color: "white", margin: 0 }}>Undo</p>
-            </Button>
+            </Button> */}
             <IconButton
                 size="small"
                 aria-label="close"

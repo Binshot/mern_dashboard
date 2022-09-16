@@ -44,13 +44,13 @@ const Table = () => {
 
     const actionButton = (
         <React.Fragment>
-            <Button size="small"
+            {/* <Button size="small"
                 onClick={() => {
                     toggleSnackbar(false)
                     toggleDeletesnackbar(false)
                 }}>
                 <p style={{ color: "white", margin: 0 }}>Undo</p>
-            </Button>
+            </Button> */}
             <IconButton
                 size="small"
                 aria-label="close"
@@ -139,7 +139,7 @@ const Table = () => {
 
                 {/* Add Family Member */}
                 {action === "addMember" && (
-                    <AddFamilyMember shown={showModal} setShown={getModal} action={action} headID={selectedResident._id}/>
+                    <AddFamilyMember shown={showModal} setShown={getModal} action={action} headID={selectedResident._id} />
                 )}
 
                 {/* Delete Resident */}
@@ -204,6 +204,7 @@ const Table = () => {
                     action={actionButton}
                 />
 
+                {/* delete snackbar */}
                 <Snackbar
                     open={Deletesnackbar}
                     onClose={() => { toggleDeletesnackbar(false) }}

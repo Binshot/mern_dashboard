@@ -19,14 +19,13 @@ import Button from '@mui/material/Button';
 //context
 import { useResidentContext } from "../../hooks/userResidentContext"
 
-import format from 'date-fns/format';
-
 function AddResident(props) {
 
     //context dispatch
     const { dispatch } = useResidentContext()
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [emptyFields, setEmptyFields] = useState([])
 
     const genderOptions = ['Male', 'Female'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
@@ -34,7 +33,7 @@ function AddResident(props) {
     const educationAttainmentOptions = ['No Formal Education', 'Elementary', 'High School',
         'General Education Development', 'Vocational Qualificiation', 'Bachelor’s Degree',
         'Master’s Degree', 'Doctorate or Higher'];
-    const familyMember = ["Husband" , "Wife", "Daughter", "Son" ];
+    const familyMember = ["Husband", "Wife", "Daughter", "Son"];
 
     const [value, setValue] = React.useState(0);
 
@@ -87,6 +86,7 @@ function AddResident(props) {
         if (!response.ok) {
             setError(json.error)
             setLoading(false)
+            setEmptyFields(json.emptyFields)
         }
         if (response.ok) {
             setError(null)
@@ -153,9 +153,9 @@ function AddResident(props) {
 
     const action = (
         <React.Fragment>
-            <Button size="small" onClick={() => { toggleSnackbar(false) }}>
+            {/* <Button size="small" onClick={() => { toggleSnackbar(false) }}>
                 <p style={{ color: "white", margin: 0 }}>View</p>
-            </Button>
+            </Button> */}
             <IconButton
                 size="medium"
                 aria-label="close"
@@ -253,6 +253,7 @@ function AddResident(props) {
                                                         <h4>Last Name</h4>
                                                         <input
                                                             type="text"
+                                                            className={emptyFields.includes('Last Name') ? 'error' : ''}
                                                             required
                                                             placeholder="Input last Name"
                                                             value={lastName}
@@ -263,6 +264,7 @@ function AddResident(props) {
                                                         <h4>First Name</h4>
                                                         <input
                                                             type="text"
+                                                            className={emptyFields.includes('First Name') ? 'error' : ''}
                                                             required
                                                             placeholder="Input First Name"
                                                             value={firstName}
@@ -275,6 +277,7 @@ function AddResident(props) {
                                                         <h4>Middle Name</h4>
                                                         <input
                                                             type="text"
+                                                            className={emptyFields.includes('Middle Name') ? 'error' : ''}
                                                             required
                                                             placeholder="Input Middle Name"
                                                             value={middleName}
@@ -297,6 +300,7 @@ function AddResident(props) {
                                                         <h4>Birthday</h4>
                                                         <TextField
                                                             required
+                                                            className={emptyFields.includes('Birthday') ? 'error' : ''}
                                                             id="date"
                                                             type="date"
                                                             placeholder="Choose Birthday"
@@ -304,8 +308,6 @@ function AddResident(props) {
                                                             InputLabelProps={{
                                                                 shrink: true,
                                                             }}
-
-                                                            // value={birthday ? format(new Date(birthday), "yyyy-MM-dd") : " "}
                                                             onChange={(e) => setBday(e.target.value)}
                                                         />
                                                     </div>
@@ -313,6 +315,7 @@ function AddResident(props) {
                                                         <h4>Birth Place</h4>
                                                         <input
                                                             type="text"
+                                                            className={emptyFields.includes('Birthplace') ? 'error' : ''}
                                                             required
                                                             placeholder="Input Birth Place"
                                                             value={birthplace}
@@ -325,6 +328,7 @@ function AddResident(props) {
                                                         <h4>Gender</h4>
                                                         <Autocomplete
                                                             style={{ width: "99%" }}
+                                                            className={emptyFields.includes('Gender') ? 'error' : ''}
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={genderOptions}
@@ -373,6 +377,7 @@ function AddResident(props) {
                                                 <input
                                                     style={{ width: "95%" }}
                                                     type="text"
+                                                    className={emptyFields.includes('Address') ? 'error' : ''}
                                                     required
                                                     placeholder="Input Address"
                                                     value={address}
@@ -509,7 +514,7 @@ function AddResident(props) {
                                                             id="combo-box-demo"
                                                             options={familyMember}
                                                             sx={{ width: '100%' }}
-                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Kind of Family Member" required />}
+                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Kind of Family Member" />}
                                                             onChange={(event, e) => setRelationship(e)}
                                                         />
                                                     </div>
@@ -519,46 +524,47 @@ function AddResident(props) {
                                     </Box>
                                 </Box>
                             </div>
-                            <div className="rightAlign ModalButtons">
-                                {value === 2 ?
-                                    <button
-                                        disabled={loading}
-                                        type="submit"
-                                        className="solidButton buttonBlue">
-                                        Add
-                                    </button> :
-                                    <button
-                                        disabled={loading}
-                                        type='button'
-                                        className="solidButton buttonBlue"
-                                        onClick={() => {
-                                            setValue(value + 1)
-                                        }}>
-                                        Next
-                                    </button>
-                                }
-                                {value === 0 ?
-                                    <button
-                                        disabled={loading}
-                                        type="reset"
-                                        className="borderedButton"
-                                        onClick={() => {
-                                            cancelForm()
-                                        }}>
-                                        Cancel
-                                    </button> :
-                                    <button
-                                        disabled={loading}
-                                        type='button'
-                                        className="borderedButton"
-                                        onClick={() => {
-                                            setValue(value - 1)
-                                        }}>
-                                        Back
-                                    </button>
-                                }
-                                {error && <div className="error">{error}</div>}
-
+                            <div className='bottomPartModal'>
+                                <div className="rightAlign ModalButtons">
+                                    {value === 2 ?
+                                        <button
+                                            disabled={loading}
+                                            type="submit"
+                                            className="solidButton buttonBlue">
+                                            Add
+                                        </button> :
+                                        <button
+                                            disabled={loading}
+                                            type='button'
+                                            className="solidButton buttonBlue"
+                                            onClick={() => {
+                                                setValue(value + 1)
+                                            }}>
+                                            Next
+                                        </button>
+                                    }
+                                    {value === 0 ?
+                                        <button
+                                            disabled={loading}
+                                            type="reset"
+                                            className="borderedButton"
+                                            onClick={() => {
+                                                cancelForm()
+                                            }}>
+                                            Cancel
+                                        </button> :
+                                        <button
+                                            disabled={loading}
+                                            type='button'
+                                            className="borderedButton"
+                                            onClick={() => {
+                                                setValue(value - 1)
+                                            }}>
+                                            Back
+                                        </button>
+                                    }
+                                </div>
+                                {error && <div className="divError">{error}</div>}
                             </div>
                         </div>
                     </form>

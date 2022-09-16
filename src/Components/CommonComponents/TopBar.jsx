@@ -1,7 +1,5 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-
-import ProfilePic from "../NewImageFiles/Topbar/Avatar.svg";
 import Settings from "../NewImageFiles/Topbar/Settings.svg"
 
 //format date

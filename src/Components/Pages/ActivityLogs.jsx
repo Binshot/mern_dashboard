@@ -1,13 +1,15 @@
 import Header from "../ActivityLogsComponents/Header"
 import ResidentsTable from "../ActivityLogsComponents/ActivityLogsTable"
-import ActivityList from "../dummyDB/Activity";
 import React from "react";
+import { ActivityLogsContextProvider } from "../../context/ActivityLogsContext"
 function ActivityLog() {
     return (
-        <div className="content">
-            <Header />
-            <ResidentsTable list={ActivityList}/>
-        </div>
+        <ActivityLogsContextProvider>
+            <div className="content">
+                <Header />
+                <ResidentsTable />
+            </div>
+        </ActivityLogsContextProvider>
     );
 }
 

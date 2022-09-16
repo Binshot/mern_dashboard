@@ -35,9 +35,9 @@ function Header(props) {
     const [snackbar, toggleSnackbar] = useState(false);
     const action = (
         <React.Fragment>
-            <Button size="small" onClick={() => { toggleSnackbar(false) }}>
+            {/* <Button size="small" onClick={() => { toggleSnackbar(false) }}>
                 <p style={{ color: "white", margin: 0 }}>View</p>
-            </Button>
+            </Button> */}
             <IconButton
                 size="small"
                 aria-label="close"
