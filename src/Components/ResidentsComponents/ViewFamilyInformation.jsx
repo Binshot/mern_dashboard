@@ -75,6 +75,17 @@ function ViewFamilyInformation(props) {
             setLoading(false)
             setShowDeleteModal(false)
             dispatch({ type: 'DELETE_RESIDENT_MEMBER', payload: json })
+
+            //Deleted a member of the family
+            const activity = "Deleted a member of the family: " + selectedFamMember.lastName + ", " + selectedFamMember.firstName
+            const content = { activity }
+            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                method: 'POST',
+                body: JSON.stringify(content),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
         } else {
             setLoading(false)
         }

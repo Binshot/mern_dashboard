@@ -102,6 +102,16 @@ function Header() {
                 setIsLoading(false)
                 dispatch({ type: 'CREATE_EVENT', payload: json })
 
+                //Add an Event
+                const activity = "Added an Event: " + eventTitle
+                const content = { activity }
+                fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                    method: 'POST',
+                    body: JSON.stringify(content),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
             }
         } catch (error) {
             console.log(error);

@@ -102,6 +102,17 @@ const Table = () => {
 
         if (response.ok) {
             dispatch({ type: 'DELETE_EVENT', payload: json })
+
+            //Delete an Event
+            const activity = "Deleted an Event: " + selectedEvent.eventTitle
+            const content = { activity }
+            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                method: 'POST',
+                body: JSON.stringify(content),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
         }
     }
 

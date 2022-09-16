@@ -99,6 +99,17 @@ function AddResident(props) {
             document.getElementById("sideBlur").className = "sidebar";
             document.getElementById("ResidentcontentBlur").className = "resident";
             document.getElementById("headerBlur").className = "header";
+
+            //Added a Head of the family
+            const activity = "Added a member of the family: " + lastName + ", " + firstName
+            const content = { activity }
+            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                method: 'POST',
+                body: JSON.stringify(content),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
         }
 
     }
@@ -136,6 +147,17 @@ function AddResident(props) {
             document.getElementById("sideBlur").className = "sidebar";
             document.getElementById("ResidentcontentBlur").className = "resident";
             document.getElementById("headerBlur").className = "header";
+
+            //Added a member of the family
+            const activity = "Added a member of the family: " + lastName + ", " + firstName
+            const content = { activity }
+            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                method: 'POST',
+                body: JSON.stringify(content),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
         }
     }
     const xButton = (
@@ -166,8 +188,6 @@ function AddResident(props) {
             </IconButton>
         </React.Fragment>
     );
-
-
 
     const cancelForm = () => {
         props.setShown(false)

@@ -98,6 +98,17 @@ const Table = () => {
 
             if (response.ok) {
                 dispatch({ type: 'DELETE_ANNOUNCEMENT', payload: json })
+
+                //delete announcement
+                const activity = "Deleted an announcement: " + title
+                const content = { activity }
+                fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                    method: 'POST',
+                    body: JSON.stringify(content),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
             }
         }
 
@@ -121,6 +132,17 @@ const Table = () => {
 
             if (response.ok) {
                 dispatch({ type: 'UPDATE_ANNOUNCEMENT', payload: json })
+
+                //update announcement
+                const activity = "Updated an announcement: " + title
+                const content = { activity }
+                fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                    method: 'POST',
+                    body: JSON.stringify(content),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
             }
         }
 
