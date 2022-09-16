@@ -1,23 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Activities from './ActivityLogsTableContents';
 import PageNumber from './ActivityLogsPageNumber';
+import { useActivityLogsContext } from "../../hooks/useActivtyLogsContext"
+const Table = () => {
 
-const Table = (props) => {
-    // const { data: ActivityList, error, isPending } = useFetch("http://localhost:8004/Logs");
-    const ActivityList = props.list
+    const { activity, activityDispatch } = useActivityLogsContext()
+
+    useEffect(() => {
+        const fetchActivities = async () => {
+            const response = await fetch('https://drims-demo.herokuapp.com/api/activity/')
+            const json = await response.json()
+            if (response.ok) {
+                activityDispatch({ type: 'SET_ACTIVITY', payload: json })
+            }
+        }
+
+        fetchActivities()
+    }, [activityDispatch])
 
     const [currentPage, setCurrentPage] = useState(1);
     const ActivityPerPage = 5;
 
-    if (ActivityList) {
+    if (activity) {
 
-        const activities = ActivityList
-
-        // Get current activities
+        // Get current activity
         let indexOfLastActivity = currentPage * ActivityPerPage;
         let indexOfFirstActivity = indexOfLastActivity - ActivityPerPage;
         let currentActivities;
-        currentActivities = activities.slice(indexOfFirstActivity, indexOfLastActivity);
+        currentActivities = activity.slice(indexOfFirstActivity, indexOfLastActivity);
 
         // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
@@ -42,12 +52,12 @@ const Table = (props) => {
                         <tfoot>
                             <tr>
                                 <td>
-                                    <h4>Total Activities: {activities.length}</h4>
+                                    <h4>Total Activities: {activity.length}</h4>
                                 </td>
                                 <td>
                                     <PageNumber
                                         activitiesPerPage={ActivityPerPage}
-                                        totalActivities={activities.length}
+                                        totalActivities={activity.length}
                                         paginate={paginate}
                                     />
                                 </td>

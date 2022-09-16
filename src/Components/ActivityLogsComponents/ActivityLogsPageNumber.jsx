@@ -22,7 +22,6 @@ function ResidentsPageNumber({ activitiesPerPage, totalActivities, paginate }) {
         setCurrentPage(num)
         paginate(num);
     }
-
     return (
         <nav className='paginationButtons flex-row'>
             <PrevPage
@@ -30,17 +29,20 @@ function ResidentsPageNumber({ activitiesPerPage, totalActivities, paginate }) {
                 onClick={1 === currentPage ? null : prevPage}
                 className="prevButton"
             />
-            {getPaginationGroup().map((item, index) => (
-                (item <= Math.ceil(totalActivities / activitiesPerPage)) && (
-                    <button
-                        key={index}
-                        className={currentPage === item ? 'pageNumber activeNumber' : 'pageNumber'}
-                    >
-                        <span>{item}</span>
-                    </button>
-                )
+            {
+                getPaginationGroup().map((item, index) => (
+                    (item <= Math.ceil(totalActivities / activitiesPerPage)) && (
+                        <button
+                            style={{ cursor: "default" }}
+                            key={index}
+                            className={currentPage === item ? 'pageNumber activeNumber' : 'pageNumber'}
+                        >
+                            <span>{item}</span>
+                        </button>
+                    )
 
-            ))}
+                ))
+            }
             <NextPage
                 style={currentPage === Math.ceil(totalActivities / activitiesPerPage) ? { fill: "#D0D1FB" } : { fill: "#0C1096", cursor: "pointer" }}
                 onClick={currentPage === Math.ceil(totalActivities / activitiesPerPage) ? null : nextPage}

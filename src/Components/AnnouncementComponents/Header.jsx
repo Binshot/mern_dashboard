@@ -12,7 +12,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
 
 //context
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
@@ -29,9 +28,9 @@ function Header() {
     const [snackbar, toggleSnackbar] = useState(false);
     const action = (
         <React.Fragment>
-            <Button size="small" onClick={() => { toggleSnackbar(false) }}>
+            {/* <Button size="small" onClick={() => { toggleSnackbar(false) }}>
                 <p style={{ color: "white", margin: 0 }}>View</p>
-            </Button>
+            </Button> */}
             <IconButton
                 size="small"
                 aria-label="close"
@@ -58,9 +57,8 @@ function Header() {
                 'Content-Type': 'application/json'
             }
         })
-        console.log(JSON.stringify(announcement))
-        const json = await response.json()
 
+        const json = await response.json()
 
         if (response.ok) {
             toggleAddModal(false)
@@ -73,8 +71,17 @@ function Header() {
             console.log('new announcement added:', json)
             dispatch({ type: 'CREATE_ANNOUNCEMENT', payload: json })
 
+            // add activity logs
+            const activity = "Added an announcement: " + announcementTitle
+            const content = { activity }
+            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                method: 'POST',
+                body: JSON.stringify(content),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
         }
-
     }
 
     return (
