@@ -14,7 +14,6 @@ import Avatar from "../NewImageFiles/Resident/Avatar.svg"
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
 
 //context
 import { useResidentContext } from "../../hooks/userResidentContext"

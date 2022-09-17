@@ -11,15 +11,10 @@ function Header() {
     
     const [AddmodalShown, toggleAddModal] = useState(false);
 
-    //FOR SNACKBAR
-    const [snackbar, toggleSnackbar] = useState(false);
-    const [name, setName] = useState([])
-
     const getShown = get => toggleAddModal(get)
-    const getSnack = get => toggleSnackbar(get)
     return (
         <div>
-            <AddResidentTab shown={AddmodalShown} setShown={getShown} toggleSnack={getSnack} />
+            <AddResidentTab shown={AddmodalShown} setShown={getShown} />
 
             <div id='headerBlur' className='header'>
                 <div className="flex-row borderBottom2 topHeader">

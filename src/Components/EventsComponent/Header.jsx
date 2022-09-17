@@ -15,12 +15,9 @@ import TextField from "@mui/material/TextField";
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
 
 //Context
 import { useEventContext } from "../../hooks/useEventContext"
-
-import format from 'date-fns/format'
 
 function Header() {
     const [AddmodalShown, toggleAddModal] = useState(false);
@@ -105,7 +102,7 @@ function Header() {
                 //Add an Event
                 const activity = "Added an Event: " + eventTitle
                 const content = { activity }
-                fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                fetch('/api/activity/', {
                     method: 'POST',
                     body: JSON.stringify(content),
                     headers: {

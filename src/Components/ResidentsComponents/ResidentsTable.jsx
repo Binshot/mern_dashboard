@@ -7,7 +7,6 @@ import Modal from "../CommonComponents/Modal"
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
 
 import UpdateResident from "./UpdateResident"
 import AddFamilyMember from "./AddResident"
@@ -232,7 +231,7 @@ const Table = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {currentResidents.filter(head => head.isHeadOfFamily == true).map((filteredHead) => {
+                            {currentResidents.filter(head => head.isHeadOfFamily === true).map((filteredHead) => {
                                 return (
                                     <Residents
                                         key={filteredHead._id}
@@ -248,12 +247,12 @@ const Table = () => {
                         <tfoot>
                             <tr>
                                 <td>
-                                    <h4>Total Residents: {residents.filter(head => head.isHeadOfFamily == true).length}</h4>
+                                    <h4>Total Residents: {residents.filter(head => head.isHeadOfFamily === true).length}</h4>
                                 </td>
                                 <td colSpan={2}>
                                     <PageNumber
                                         residentsPerPage={residentsPerPage}
-                                        totalResidents={residents.filter(head => head.isHeadOfFamily == true).length}
+                                        totalResidents={residents.filter(head => head.isHeadOfFamily === true).length}
                                         paginate={paginate}
                                     />
                                 </td>

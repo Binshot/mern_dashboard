@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Modal from "../CommonComponents/Modal"
 import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -13,20 +13,52 @@ import AddIcon from "../NewImageFiles/ActionButton/Plus.svg"
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
 
-function Header(props) {
+import { useOrganizationContext } from "../../hooks/useOrganizationContext"
+import { format } from "date-fns";
+
+function Header() {
+    //context dispatch
+    const { dispatch } = useOrganizationContext()
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState(null)
+
     const [AddmodalShown, toggleAddModal] = useState(false);
-    const officialList = props.list
-    const [resid, setId] = useState(0)
 
-    const [flag, setFlag] = useState(false)
+    const [officialList, setOfficialList] = useState(null)
+    const [selectedResident, setSelectedResident] = useState(null)
+    const [position, setPosition] = useState(null)
+    const [name, setName] = useState('')
+
+    useEffect(() => {
+        const fetchResident = async () => {
+            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/')
+            const json = await response.json()
+
+            if (response.ok) {
+                setOfficialList(json)
+            }
+        }
+
+        fetchResident()
+    }, [])
+
+    const fetchSingleResident = async (id) => {
+        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/' + id)
+        const json = await response.json()
+
+        if (response.ok) {
+            setSelectedResident(json)
+        }
+    }
+
+    //Options
     const positionOptions = ['Chairman', 'Chairperson', 'Kagawad', 'SB Member', 'Member'];
     const membername = [];
     if (officialList) {
         officialList.map((props) => {
             membername.push(
-                { label: props.name.firstName, id: props.id }
+                { label: props.lastName + ", " + props.firstName, id: props._id }
             )
         })
     }
@@ -49,49 +81,51 @@ function Header(props) {
         </React.Fragment>
     );
 
-    //form
-    const id = props.length + 1
-    const [name, setName] = useState(null)
-    const [birthday, setBirthday] = useState(null)
-    const [age, setAge] = useState(null)
-    const [number, setNumber] = useState(null)
-    const [typeOfMember, setTypeOfMember] = useState(null)
-    const [address, setAddress] = useState(null)
-    const [email, setEmail] = useState(null)
+    const handleSubmit = async (e) => {
+        setIsLoading(true)
+        e.preventDefault()
 
-    const onchange = (e) => {
-        setName(officialList[e - 1].name.firstName + " " + officialList[e].name.lastName)
-        setBirthday(officialList[e - 1].birthday)
-        setAge(32)
-        setNumber(officialList[e - 1].phone)
-        setAddress(officialList[e - 1].address)
-        setEmail(officialList[e - 1].email)
+        const resident_id = selectedResident._id
+        const official = { resident_id, position }
+        console.log(official)
+        const response = await fetch('https://drims-demo.herokuapp.com/api/organization/', {
+            method: 'POST',
+            body: JSON.stringify(official),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const json = await response.json()
+        console.log(json)
+
+        if (response.ok) {
+            toggleAddModal(false)
+            document.getElementById("topBlur").className = "topbar flex-row";
+            document.getElementById("sideBlur").className = "sidebar";
+            document.getElementById("contentBlur").className = "resident";
+            document.getElementById("headerBlur").className = "header";
+            setIsLoading(false)
+            toggleSnackbar(true)
+            console.log('new official added:', json)
+            dispatch({ type: 'CREATE_OFFICIAL', payload: json })
+
+            // add activity logs
+            const activity = "Added an official: " + selectedResident.lastName + ", " + selectedResident.firstName
+            const content = { activity }
+            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                method: 'POST',
+                body: JSON.stringify(content),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        } else {
+            setError(json.error)
+            console.log(json.error)
+            setIsLoading(false)
+        }
     }
-    const handleSubmit = () => {
-        const avatar = "defaultAvatar"
-        const officialMember = { id, avatar, name, birthday, age, number, typeOfMember, address, email }
-
-        setId(0)
-        toggleAddModal(false)
-        document.getElementById("topBlur").className = "topbar flex-row";
-        document.getElementById("sideBlur").className = "sidebar";
-        document.getElementById("contentBlur").className = "flex-row";
-        document.getElementById("headerBlur").className = "header";
-        toggleSnackbar(true)
-        setFlag(false)
-
-        props.getSelectedRes(officialMember)
-        //insert data to json file
-        // fetch('http://localhost:8000/MembersData/', {
-        //     method: 'POST',
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify(officialMember)
-        // }).then(() => {
-        //     console.log('new official added');
-        //     window.location.reload(false);
-        // })
-    }
-
     return (
         <div>
             <Modal
@@ -104,29 +138,28 @@ function Header(props) {
                         <h2 className="marginBottom">Add Official</h2>
                         <div className="flex-row addOfficial space-between">
                             <div className="selects">
-                                <h4>Resident's Name</h4>
+                                <h4 style={{ marginBottom: "8px" }}>Resident's Name</h4>
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
                                     options={membername}
-                                    getOptionLabel={(option) => option.label}
                                     sx={{ width: '100%' }}
-                                    renderInput={(params) => <TextField {...params} required placeholder="Choose Resident" />}
+                                    value={name}
+                                    renderInput={(params) => <TextField {...params} placeholder="Choose Resident" />}
                                     onChange={(event, newValue) => {
-                                        setId(newValue.id)
-                                        setFlag(true)
-                                        onchange(newValue.id)
+                                        newValue && fetchSingleResident(newValue.id)
+                                        setName(newValue.label)
                                     }}
                                 />
-                                <h4>Position</h4>
+                                <h4 style={{ marginBottom: "8px", marginTop: "16px" }}>Position</h4>
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
                                     options={positionOptions}
                                     sx={{ width: '100%' }}
-                                    renderInput={(params) => <TextField {...params} required placeholder="Choose Position" />}
+                                    renderInput={(params) => <TextField {...params} placeholder="Choose Position" />}
                                     onChange={(event, newValue) => {
-                                        setTypeOfMember(newValue)
+                                        setPosition(newValue)
                                     }}
                                 />
                             </div>
@@ -138,7 +171,7 @@ function Header(props) {
                                 <div className="details">
                                     <div className="addOfficialDetailsHeader">
                                         <img src={Avatar} alt="" className="modalAvatar" />
-                                        <h3>{flag ? officialList[resid].name.firstName : "No resident have been displayed. Please select or type a resident"}</h3>
+                                        <h3>{selectedResident ? selectedResident.firstName + " " + selectedResident.lastName : "No resident have been displayed. Please select or type a resident"}</h3>
                                     </div>
                                     <div className=" topAlign">
                                         <div className="flex-row marginBottom marginTop">
@@ -146,19 +179,19 @@ function Header(props) {
                                         </div>
                                         <div className="flex-row borderBottom1 paddingBottom">
                                             <h4 style={{ width: "30%", textAlign: "left" }}>Birthday:</h4>
-                                            <p style={{ textAlign: "left" }}>{flag ? officialList[resid].birthday : "N/A"}</p>
+                                            <p style={{ textAlign: "left" }}>{selectedResident ? format(new Date(selectedResident.birthday), "MMMM dd, yyyy") : "N/A"}</p>
                                         </div>
                                         <div className="flex-row borderBottom1 marginTop paddingBottom">
                                             <h4 style={{ width: "30%", textAlign: "left" }}>Address:</h4>
-                                            <p style={{ width: "70%", textAlign: "left" }}>{flag ? officialList[resid].address : "N/A"}</p>
+                                            <p style={{ width: "70%", textAlign: "left" }}>{selectedResident ? selectedResident.address : "N/A"}</p>
                                         </div>
                                         <div className="flex-row borderBottom1 marginTop paddingBottom">
                                             <h4 style={{ width: "30%", textAlign: "left" }}>Email:</h4>
-                                            <p style={{ textAlign: "left" }}>{flag ? officialList[resid].email : "N/A"}</p>
+                                            <p style={{ textAlign: "left" }}>{selectedResident ? selectedResident.email : "N/A"}</p>
                                         </div>
                                         <div className="flex-row marginTop paddingBottom">
                                             <h4 style={{ width: "30%", textAlign: "left" }}>Phone No.:</h4>
-                                            <p style={{ textAlign: "left" }}>{flag ? officialList[resid].phone : "N/A"}</p>
+                                            <p style={{ textAlign: "left" }}>{selectedResident ? selectedResident.contactNumber : "N/A"}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -169,7 +202,8 @@ function Header(props) {
                         <div className="ModalButtons">
                             <button
                                 type="submit"
-                                className="solidButton buttonBlue">
+                                className="solidButton buttonBlue"
+                                disabled={isLoading}>
                                 Add
                             </button>
                             <button
@@ -177,13 +211,12 @@ function Header(props) {
                                 className="borderedButton"
                                 onClick={() => {
                                     toggleAddModal(false)
-                                    setId(0)
                                     document.getElementById("topBlur").className = "topbar flex-row";
                                     document.getElementById("sideBlur").className = "sidebar";
                                     document.getElementById("contentBlur").className = "flex-row";
                                     document.getElementById("headerBlur").className = "header";
-                                    setFlag(false)
-                                }}>
+                                }}
+                                disabled={isLoading}>
                                 Cancel
                             </button>
                         </div>
@@ -191,22 +224,25 @@ function Header(props) {
                 </form>
 
             </Modal>
-            <Snackbar
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                open={snackbar}
-                onClose={() => { toggleSnackbar(false) }}
-                autoHideDuration={5000}
-                message={`${name} has been added!`}
-                action={action}
-                ContentProps={{
-                    sx: {
-                        background: "#35CA3B",
-                        width: 560,
-                        ml: 30,
-                        mt: 10
-                    }
-                }}
-            />
+            {selectedResident && (
+                <Snackbar
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                    open={snackbar}
+                    onClose={() => { toggleSnackbar(false) }}
+                    autoHideDuration={5000}
+                    message={`${selectedResident.lastName}, ${selectedResident.firstName} has been added!`}
+                    action={action}
+                    ContentProps={{
+                        sx: {
+                            background: "#35CA3B",
+                            width: 560,
+                            ml: 30,
+                            mt: 10
+                        }
+                    }}
+                />
+            )}
+
             <div id='headerBlur' className='header'>
                 <div className="flex-row borderBottom2 topHeader">
                     <h1>ORGANIZATION</h1>
@@ -225,19 +261,20 @@ function Header(props) {
                             }}
                         />
                     </div>
-                    <div className="flex-row center"
-                        onClick={() => {
-                            toggleAddModal(true)
-                            document.getElementById("sideBlur").className += " blur";
-                            document.getElementById("topBlur").className += " blur";
-                            document.getElementById("headerBlur").className += " blur";
-                            document.getElementById("contentBlur").className += " blur";
-                        }}>
+                    <div className="flex-row center">
                         <img src={Print} alt="" className="export" style={{ cursor: "pointer" }} />
-                        <div className="solidButton add buttonBlue">
+                        <button
+                            className="solidButton add buttonBlue"
+                            onClick={() => {
+                                toggleAddModal(true)
+                                document.getElementById("sideBlur").className += " blur";
+                                document.getElementById("topBlur").className += " blur";
+                                document.getElementById("headerBlur").className += " blur";
+                                // document.getElementById("contentBlur").className += " blur";
+                            }}>
                             <img src={AddIcon} alt="" />
                             <p>Add Official</p>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>
