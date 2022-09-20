@@ -46,7 +46,7 @@ class HeroSlider extends Component {
                     {images.map((image, index) => {
                         return (
                             <div key={index}>
-                                <div className="container">
+                                <div className="imageContainer">
                                     <img src={image} alt="" />
                                     <div className="overlay"></div>
                                 </div>

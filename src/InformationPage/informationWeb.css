@@ -152,13 +152,13 @@ a {
   height: 100vh;
 }
 
-.slides .container {
+.slides .imageContainer {
   display: flex;
   align-items: flex-end;
   position: relative;
 }
 
-.slides .container .overlay {
+.slides .imageContainer .overlay {
   position: absolute;
   top: 0;
   left: 0;
