@@ -1,0 +1,16 @@
+#chat-container {
+  display: grid;
+  grid-template-columns: 30% auto;
+  grid-template-areas: 
+  'search-container chat-title'
+  'conversation-list chat-message-list'
+  'conversation-list chat-form';
+  width: 100%;
+  height: 85vh;
+  background: #FFF;
+  border-radius: 10px;
+}
+
+#chat-container .borderLeft {
+  border-left: 2px solid #9C9C9C;
+}
