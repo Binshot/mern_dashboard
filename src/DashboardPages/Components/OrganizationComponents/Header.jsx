@@ -141,9 +141,9 @@ function Header() {
                                 <h4 style={{ marginBottom: "8px" }}>Resident's Name</h4>
                                 <Autocomplete
                                     disablePortal
+                                    className="roundRadius"
                                     id="combo-box-demo"
                                     options={membername}
-                                    sx={{ width: '100%' }}
                                     value={name}
                                     renderInput={(params) => <TextField {...params} placeholder="Choose Resident" />}
                                     onChange={(event, newValue) => {
@@ -156,7 +156,6 @@ function Header() {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={positionOptions}
-                                    sx={{ width: '100%' }}
                                     renderInput={(params) => <TextField {...params} placeholder="Choose Position" />}
                                     onChange={(event, newValue) => {
                                         setPosition(newValue)
@@ -251,7 +250,7 @@ function Header() {
                     <div style={{ flexGrow: "9" }}>
                         <TextField
                             placeholder="Search for Name, Position, Email..."
-                            sx={{ backgroundColor: "white" }}
+                            sx={{ backgroundColor: "white", borderRadius: "8px" }}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -270,7 +269,7 @@ function Header() {
                                 document.getElementById("sideBlur").className += " blur";
                                 document.getElementById("topBlur").className += " blur";
                                 document.getElementById("headerBlur").className += " blur";
-                                // document.getElementById("contentBlur").className += " blur";
+                                document.getElementById("contentBlur").className += " blur";
                             }}>
                             <img src={AddIcon} alt="" />
                             <p>Add Official</p>

@@ -1118,7 +1118,7 @@ tfoot td {
 
 /* description */
 .css-8ewcdo-MuiInputBase-root-MuiOutlinedInput-root {
-    border-radius: 10px;
+    border-radius: 8px;
     border-color: #9C9C9C;
     padding: 0;
 }
@@ -1130,12 +1130,12 @@ tfoot td {
 
 .css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled {
     background-color: #D4D4D4;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 
 /* time and date */
-.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
-    border-radius: 10px;
+.MuiInputBase-root {
+    border-radius: 8px;
 }
 
 .announcementModals {
