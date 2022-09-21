@@ -87,18 +87,32 @@ const Table = () => {
 
     //Handle Delete Head of The Family
     const handleDelete = async () => {
-
+        setLoading(true)
         const response = await fetch('https://drims-demo.herokuapp.com/api/residents/'
             + selectedResident._id, {
             method: 'DELETE'
         })
+
         const json = await response.json()
 
         if (response.ok) {
-            console.log("deleted")
-            dispatch({ type: 'DELETE_RESIDENT', payload: json })
+            toggleDeletesnackbar(true)
+            setLoading(false)
+            setShowDeleteModal(false)
+            dispatch({ type: 'DELETE_RESIDENT_MEMBER', payload: json })
+
+            //Deleted a head of the family
+            const activity = "Deleted a head of the family and its members: " + selectedResident.lastName + ", " + selectedResident.firstName
+            const content = { activity }
+            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                method: 'POST',
+                body: JSON.stringify(content),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
         } else {
-            console.log("not Delete")
+            setLoading(false)
         }
     }
 

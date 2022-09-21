@@ -161,23 +161,26 @@ const Table = () => {
                                 <h4>Tittle</h4>
                                 <TextField
                                     id="outlined-multiline-static"
-                                    placeholder="Input Description"
-                                    multiline
                                     defaultValue={title}
-                                    rows={1}
                                     fullWidth
                                     inputProps={{
                                         maxLength: 80
                                     }}
                                     disabled={action === "view" ? true : false}
                                     onChange={(e) => setTitle(e.target.value)}
+                                    sx={{
+                                        "& .MuiOutlinedInput-root:hover": {
+                                            "& > fieldset": {
+                                                borderColor: "#7175F4"
+                                            }
+                                        }
+                                    }}
                                 />
                             </div>
                             <div>
                                 <h4>Description (Optional)</h4>
                                 <TextField
                                     id="outlined-multiline-static"
-                                    placeholder="Input Description"
                                     multiline
                                     defaultValue={description}
                                     rows={7}
@@ -187,6 +190,13 @@ const Table = () => {
                                     }}
                                     disabled={action === "view" ? true : false}
                                     onChange={(e) => setDescription(e.target.value)}
+                                    sx={{
+                                        "& .MuiOutlinedInput-root:hover": {
+                                            "& > fieldset": {
+                                                borderColor: "#7175F4"
+                                            }
+                                        }
+                                    }}
                                 />
                             </div>
                         </div>

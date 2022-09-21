@@ -42,6 +42,13 @@ function Login() {
                         placeholder='Input Email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        sx={{
+                            "& .MuiOutlinedInput-root:hover": {
+                                "& > fieldset": {
+                                    borderColor: "#7175F4"
+                                }
+                            }
+                        }}
                     />
                     <h3>Password</h3>
                     <OutlinedInput
@@ -61,9 +68,16 @@ function Login() {
                                 </IconButton>
                             </InputAdornment>
                         }
+                        sx={{
+                            "& .MuiOutlinedInput-root:hover": {
+                                "& > fieldset": {
+                                    borderColor: "#7175F4"
+                                }
+                            }
+                        }}
                     />
                 </div>
-                {error && <div className="divError">{error}</div>}
+                {error && <div className="divError loginError">{error}</div>}
                 <button disabled={isLoading} className='loginButton'> LOGIN</button>
                 <div className='lowerActions'>
                     <NavLink to="/forgot_password" >

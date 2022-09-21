@@ -22,6 +22,9 @@ import { useEventContext } from "../../hooks/useEventContext"
 function Header() {
     const [AddmodalShown, toggleAddModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState(null)
+    const [emptyFields, setEmptyFields] = useState([])
+    console.log(emptyFields)
 
     const tagOption = ['Business', 'Work', 'Legal', 'Community'];
 
@@ -82,11 +85,6 @@ function Header() {
                 body: formData
             })
             const json = await response.json();
-            console.log(json);
-
-            if (!response.ok) {
-                setIsLoading(false)
-            }
 
             if (response.ok) {
                 toggleSnackbar(true)
@@ -109,6 +107,10 @@ function Header() {
                         'Content-Type': 'application/json'
                     }
                 })
+            } else {
+                setIsLoading(false)
+                setError(json.error)
+                setEmptyFields(json.emptyFields)
             }
         } catch (error) {
             console.log(error);
@@ -128,13 +130,19 @@ function Header() {
                         <Box sx={{ width: '100%', height: '400px', overflow: 'auto', paddingRight: '10px', mb: 4, borderBottom: 1, borderColor: '#9C9C9C' }}>
                             <div className="flex-column">
                                 <h4>Tittle</h4>
-                                <input
-                                    type="text"
-                                    placeholder="Input Title"
-                                    required
-                                    onChange={(e) => setEventTitle(e.target.value)}
-                                    className='marginBottom'
+                                <TextField
+                                    error={emptyFields.includes('Event Title') ? true : false}
                                     disabled={isLoading}
+                                    placeholder="Input Title"
+                                    style={{ width: "100%", marginBottom: "16px" }}
+                                    onChange={(e) => setEventTitle(e.target.value)}
+                                    sx={{
+                                        "& .MuiOutlinedInput-root:hover": {
+                                            "& > fieldset": {
+                                                borderColor: "#7175F4"
+                                            }
+                                        }
+                                    }}
                                 />
                             </div>
                             <div className="flex-row space-between marginBottom">
@@ -144,42 +152,61 @@ function Header() {
                                         disablePortal
                                         id="combo-box-demo"
                                         options={tagOption}
-                                        sx={{ width: 330 }}
-                                        renderInput={(params) => <TextField {...params} placeholder="Choose Tag" required />}
-                                        required
+                                        renderInput={(params) => <TextField {...params} placeholder="Choose Tag" error={emptyFields.includes('Event Tag') ? true : false} />}
                                         onChange={(event, newValue) => {
                                             setEventTag(newValue);
                                         }}
                                         disabled={isLoading}
+                                        sx={{
+                                            width: 330,
+                                            "& .MuiOutlinedInput-root:hover": {
+                                                "& > fieldset": {
+                                                    borderColor: "#7175F4"
+                                                }
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div className="flex-column">
                                     <h4>Location</h4>
                                     <TextField
+                                        error={emptyFields.includes('Event Location') ? true : false}
                                         id="outlined-multiline-static"
                                         placeholder="Input Location"
-                                        required
-                                        sx={{ width: 330 }}
                                         onChange={(e) => setEventLocation(e.target.value)}
                                         disabled={isLoading}
-
+                                        sx={{
+                                            width: 330,
+                                            "& .MuiOutlinedInput-root:hover": {
+                                                "& > fieldset": {
+                                                    borderColor: "#7175F4"
+                                                }
+                                            }
+                                        }}
                                     />
                                 </div>
                             </div>
                             <div style={{ marginBottom: "16px" }}>
                                 <h4>Description</h4>
                                 <TextField
+                                    error={emptyFields.includes('Event Description') ? true : false}
                                     id="outlined-multiline-static"
                                     placeholder="Input Description"
                                     multiline
                                     rows={6}
                                     fullWidth
-                                    required
                                     inputProps={{
                                         maxLength: 400
                                     }}
                                     onChange={(e) => setEventDescription(e.target.value)}
                                     disabled={isLoading}
+                                    sx={{
+                                        "& .MuiOutlinedInput-root:hover": {
+                                            "& > fieldset": {
+                                                borderColor: "#7175F4"
+                                            }
+                                        }
+                                    }}
                                 />
                             </div>
                             <h4>Events Banner</h4>
@@ -196,38 +223,52 @@ function Header() {
 
                                         <div className="upload" style={{ cursor: "pointer" }}>Upload</div>
                                     </div>
-                                    <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0])} required />
+                                    <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0])} />
                                 </label>
                             </div>
                             <div className="flex-row space-between marginBottom" style={{ marginBottom: "16px" }}>
                                 <div>
                                     <h4>Start Date</h4>
                                     <TextField
+                                        error={emptyFields.includes('Event Date (from)') ? true : false}
                                         id="date"
                                         type="date"
-                                        sx={{ width: '330px' }}
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
-                                        required
                                         placeholder="Input start Date"
                                         value={dateFrom}
                                         onChange={(e) => setDateFrom(e.target.value)}
                                         disabled={isLoading}
+                                        sx={{
+                                            width: 330,
+                                            "& .MuiOutlinedInput-root:hover": {
+                                                "& > fieldset": {
+                                                    borderColor: "#7175F4"
+                                                }
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div>
                                     <h4>End Date</h4>
                                     <TextField
+                                        error={emptyFields.includes('Event Date (to)') ? true : false}
                                         id="date"
                                         type="date"
-                                        sx={{ width: '330px' }}
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
-                                        required
                                         onChange={(e) => setDateTo(e.target.value)}
                                         disabled={isLoading}
+                                        sx={{
+                                            width: 330,
+                                            "& .MuiOutlinedInput-root:hover": {
+                                                "& > fieldset": {
+                                                    borderColor: "#7175F4"
+                                                }
+                                            }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -235,53 +276,71 @@ function Header() {
                                 <div>
                                     <h4>Start Time</h4>
                                     <TextField
+                                        error={emptyFields.includes('Event Time (from)') ? true : false}
                                         id="time"
                                         type="time"
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
-                                        sx={{ width: '330px' }}
-                                        required
                                         value={timeFrom}
                                         onChange={(e) => setTimeFrom(e.target.value)}
                                         disabled={isLoading}
+                                        sx={{
+                                            width: 330,
+                                            "& .MuiOutlinedInput-root:hover": {
+                                                "& > fieldset": {
+                                                    borderColor: "#7175F4"
+                                                }
+                                            }
+                                        }}
                                     />
                                 </div>
                                 <div>
                                     <h4>End Time</h4>
                                     <TextField
+                                        error={emptyFields.includes('Event Time (to)') ? true : false}
                                         id="time"
                                         type="time"
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
-                                        sx={{ width: '330px' }}
-                                        required
                                         onChange={(e) => setTimeTo(e.target.value)}
                                         disabled={isLoading}
+                                        sx={{
+                                            width: 330,
+                                            "& .MuiOutlinedInput-root:hover": {
+                                                "& > fieldset": {
+                                                    borderColor: "#7175F4"
+                                                }
+                                            }
+                                        }}
                                     />
                                 </div>
 
                             </div>
 
                         </Box>
-                        <div className="ModalButtons rightAlign">
-                            <button className="solidButton buttonBlue" type="submit" disabled={isLoading}>
-                                Add
-                            </button>
-                            <button
-                                disabled={isLoading}
-                                className="borderedButton"
-                                onClick={() => {
-                                    toggleAddModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("ResidentcontentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
-                                }}>
-                                Cancel
-                            </button>
-
+                        <div className='bottomPartModal'>
+                            <div className="ModalButtons rightAlign">
+                                <button className="solidButton buttonBlue" type="submit" disabled={isLoading}>
+                                    Add
+                                </button>
+                                <button
+                                    disabled={isLoading}
+                                    className="borderedButton"
+                                    onClick={() => {
+                                        toggleAddModal(false)
+                                        setError(null)
+                                        setEmptyFields([])
+                                        document.getElementById("topBlur").className = "topbar flex-row";
+                                        document.getElementById("sideBlur").className = "sidebar";
+                                        document.getElementById("ResidentcontentBlur").className = "resident";
+                                        document.getElementById("headerBlur").className = "header";
+                                    }}>
+                                    Cancel
+                                </button>
+                            </div>
+                            {error && <div className="divError">{error}</div>}
                         </div>
                     </div>
                 </form>

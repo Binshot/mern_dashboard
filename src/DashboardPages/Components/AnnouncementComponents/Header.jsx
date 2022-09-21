@@ -18,7 +18,9 @@ import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
 function Header() {
 
     const [isLoading, setIsLoading] = useState(false)
-
+    const [error, setError] = useState(null)
+    const [emptyFields, setEmptyFields] = useState([])
+    console.log(emptyFields)
     const [AddmodalShown, toggleAddModal] = useState(false);
 
     //context dispatch
@@ -81,9 +83,24 @@ function Header() {
                     'Content-Type': 'application/json'
                 }
             })
+        } else {
+            setEmptyFields(json.emptyFields)
+            setIsLoading(false)
+            setError(json.error)
         }
     }
 
+    const handleCancel = () => {
+        setError(null)
+        setEmptyFields([])
+        toggleAddModal(false)
+        setDescription('')
+        setTitle('')
+        document.getElementById("topBlur").className = "topbar flex-row";
+        document.getElementById("sideBlur").className = "sidebar";
+        document.getElementById("contentBlur").className = "resident";
+        document.getElementById("headerBlur").className = "header";
+    }
     return (
         <div>
             <Modal
@@ -99,22 +116,28 @@ function Header() {
                                 <h4>Title</h4>
                                 <TextField
                                     id="outlined-multiline-static"
+                                    error={emptyFields.includes('Announcement Title') ? true : false}
                                     placeholder="Input Title"
-                                    multiline
-                                    rows={1}
                                     fullWidth
                                     inputProps={{
                                         maxLength: 80
                                     }}
                                     value={announcementTitle}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    required
+                                    sx={{
+                                        "& .MuiOutlinedInput-root:hover": {
+                                            "& > fieldset": {
+                                                borderColor: "#7175F4"
+                                            }
+                                        }
+                                    }}
                                 />
                             </div>
                             <div>
                                 <h4>Description (Optional)</h4>
                                 <TextField
                                     id="outlined-multiline-static"
+                                    error={emptyFields.includes('Announcement Detail') ? true : false}
                                     placeholder="Input Description"
                                     multiline
                                     rows={7}
@@ -124,30 +147,33 @@ function Header() {
                                     }}
                                     value={announcementDetail}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    required
+                                    sx={{
+                                        "& .MuiOutlinedInput-root:hover": {
+                                            "& > fieldset": {
+                                                borderColor: "#7175F4"
+                                            }
+                                        }
+                                    }}
                                 />
                             </div>
                         </div>
                         {/*Button*/}
-                        <div className="rightAlign ModalButtons" style={{ marginTop: "23px" }}>
-                            <button className="solidButton buttonBlue" type="submit" disabled={isLoading}>
-                                Add
-                            </button>
-                            <button
-                                disabled={isLoading}
-                                type="button"
-                                className="borderedButton"
-                                onClick={() => {
-                                    toggleAddModal(false)
-                                    setDescription('')
-                                    setTitle('')
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("contentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
-                                }}>
-                                Cancel
-                            </button>
+                        <div className='bottomPartModal' style={{ marginTop: "16px" }}>
+                            <div className="rightAlign ModalButtons">
+                                <button className="solidButton buttonBlue" type="submit" disabled={isLoading}>
+                                    Add
+                                </button>
+                                <button
+                                    disabled={isLoading}
+                                    type="button"
+                                    className="borderedButton"
+                                    onClick={() => {
+                                        handleCancel()
+                                    }}>
+                                    Cancel
+                                </button>
+                            </div>
+                            {error && <div className="divError">{error}</div>}
                         </div>
                     </div>
                 </form>

@@ -171,164 +171,177 @@ function UpdateResident(props) {
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
                                                         <h4>Last Name</h4>
-                                                        <input
-                                                            type="text"
-                                                            required
-                                                            placeholder="Input last Name"
+                                                        <TextField
                                                             value={lastName}
                                                             onChange={(e) => setLastName(e.target.value)}
-                                                            disabled={props.action === "view" ? true : false}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
                                                         />
                                                     </div>
                                                     <div className="flex-column inputs">
                                                         <h4>First Name</h4>
-                                                        <input
-                                                            type="text"
-                                                            required
-                                                            placeholder="Input First Name"
+                                                        <TextField
                                                             value={firstName}
                                                             onChange={(e) => setFirstName(e.target.value)}
-                                                            disabled={props.action === "view" ? true : false}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
                                                         />
                                                     </div>
                                                 </div>
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
                                                         <h4>Middle Name</h4>
-                                                        <input
-                                                            type="text"
-                                                            required
+                                                        <TextField
                                                             value={middleName}
                                                             onChange={(e) => setMiddleName(e.target.value)}
-                                                            disabled={props.action === "view" ? true : false}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
                                                         />
                                                     </div>
                                                     <div className="flex-column inputs">
                                                         <h4>Suffix (If Applicable)</h4>
-                                                        <input
-                                                            type="text"
+                                                        <TextField
                                                             placeholder="Input Suffix"
                                                             value={suffix}
                                                             onChange={(e) => setSuffix(e.target.value)}
-                                                            disabled={props.action === "view" ? true : false}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
                                                         />
                                                     </div>
                                                 </div>
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
                                                         <h4>Birthday</h4>
-                                                        {props.action === "view" ?
-                                                            <input
-                                                                type="text"
-                                                                required
-                                                                value={format(new Date(birthday), "MMMM dd, yyyy")}
-                                                                disabled
-                                                            /> :
-                                                            <TextField
-                                                                id="date"
-                                                                type="date"
-                                                                placeholder="Choose Birthday"
-                                                                sx={{ width: 338 }}
-                                                                InputLabelProps={{
-                                                                    shrink: true,
-                                                                }}
-                                                                value={birthday}
-                                                                onChange={(e) => setBday(e.target.value)}
-                                                                required
-                                                            />
-                                                        }
+                                                        <TextField
+                                                            id="date"
+                                                            type="date"
+                                                            value={birthday}
+                                                            onChange={(e) => setBday(e.target.value)}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
+                                                        />
                                                     </div>
                                                     <div className="flex-column inputs">
                                                         <h4>Birth Place</h4>
-                                                        <input
-                                                            type="text"
-                                                            required
-                                                            placeholder="Input Birth Place"
+                                                        <TextField
                                                             value={birthPlace}
                                                             onChange={(e) => setBirthplace(e.target.value)}
-                                                            disabled={props.action === "view" ? true : false}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
                                                         />
                                                     </div>
                                                 </div>
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
                                                         <h4>Gender</h4>
-                                                        {props.action === "view" ?
-                                                            <input
-                                                                type="text"
-                                                                required
-                                                                value={gender}
-                                                                disabled
-                                                            /> :
-                                                            <Autocomplete
-                                                                style={{ width: "99%" }}
-                                                                disablePortal
-                                                                id="combo-box-demo"
-                                                                value={gender}
-                                                                options={genderOptions}
-                                                                sx={{ width: '100%' }}
-                                                                renderInput={(params) => <TextField {...params} />}
-                                                                onChange={(e, newValue) => setGender(newValue)}
-                                                                required
-                                                            />
-                                                        }
+                                                        <Autocomplete
+                                                            style={{ width: "99%" }}
+                                                            disablePortal
+                                                            id="combo-box-demo"
+                                                            value={gender}
+                                                            options={genderOptions}
+                                                            renderInput={(params) => <TextField {...params} />}
+                                                            onChange={(e, newValue) => setGender(newValue)}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
+                                                        />
                                                     </div>
                                                     <div className="flex-column inputs">
                                                         <h4>Religion</h4>
-                                                        {props.action === "view" ?
-                                                            <input
-                                                                type="text"
-                                                                required
-                                                                value={religion}
-                                                                disabled
-                                                            /> :
-                                                            <Autocomplete
-                                                                style={{ width: "99%" }}
-                                                                disablePortal
-                                                                id="combo-box-demo"
-                                                                value={religion}
-                                                                options={religionOptions}
-                                                                sx={{ width: '100%' }}
-                                                                renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
-                                                                onChange={(e, newValue) => setReligion(newValue)}
-                                                                required
-                                                            />
-                                                        }
+                                                        <Autocomplete
+                                                            disablePortal
+                                                            id="combo-box-demo"
+                                                            value={religion}
+                                                            options={religionOptions}
+                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
+                                                            onChange={(e, newValue) => setReligion(newValue)}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
+                                                        />
                                                     </div>
                                                 </div>
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
                                                         <h4>Email Address</h4>
-                                                        <input
-                                                            type="text"
-                                                            required
+                                                        <TextField
                                                             placeholder="Input Email"
                                                             value={email}
                                                             onChange={(e) => setEmail(e.target.value)}
-                                                            disabled={props.action === "view" ? true : false}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
                                                         />
                                                     </div>
                                                     <div className="flex-column inputs">
                                                         <h4>Contact Number</h4>
-                                                        <input
-                                                            type="text"
-                                                            required
-                                                            placeholder="Input Contact Number"
+                                                        <TextField
                                                             value={phone}
                                                             onChange={(e) => setPhone(e.target.value)}
-                                                            disabled={props.action === "view" ? true : false}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
                                                         />
                                                     </div>
                                                 </div>
                                                 <h4>Address</h4>
-                                                <input
-                                                    style={{ width: "95%" }}
-                                                    type="text"
-                                                    required
-                                                    placeholder="Input Address"
+                                                <TextField
                                                     value={address}
                                                     onChange={(e) => setAddress(e.target.value)}
-                                                    disabled={props.action === "view" ? true : false}
+                                                    sx={{
+                                                        "& .MuiOutlinedInput-root:hover": {
+                                                            "& > fieldset": {
+                                                                borderColor: "#7175F4"
+                                                            }
+                                                        }
+                                                    }}
                                                 />
                                             </div>
                                         )}
@@ -337,70 +350,70 @@ function UpdateResident(props) {
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
                                                         <h4>Civil Status</h4>
-                                                        {props.action === "view" ?
-                                                            <input
-                                                                type="text"
-                                                                required
-                                                                value={civilStatus}
-                                                                disabled
-                                                            /> :
-                                                            <Autocomplete
-                                                                style={{ width: "99%" }}
-                                                                disablePortal
-                                                                id="combo-box-demo"
-                                                                value={civilStatus}
-                                                                options={civilStatusOptions}
-                                                                sx={{ width: '100%' }}
-                                                                renderInput={(params) => <TextField {...params} placeholder="Choose Civil Status" />}
-                                                                onChange={(e, newValue) => setCivilStatus(newValue)}
-                                                                required
-                                                            />
-                                                        }
+                                                        <Autocomplete
+                                                            disablePortal
+                                                            id="combo-box-demo"
+                                                            value={civilStatus}
+                                                            options={civilStatusOptions}
+                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Civil Status" />}
+                                                            onChange={(e, newValue) => setCivilStatus(newValue)}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
+                                                        />
                                                     </div>
                                                     <div className="flex-column inputs">
                                                         <h4>Educational Attainment</h4>
-                                                        {props.action === "view" ?
-                                                            <input
-                                                                type="text"
-                                                                required
-                                                                value={educationalAttainment}
-                                                                disabled
-                                                            /> :
-                                                            <Autocomplete
-                                                                style={{ width: "99%" }}
-                                                                disablePortal
-                                                                id="combo-box-demo"
-                                                                value={educationalAttainment}
-                                                                options={educationAttainment}
-                                                                sx={{ width: '100%' }}
-                                                                renderInput={(params) => <TextField {...params} />}
-                                                                onChange={(e, newValue) => setEducationalAttainment(newValue)}
-                                                                required
-                                                            />
-                                                        }
+                                                        <Autocomplete
+                                                            disablePortal
+                                                            id="combo-box-demo"
+                                                            value={educationalAttainment}
+                                                            options={educationAttainment}
+                                                            renderInput={(params) => <TextField {...params} />}
+                                                            onChange={(e, newValue) => setEducationalAttainment(newValue)}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
+                                                        />
                                                     </div>
                                                 </div>
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
                                                         <h4>Occupation</h4>
-                                                        <input
-                                                            type="text"
-                                                            required
-                                                            placeholder="Input Last Name"
+                                                        <TextField
+                                                            placeholder="Input Occupation"
                                                             value={occupation}
                                                             onChange={(e) => setOccupation(e.target.value)}
-                                                            disabled={props.action === "view" ? true : false}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
                                                         />
                                                     </div>
                                                     <div className="flex-column inputs">
                                                         <h4>Monthly Income</h4>
-                                                        <input
-                                                            type="text"
-                                                            required
-                                                            placeholder="Input First Name"
+                                                        <TextField
+                                                            placeholder="Input monthly income"
                                                             value={monthlyIncome}
                                                             onChange={(e) => setMonthlyIncome(e.target.value)}
-                                                            disabled={props.action === "view" ? true : false}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
                                                         />
                                                     </div>
                                                 </div>
@@ -481,15 +494,19 @@ function UpdateResident(props) {
                                                         <div className="flex-column inputs">
                                                             <h4>Family Member</h4>
                                                             <Autocomplete
-                                                                style={{ width: "99%" }}
                                                                 disablePortal
                                                                 id="combo-box-demo"
                                                                 value="Father"
                                                                 options={familyMember}
-                                                                sx={{ width: '100%' }}
                                                                 renderInput={(params) => <TextField {...params} placeholder="Choose Kind of Family Member" />}
                                                                 // onChange={(e, newValue) => setRole(newValue)}
-                                                                required
+                                                                sx={{
+                                                                    "& .MuiOutlinedInput-root:hover": {
+                                                                        "& > fieldset": {
+                                                                            borderColor: "#7175F4"
+                                                                        }
+                                                                    }
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>

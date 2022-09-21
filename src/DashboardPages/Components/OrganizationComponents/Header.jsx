@@ -22,6 +22,7 @@ function Header() {
     const { dispatch } = useOrganizationContext()
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
+    const [emptyFields, setEmptyFields] = useState([])
 
     const [AddmodalShown, toggleAddModal] = useState(false);
 
@@ -84,10 +85,10 @@ function Header() {
     const handleSubmit = async (e) => {
         setIsLoading(true)
         e.preventDefault()
-
-        const resident_id = selectedResident._id
+        let resident_id
+        selectedResident ? resident_id = selectedResident._id : resident_id = ''
         const official = { resident_id, position }
-        console.log(official)
+
         const response = await fetch('https://drims-demo.herokuapp.com/api/organization/', {
             method: 'POST',
             body: JSON.stringify(official),
@@ -124,6 +125,7 @@ function Header() {
             setError(json.error)
             console.log(json.error)
             setIsLoading(false)
+            setEmptyFields(json.emptyFields)
         }
     }
     return (
@@ -145,10 +147,20 @@ function Header() {
                                     id="combo-box-demo"
                                     options={membername}
                                     value={name}
-                                    renderInput={(params) => <TextField {...params} placeholder="Choose Resident" />}
+                                    renderInput={(params) => <TextField {...params}
+                                        placeholder="Choose Resident"
+                                        error={emptyFields.includes('Resident') ? true : false}
+                                    />}
                                     onChange={(event, newValue) => {
                                         newValue && fetchSingleResident(newValue.id)
                                         setName(newValue.label)
+                                    }}
+                                    sx={{
+                                        "& .MuiOutlinedInput-root:hover": {
+                                            "& > fieldset": {
+                                                borderColor: "#7175F4"
+                                            }
+                                        }
                                     }}
                                 />
                                 <h4 style={{ marginBottom: "8px", marginTop: "16px" }}>Position</h4>
@@ -156,9 +168,17 @@ function Header() {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={positionOptions}
-                                    renderInput={(params) => <TextField {...params} placeholder="Choose Position" />}
+                                    renderInput={(params) => <TextField {...params} placeholder="Choose Position"
+                                    error={emptyFields.includes('Position') ? true : false} />}
                                     onChange={(event, newValue) => {
                                         setPosition(newValue)
+                                    }}
+                                    sx={{
+                                        "& .MuiOutlinedInput-root:hover": {
+                                            "& > fieldset": {
+                                                borderColor: "#7175F4"
+                                            }
+                                        }
                                     }}
                                 />
                             </div>
@@ -198,26 +218,31 @@ function Header() {
                             </div>
 
                         </div>
-                        <div className="ModalButtons">
-                            <button
-                                type="submit"
-                                className="solidButton buttonBlue"
-                                disabled={isLoading}>
-                                Add
-                            </button>
-                            <button
-                                type="reset"
-                                className="borderedButton"
-                                onClick={() => {
-                                    toggleAddModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("contentBlur").className = "flex-row";
-                                    document.getElementById("headerBlur").className = "header";
-                                }}
-                                disabled={isLoading}>
-                                Cancel
-                            </button>
+                        <div className='bottomPartModal'>
+                            <div className="ModalButtons">
+                                <button
+                                    type="submit"
+                                    className="solidButton buttonBlue"
+                                    disabled={isLoading}>
+                                    Add
+                                </button>
+                                <button
+                                    type="reset"
+                                    className="borderedButton"
+                                    onClick={() => {
+                                        toggleAddModal(false)
+                                        setError(null)
+                                        setEmptyFields([])
+                                        document.getElementById("topBlur").className = "topbar flex-row";
+                                        document.getElementById("sideBlur").className = "sidebar";
+                                        document.getElementById("contentBlur").className = "flex-row";
+                                        document.getElementById("headerBlur").className = "header";
+                                    }}
+                                    disabled={isLoading}>
+                                    Cancel
+                                </button>
+                            </div>
+                            {error && <div className="divError">{error}</div>}
                         </div>
                     </div>
                 </form>

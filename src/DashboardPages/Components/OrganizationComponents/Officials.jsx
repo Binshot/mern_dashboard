@@ -229,17 +229,27 @@ function Officials() {
                             <div className="flex-row addOfficial space-between">
                                 <div className="selects">
                                     <h4>Resident's Name</h4>
-                                    <input type="text" value={nameOfMember} disabled style={{ marginTop: "8px", marginBottom: "16px", width: "90%" }} />
-                                    <h4>Position</h4>
+                                    <TextField
+                                        value={nameOfMember}
+                                        disabled
+                                        style={{ marginTop: "8px", marginBottom: "16px", width: "100%" }}
+                                    />
+                                    <h4 style={{ marginBottom: "8px" }}>Position</h4>
                                     <Autocomplete
-                                        style={{ width: "99%" }}
                                         disablePortal
                                         id="combo-box-demo"
                                         value={position}
                                         options={positionOptions}
-                                        sx={{ width: '100%' }}
+                                        fullWidth
                                         renderInput={(params) => <TextField {...params} />}
                                         onChange={(e, newValue) => setPosition(newValue)}
+                                        sx={{
+                                            "& .MuiOutlinedInput-root:hover": {
+                                                "& > fieldset": {
+                                                    borderColor: "#7175F4"
+                                                }
+                                            }
+                                        }}
                                     />
                                 </div>
 

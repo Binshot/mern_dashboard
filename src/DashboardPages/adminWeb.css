@@ -178,6 +178,11 @@ input::-webkit-input-placeholder {
     margin-right: 8px;
 }
 
+/* All textfields border radius */
+.MuiInputBase-root {
+    border-radius: 8px;
+}
+
 /* ================== BUTTONS =========================== */
 
 .solidButton {
@@ -364,16 +369,6 @@ button:disabled {
     color: #7175F4;
 }
 
-/* email field */
-.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root .error {
-    border: 1px solid var(--error);
-}
-
-/* password field */
-.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
-    border-radius: 10px;
-}
-
 .divError {
     text-align: center;
     padding: 10px;
@@ -381,6 +376,9 @@ button:disabled {
     border: 1px solid var(--error);
     color: var(--error);
     border-radius: 8px;
+}
+
+.loginError {
     margin: 20px 0;
 }
 
@@ -456,6 +454,7 @@ button:disabled {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
+    align-items: center;
 }
 
 .bottomPartModal.ModalButtons {
@@ -1066,6 +1065,18 @@ tfoot td {
     border-color: #D82727;
 }
 
+.uploadAvatar {
+    position: absolute;
+    bottom: 1px;
+    right: 5px;
+    background-color: white;
+    width: 48px;
+    height: 35px;
+    padding-top: 13px;
+    border-radius: 50px;
+    filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.24));
+}
+
 /* ================== RESIDENTS MODAL TABS=========================== */
 .tab {
     padding: 0 10px;
@@ -1086,10 +1097,6 @@ tfoot td {
 
 .tab h4 {
     margin-bottom: 8px;
-}
-
-.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root {
-    border-radius: 8px;
 }
 
 /* ==================  View Family Member =========================== */
@@ -1118,8 +1125,6 @@ tfoot td {
 
 /* description */
 .css-8ewcdo-MuiInputBase-root-MuiOutlinedInput-root {
-    border-radius: 8px;
-    border-color: #9C9C9C;
     padding: 0;
 }
 
@@ -1130,11 +1135,6 @@ tfoot td {
 
 .css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled {
     background-color: #D4D4D4;
-    border-radius: 8px;
-}
-
-/* time and date */
-.MuiInputBase-root {
     border-radius: 8px;
 }
 
@@ -1149,10 +1149,6 @@ tfoot td {
     margin-top: 24px;
 }
 
-.addAnnouncement input {
-    width: 96%;
-}
-
 /* ================== EVENT =========================== */
 
 .eventModals {
@@ -1161,74 +1157,34 @@ tfoot td {
     padding-bottom: 0;
 }
 
-@media screen and (min-width: 400px) {
-
-    /* title */
-    .Events_table td:nth-child(1) {
-        width: 90px;
-    }
-
-    /* date */
-    .Events_table td:nth-child(2) {
-        width: 105px;
-    }
-
-    /* time */
-    .Events_table td:nth-child(3) {
-        width: 80px;
-    }
-
-    /* status */
-    .Events_table td:nth-child(4) {
-        width: 70px;
-    }
-
-    /* participants */
-    .Events_table td:nth-child(5) {
-        width: 90px;
-    }
-
-    /* action */
-    .Events_table td:last-child {
-        width: 200px;
-    }
+/* tittle */
+.Events_table td:nth-child(1) {
+    min-width: 90px;
 }
 
-@media screen and (min-width: 1200px) {
-
-    /* title */
-    .Events_table td:nth-child(1) {
-        width: 230px;
-    }
-
-    /* date */
-    .Events_table td:nth-child(2) {
-        width: 105px;
-    }
-
-    /* time */
-    .Events_table td:nth-child(3) {
-        width: 80px;
-    }
-
-    /* status */
-    .Events_table td:nth-child(4) {
-        width: 80px;
-    }
-
-    /* participants */
-    .Events_table td:nth-child(5) {
-        width: 90px;
-    }
-
-    /* action */
-    .Events_table td:last-child {
-        width: 200px;
-    }
+/* date */
+.Events_table td:nth-child(2) {
+    width: 105px;
 }
 
-td.actions:last-child {
-    margin-right: 0;
+/* time */
+.Events_table td:nth-child(3) {
+    width: 80px;
+}
+
+/* status */
+.Events_table td:nth-child(4) {
+    width: 80px;
+}
+
+/* participants */
+.Events_table td:nth-child(5) {
+    width: 90px;
+}
+
+/* action */
+.Events_table td:nth-child(6) {
+    width: 176px;
 }
 
 .eventModals h4 {
