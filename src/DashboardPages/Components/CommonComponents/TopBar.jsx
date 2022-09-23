@@ -19,7 +19,7 @@ function TopBar() {
                     <h4>Welcome, Admin!</h4>
                     <p>Today it's {format(new Date(dateNow), 'MMM dd, yyyy')} </p>
                 </div>
-                <NavLink to="/settings">
+                <NavLink to="/admin/settings">
                     <div className="settings">
                         <img src={Settings} alt="" className="center" />
                     </div>

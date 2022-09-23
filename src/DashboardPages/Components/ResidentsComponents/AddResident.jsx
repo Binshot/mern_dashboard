@@ -46,19 +46,19 @@ function AddResident(props) {
     const [suffix, setSuffix] = useState("")
     const [birthday, setBday] = useState('')
     const [birthplace, setBirthplace] = useState('')
-    const [gender, setGender] = useState(null)
-    const [religion, setReligion] = useState(null)
+    const [gender, setGender] = useState('')
+    const [religion, setReligion] = useState('')
     const [email, setEmail] = useState('')
     const [contactNumber, setPhone] = useState('')
     const [address, setAddress] = useState('')
-    const [civilStatus, setCivilStatus] = useState(null)
-    const [educationalAttainment, setEducationalAttainment] = useState(null)
+    const [civilStatus, setCivilStatus] = useState('')
+    const [educationalAttainment, setEducationalAttainment] = useState('')
     const [occupation, setOccupation] = useState('')
     const [monthlyIncome, setMonthlyIncome] = useState('')
-    const [sss, setSSS] = useState('')
-    const [gsis, setGSIS] = useState('')
-    const [pagibig, setPagibig] = useState('')
-    const [philhealth, setPhilhealth] = useState('')
+    const [sss, setSSS] = useState(false)
+    const [gsis, setGSIS] = useState(false)
+    const [pagibig, setPagibig] = useState(false)
+    const [philhealth, setPhilhealth] = useState(false)
 
     const [snackbar, toggleSnackbar] = useState(false);
 
@@ -646,7 +646,6 @@ function AddResident(props) {
                                             Add
                                         </button> :
                                         <button
-                                            disabled={loading}
                                             type='button'
                                             className="solidButton buttonBlue"
                                             onClick={() => {

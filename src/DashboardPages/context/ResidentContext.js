@@ -14,7 +14,7 @@ export const residentsReducer = (state, action) => {
       }
     case 'DELETE_RESIDENT':
       return {
-        residents: state.residents.filter(w => w._id !== action.payload._id)
+        residents: state.residents.filter(w => w._id !== action.payload.resident._id)
       }
     case 'UPDATE_RESIDENT':
       return {

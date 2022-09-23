@@ -94,12 +94,12 @@ function ViewFamilyInformation(props) {
         <div>
             {/* view or update family member */}
             {selectedFamMember && (
-                <FamilyModal 
-                shown={showFamilyModal} 
-                setShown={getShowFamilyModal} 
-                action={FamAction} 
-                resident={selectedFamMember} 
-                relation={memberRelationship}/>
+                <FamilyModal
+                    shown={showFamilyModal}
+                    setShown={getShowFamilyModal}
+                    action={FamAction}
+                    resident={selectedFamMember}
+                    relation={memberRelationship} />
             )}
 
             {/* Delete Resident */}

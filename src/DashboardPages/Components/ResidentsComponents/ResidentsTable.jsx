@@ -40,6 +40,7 @@ const Table = () => {
     //FOR SNACKBAR
     const [snackbar, toggleSnackbar] = useState(false);
     const [Deletesnackbar, toggleDeletesnackbar] = useState(false);
+    const [updateMemberName, setUpdateMemberName] = useState('')
 
     const actionButton = (
         <React.Fragment>
@@ -85,6 +86,7 @@ const Table = () => {
         </React.Fragment>
     )
 
+    const [loading, setLoading] = useState(false)
     //Handle Delete Head of The Family
     const handleDelete = async () => {
         setLoading(true)
@@ -99,7 +101,7 @@ const Table = () => {
             toggleDeletesnackbar(true)
             setLoading(false)
             setShowDeleteModal(false)
-            dispatch({ type: 'DELETE_RESIDENT_MEMBER', payload: json })
+            dispatch({ type: 'DELETE_RESIDENT', payload: json })
 
             //Deleted a head of the family
             const activity = "Deleted a head of the family and its members: " + selectedResident.lastName + ", " + selectedResident.firstName
@@ -118,20 +120,26 @@ const Table = () => {
 
     if (residents) {
 
+        // filter family head
+        const familyHead = residents.filter(head => head.isHeadOfFamily === true)
         // Get current residents
         let indexOfLastResident = currentPage * residentsPerPage;
         let indexOfFirstResident = indexOfLastResident - residentsPerPage;
         let currentResidents;
-        currentResidents = residents.slice(indexOfFirstResident, indexOfLastResident);
+        currentResidents = familyHead.slice(indexOfFirstResident, indexOfLastResident);
 
         // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
 
         const getAction = action => setAction(action);
-        const getModal = modal => setShowModal(modal);
+        const getModal = modal => {
+            setShowModal(modal)
+            setSelectedResident(null)
+        }
         const getDelete = del => setShowDeleteModal(del)
         const getSelectedResident = resident => setSelectedResident(resident)
         const getSnack = snack => toggleSnackbar(snack)
+        const getName = name => setUpdateMemberName(name)
 
         return (
             <div>
@@ -143,97 +151,104 @@ const Table = () => {
                             setShown={getModal}
                             action={action}
                             resident={selectedResident}
-                            length={residents.length}
                             snackbar={getSnack}
                             allResidents={residents}
+                            headName={getName}
                         />
                     )
                 )}
 
                 {/* Add Family Member */}
-                {action === "addMember" && (
-                    <AddFamilyMember shown={showModal} setShown={getModal} action={action} headID={selectedResident._id} />
+                {selectedResident && (
+                    action === "addMember" && (
+                        <AddFamilyMember shown={showModal} setShown={getModal} action={action} headID={selectedResident._id} />
+                    )
                 )}
 
                 {/* Delete Resident */}
-                <Modal
-                    shown={showDeleteModal}
-                    close={() => {
-                        setShowDeleteModal(false);
-                    }}>
-                    <div className="deleteModals">
-                        <div className='modalHeader'>
-                            <h2> Remove Resident?</h2>
-                            {xButton}
+                {showDeleteModal && (
+                    <Modal
+                        shown={showDeleteModal}
+                        close={() => {
+                            setShowDeleteModal(false);
+                        }}>
+                        <div className="deleteModals">
+                            <div className='modalHeader'>
+                                <h2> Remove Resident?</h2>
+                                {xButton}
+                            </div>
+                            <div>
+                                <p>Are you sure you want to remove <span style={{ fontWeight: "bold" }}>{selectedResident.lastName}, </span>
+                                    <span style={{ fontWeight: "bold" }}>{selectedResident.firstName}</span>? All data such as their family members
+                                    and account information won't be restored.</p>
+                            </div>
+                            <div className="rightAlign ModalButtons">
+                                <button
+                                    className="solidButton buttonRed"
+                                    onClick={() => {
+                                        setShowDeleteModal(false)
+                                        toggleDeletesnackbar(true)
+                                        document.getElementById("topBlur").className = "topbar flex-row";
+                                        document.getElementById("sideBlur").className = "sidebar";
+                                        document.getElementById("ResidentcontentBlur").className = "resident";
+                                        document.getElementById("headerBlur").className = "header";
+                                        handleDelete()
+                                    }}>
+                                    Remove
+                                </button>
+                                <button
+                                    className="borderedButton"
+                                    onClick={() => {
+                                        setShowDeleteModal(false)
+                                        document.getElementById("topBlur").className = "topbar flex-row";
+                                        document.getElementById("sideBlur").className = "sidebar";
+                                        document.getElementById("ResidentcontentBlur").className = "resident";
+                                        document.getElementById("headerBlur").className = "header";
+                                    }}>
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                            <p>Are you sure you want to remove <span style={{ fontWeight: "bold" }}>{selectedResident.lastName}, </span>
-                                <span style={{ fontWeight: "bold" }}>{selectedResident.firstName}</span>? All data such as their family members
-                                and account information won't be restored.</p>
-                        </div>
-                        <div className="rightAlign ModalButtons">
-                            <button
-                                className="solidButton buttonRed"
-                                onClick={() => {
-                                    setShowDeleteModal(false)
-                                    toggleDeletesnackbar(true)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("ResidentcontentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
-                                    handleDelete()
-                                }}>
-                                Remove
-                            </button>
-                            <button
-                                className="borderedButton"
-                                onClick={() => {
-                                    setShowDeleteModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("ResidentcontentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
-                                }}>
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                </Modal>
-
-                <Snackbar
-                    open={snackbar}
-                    onClose={() => { toggleSnackbar(false) }}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                    autoHideDuration={2000}
-                    message={`${selectedResident.lastName}, ${selectedResident.firstName} has been updated!`}
-                    ContentProps={{
-                        sx: {
-                            background: "#DBB324",
-                            width: 560,
-                            ml: 30,
-                            mt: 10
-                        }
-                    }}
-                    action={actionButton}
-                />
+                    </Modal>
+                )}
+                {snackbar && (
+                    <Snackbar
+                        open={snackbar}
+                        onClose={() => { toggleSnackbar(false) }}
+                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                        autoHideDuration={2000}
+                        message={`${updateMemberName} information has been updated!`}
+                        ContentProps={{
+                            sx: {
+                                background: "#DBB324",
+                                width: 560,
+                                ml: 30,
+                                mt: 10
+                            }
+                        }}
+                        action={actionButton}
+                    />
+                )}
 
                 {/* delete snackbar */}
-                <Snackbar
-                    open={Deletesnackbar}
-                    onClose={() => { toggleDeletesnackbar(false) }}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                    autoHideDuration={2000}
-                    message={`${selectedResident.lastName}, ${selectedResident.firstName} has been removed!`}
-                    ContentProps={{
-                        sx: {
-                            background: "#D82727",
-                            width: 560,
-                            ml: 30,
-                            mt: 10
-                        }
-                    }}
-                    action={actionButton}
-                />
+                {selectedResident && (
+                    <Snackbar
+                        open={Deletesnackbar}
+                        onClose={() => { toggleDeletesnackbar(false) }}
+                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                        autoHideDuration={2000}
+                        message={`${selectedResident.lastName}, ${selectedResident.firstName} has been removed!`}
+                        ContentProps={{
+                            sx: {
+                                background: "#D82727",
+                                width: 560,
+                                ml: 30,
+                                mt: 10
+                            }
+                        }}
+                        action={actionButton}
+                    />
+                )}
 
                 <div id='ResidentcontentBlur' className='resident'>
                     <table className='Residents_table'>
@@ -245,7 +260,7 @@ const Table = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {currentResidents.filter(head => head.isHeadOfFamily === true).map((filteredHead) => {
+                            {currentResidents.map((filteredHead) => {
                                 return (
                                     <Residents
                                         key={filteredHead._id}

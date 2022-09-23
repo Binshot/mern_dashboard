@@ -1091,10 +1091,6 @@ tfoot td {
     width: 90%;
 }
 
-.inputs #date {
-    width: 95%;
-}
-
 .tab h4 {
     margin-bottom: 8px;
 }
@@ -1309,4 +1305,91 @@ input[type="file"] {
 
 .PDFTemplate tfoot {
     display: table-footer-group
+}
+
+/* event banner */
+.progress-area,
+.uploaded-area {
+    margin-left: 50px;
+    width: 600px;
+    padding: 24px 16px;
+    border: 1px solid #070A57;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: white;
+}
+
+.progress-area .center-div,
+.uploaded-area .center-div {
+    width: 100%;
+    margin: 0 16px
+}
+
+/* file name and file size container */
+.progress-area .center-div .progress-details,
+.uploaded-area .center-div .progress-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* file name */
+.progress-area .center-div .progress-details span:nth-child(1),
+.uploaded-area .center-div .progress-details span:nth-child(1) {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+/* file size */
+.progress-area .center-div .progress-details span:nth-child(2),
+.uploaded-area .center-div .progress-details span:nth-child(2) {
+    font-weight: 400;
+    font-size: 12px;
+    color: #636363;
+}
+
+.progress-area .progress-bar {
+    margin-top: 8px;
+    height: 5px;
+    width: 100%;
+    background-color: rgb(202, 202, 202);
+    border-radius: 5px;
+}
+
+.progress-area .progress-bar .progress {
+    height: 100%;
+    width: 50%;
+    background-color: #070A57;
+    border-radius: inherit;
+}
+.uploaded-area .center-div .progress-details{
+    width: 100%;
+    justify-content: space-between;
+}
+.uploaded-area .center-div .progress-details .left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.uploaded-area .center-div .progress-details .left div{
+    width: 3px;
+    height: 3px;
+    margin: 0 8px;
+    border-radius: 5px;
+    background-color: #9C9C9C;
+}   
+
+.uploaded-area .center-div .progress-details .left button {
+    margin-top: 2px;
+    background-color: white;
+    border: 0;
+    color: #0C1096;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 0;
 }
