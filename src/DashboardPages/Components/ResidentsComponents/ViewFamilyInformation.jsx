@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useNavigate } from "react-router-dom";
 import avatar from "../NewImageFiles/Resident/Avatar.svg"
 import View from "../NewImageFiles/ActionButton/View.svg"
 import Update from "../NewImageFiles/ActionButton/Update.svg"
@@ -30,19 +29,20 @@ function ViewFamilyInformation(props) {
 
     //FOR SNACKBAR
     const [snackbar, toggleSnackbar] = useState(false);
+    const getShowSnackbar = snack => toggleSnackbar(snack)
     const [Deletesnackbar, toggleDeletesnackbar] = useState(false);
 
     const [selectedFamMember, setSelectedFamMember] = useState(null)
 
     const actionButton = (
         <React.Fragment>
-            <Button size="small"
+            {/* <Button size="small"
                 onClick={() => {
                     toggleSnackbar(false)
                     toggleDeletesnackbar(false)
                 }}>
                 <p style={{ color: "white", margin: 0 }}>Undo</p>
-            </Button>
+            </Button> */}
             <IconButton
                 size="small"
                 aria-label="close"
@@ -58,7 +58,6 @@ function ViewFamilyInformation(props) {
     );
 
     const [memberRelationship, setFamilyRelationship] = useState('')
-    console.log(memberRelationship)
 
     // handle family member delete
     const handleDelete = async () => {
@@ -90,16 +89,22 @@ function ViewFamilyInformation(props) {
             setLoading(false)
         }
     }
+
+    const [updatedResident, setUpdatedResident] = useState(null)
+    const getName = name => setUpdatedResident(name)
     return (
         <div>
             {/* view or update family member */}
-            {selectedFamMember && (
+            {selectedFamMember && showFamilyModal && (
                 <FamilyModal
                     shown={showFamilyModal}
                     setShown={getShowFamilyModal}
                     action={FamAction}
                     resident={selectedFamMember}
-                    relation={memberRelationship} />
+                    relation={memberRelationship} 
+                    snackbar={getShowSnackbar}
+                    name={getName}
+                    />
             )}
 
             {/* Delete Resident */}
@@ -137,7 +142,7 @@ function ViewFamilyInformation(props) {
                     onClose={() => { toggleSnackbar(false) }}
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     autoHideDuration={2000}
-                    message={`${selectedFamMember.lastName}, ${selectedFamMember.firstName} information has been updated!`}
+                    message={`${updatedResident} information has been updated!`}
                     ContentProps={{
                         sx: {
                             background: "#DBB324",
@@ -172,15 +177,17 @@ function ViewFamilyInformation(props) {
                 {props.list.length !== 0 ? (
                     <div className='flex-column'>
                         {props.list.map((res) => {
+                            const relation = (props.familyHead.familyMembers.filter(member => member.member_id == res._id).map(a => {
+                                return a.relationship
+                            })).toString()
+                            console.log(relation)
                             return (
                                 <div className='flex-row viewFamilyMemberContainer' key={res._id}>
                                     <img src={avatar} alt="" style={{ height: "100px", width: "100px", marginRight: "16px" }} />
                                     <div className='flex-column' style={{ justifyContent: "center", flexGrow: "1" }}>
                                         <h4>{res.lastName + ", " + res.firstName + " " + res.middleName}</h4>
                                         <h5 style={{ fontSize: "14px", color: "#9C9C9C", fontWeight: "normal" }}>
-                                            {props.familyHead.familyMembers.filter(member => member.member_id == res._id).map(a => {
-                                                return a.relationship
-                                            })}
+                                            {relation}
                                         </h5>
                                     </div>
                                     <div className='flex-row actions' style={{ alignContent: "center", justifyContent: "center" }}>
@@ -192,9 +199,7 @@ function ViewFamilyInformation(props) {
                                                 setSelectedFamMember(res)
                                                 setFamAction("view")
                                                 setshowFamilyModal(true)
-                                                setFamilyRelationship(props.familyHead.familyMembers.filter(member => member.member_id == res._id).map(a => {
-                                                    return a.relationship
-                                                }))
+                                                setFamilyRelationship(relation)
                                             }}>
                                             <img src={View} alt="" />
                                         </button>
@@ -206,6 +211,7 @@ function ViewFamilyInformation(props) {
                                                 setSelectedFamMember(res)
                                                 setshowFamilyModal(true)
                                                 setFamAction("edit")
+                                                setFamilyRelationship(relation)
                                             }} >
                                             <img src={Update} alt="" />
                                         </button>

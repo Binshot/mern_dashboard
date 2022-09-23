@@ -8,12 +8,16 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-import UpdateResident from "./UpdateResident"
+//Family Head Modals (View and Update)
+import UpdateResident from "./FamilyHeadModals/UpdateHead"
+import ViewResident from "./FamilyHeadModals/ViewHead"
+
 import AddFamilyMember from "./AddResident"
 
 import { useResidentContext } from "../../hooks/userResidentContext"
 
 const Table = () => {
+    
     //get all resident
     const { residents, dispatch } = useResidentContext()
 
@@ -87,6 +91,7 @@ const Table = () => {
     )
 
     const [loading, setLoading] = useState(false)
+
     //Handle Delete Head of The Family
     const handleDelete = async () => {
         setLoading(true)
@@ -143,19 +148,24 @@ const Table = () => {
 
         return (
             <div>
-                {/* View or Update */}
-                {action !== "addMember" && (
-                    selectedResident && (
-                        <UpdateResident
-                            shown={showModal}
-                            setShown={getModal}
-                            action={action}
-                            resident={selectedResident}
-                            snackbar={getSnack}
-                            allResidents={residents}
-                            headName={getName}
-                        />
-                    )
+                {/* Update Head of the Family */}
+                {action === "edit" && selectedResident && (
+                    <UpdateResident
+                        shown={showModal}
+                        setShown={getModal}
+                        resident={selectedResident}
+                        snackbar={getSnack}
+                        allResidents={residents}
+                        headName={getName}
+                    />
+                )}
+                {action === "view" && selectedResident && (
+                    <ViewResident
+                        shown={showModal}
+                        setShown={getModal}
+                        resident={selectedResident}
+                        allResidents={residents}
+                    />
                 )}
 
                 {/* Add Family Member */}

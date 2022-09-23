@@ -30,6 +30,11 @@ export const residentsReducer = (state, action) => {
         residents: state.residents.map((res) => (res._id === action.payload.updatedHead._id) ? action.payload.updatedHead : res),
         residents: state.residents.filter(w => w._id !== action.payload.resident._id)
       }
+    case 'UPDATE_RESIDENT_MEMBER':
+      return {
+        residents: state.residents.map((res) => (res._id === action.payload.updatedHead._id) ? action.payload.updatedHead : res),
+        residents: state.residents.map((res) => (res._id === action.payload.resident._id) ? action.payload.resident : res),
+      }
     default:
       return state
   }
