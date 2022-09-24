@@ -91,7 +91,7 @@ function ResidentsPageNumber({ residentsPerPage, totalResidents, paginate }) {
                 className="prevButton"
             />
             {getPaginationGroup().map((item, index) => (
-                (item <= Math.ceil(totalResidents / residentsPerPage)) && (
+                (item <= Math.ceil(totalResidents / residentsPerPage) || item === 1) && (
                     <button
                         style={{ cursor: "default" }}
                         key={index}
@@ -103,7 +103,7 @@ function ResidentsPageNumber({ residentsPerPage, totalResidents, paginate }) {
 
             ))}
             <NextPage
-                style={currentPage === Math.ceil(totalResidents / residentsPerPage) ? { fill: "#D0D1FB" } : { fill: "#0C1096", cursor: "pointer" }}
+                style={currentPage >= Math.ceil(totalResidents / residentsPerPage) ? { fill: "#D0D1FB" } : { fill: "#0C1096", cursor: "pointer" }}
                 onClick={currentPage === Math.ceil(totalResidents / residentsPerPage) ? null : nextPage}
                 className="nextButton"
             />

@@ -18,39 +18,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useOrganizationContext } from "../../hooks/useOrganizationContext"
 
 import format from "date-fns/format";
-function Officials() {
+function Officials(props) {
 
     //get all officials
-    const { organizations, dispatch } = useOrganizationContext()
+    const { dispatch } = useOrganizationContext()
 
     // get all resident that are officials
-    const [filteredResident, setFilteredResident] = useState([])
-    useEffect(() => {
-        const fetchOfficials = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/organization/')
-            const json = await response.json()
-            if (response.ok) {
-                dispatch({ type: 'SET_OFFICIAL', payload: json })
-
-                const resresponse = await fetch('https://drims-demo.herokuapp.com/api/residents/')
-                const resjson = await resresponse.json()
-
-                if (resresponse.ok) {
-                    setFilteredResident(resjson)
-                    // json.map(official => {
-                    //     resjson.filter(head => head._id === official.resident_id).map((filteredHead) => {
-                    //         // setFilteredResident(current => [...current, filteredHead])
-                    //         console.log(filteredHead)
-                    //     })
-                    // })
-
-                }
-            }
-        }
-
-        fetchOfficials()
-    }, [dispatch])
-
+    const organizations = props.list
     const [modalShown, toggleModal] = useState(false);
     const [updateModalShown, toggleUpdateModal] = useState(false);
     const [deleteModal, toggleDeleteModal] = useState(false)
@@ -387,67 +361,64 @@ function Officials() {
 
                 <div id="contentBlur" className="flex-row">
                     {organizations.map((props) => {
-                        let obj = filteredResident.find(data => data._id === props.resident_id);
                         return (
-                            obj && (
-                                <div className="flex-column officialCard " key={props._id}>
-                                    <div className="avatar">
-                                        <img src={Avatar} alt="" style={{ width: "100px" }} />
-                                    </div>
-                                    <div style={{ textOverflow: "ellipsis", overflow: "hidden", width: "180px", whiteSpace: "nowrap", fontWeight: "bold", fontSize: "20px" }}>
-                                        {obj.firstName} {obj.lastName}
-                                    </div>
-                                    <p className="marginTop8">{props.position}</p>
-                                    <div className="flex-row actions">
-                                        <button className="solidButton squareButton buttonGreen" style={{ marginRight: "16px" }}
-                                            onClick={() => {
-                                                setPosition(props.position)
-                                                setAddress(obj.address)
-                                                setEmail(obj.email)
-                                                setPhone(obj.contactNumber)
-                                                setNameOfMember(obj.firstName + " " + obj.lastName)
-                                                setBday(obj.birthday)
-                                                toggleModal(true)
-                                                document.getElementById("sideBlur").className += " blur";
-                                                document.getElementById("topBlur").className += " blur";
-                                                document.getElementById("headerBlur").className += " blur";
-                                                document.getElementById("contentBlur").className += " blur";
-                                            }}>
-                                            <img src={View} alt="" />
-                                        </button>
-                                        <button className="solidButton squareButton buttonBlue" style={{ marginRight: "16px" }}
-                                            onClick={() => {
-                                                setPosition(props.position)
-                                                setAddress(obj.address)
-                                                setEmail(obj.email)
-                                                setPhone(obj.contactNumber)
-                                                setNameOfMember(obj.firstName + " " + obj.lastName)
-                                                setBday(obj.birthday)
-                                                setId(props._id)
-                                                setResidentID(props.resident_id)
-                                                toggleUpdateModal(true)
-                                                document.getElementById("sideBlur").className += " blur";
-                                                document.getElementById("topBlur").className += " blur";
-                                                document.getElementById("headerBlur").className += " blur";
-                                                document.getElementById("contentBlur").className += " blur";
-                                            }}>
-                                            <img src={Update} alt="" />
-                                        </button>
-                                        <button className='delete squareButton'
-                                            onClick={() => {
-                                                setNameOfMember(obj.firstName + " " + obj.lastName)
-                                                setId(props._id)
-                                                toggleDeleteModal(true)
-                                                document.getElementById("sideBlur").className += " blur";
-                                                document.getElementById("topBlur").className += " blur";
-                                                document.getElementById("headerBlur").className += " blur";
-                                                document.getElementById("contentBlur").className += " blur";
-                                            }}>
-                                            <img src={Delete} alt="" />
-                                        </button>
-                                    </div>
+                            <div className="flex-column officialCard " key={props._id}>
+                                <div className="avatar">
+                                    <img src={Avatar} alt="" style={{ width: "100px" }} />
                                 </div>
-                            )
+                                <div style={{ textOverflow: "ellipsis", overflow: "hidden", width: "180px", whiteSpace: "nowrap", fontWeight: "bold", fontSize: "20px" }}>
+                                    {props.official.firstName} {props.official.lastName}
+                                </div>
+                                <p className="marginTop8">{props.position}</p>
+                                <div className="flex-row actions">
+                                    <button className="solidButton squareButton buttonGreen" style={{ marginRight: "16px" }}
+                                        onClick={() => {
+                                            setPosition(props.position)
+                                            setAddress(props.official.address)
+                                            setEmail(props.official.email)
+                                            setPhone(props.official.contactNumber)
+                                            setNameOfMember(props.official.firstName + " " + props.official.lastName)
+                                            setBday(props.official.birthday)
+                                            toggleModal(true)
+                                            document.getElementById("sideBlur").className += " blur";
+                                            document.getElementById("topBlur").className += " blur";
+                                            document.getElementById("headerBlur").className += " blur";
+                                            document.getElementById("contentBlur").className += " blur";
+                                        }}>
+                                        <img src={View} alt="" />
+                                    </button>
+                                    <button className="solidButton squareButton buttonBlue" style={{ marginRight: "16px" }}
+                                        onClick={() => {
+                                            setPosition(props.position)
+                                            setAddress(props.official.address)
+                                            setEmail(props.official.email)
+                                            setPhone(props.official.contactNumber)
+                                            setNameOfMember(props.official.firstName + " " + props.official.lastName)
+                                            setBday(props.official.birthday)
+                                            setId(props._id)
+                                            setResidentID(props.resident_id)
+                                            toggleUpdateModal(true)
+                                            document.getElementById("sideBlur").className += " blur";
+                                            document.getElementById("topBlur").className += " blur";
+                                            document.getElementById("headerBlur").className += " blur";
+                                            document.getElementById("contentBlur").className += " blur";
+                                        }}>
+                                        <img src={Update} alt="" />
+                                    </button>
+                                    <button className='delete squareButton'
+                                        onClick={() => {
+                                            setNameOfMember(props.official.firstName + " " + props.official.lastName)
+                                            setId(props._id)
+                                            toggleDeleteModal(true)
+                                            document.getElementById("sideBlur").className += " blur";
+                                            document.getElementById("topBlur").className += " blur";
+                                            document.getElementById("headerBlur").className += " blur";
+                                            document.getElementById("contentBlur").className += " blur";
+                                        }}>
+                                        <img src={Delete} alt="" />
+                                    </button>
+                                </div>
+                            </div>
                         )
                     })}
                 </div>

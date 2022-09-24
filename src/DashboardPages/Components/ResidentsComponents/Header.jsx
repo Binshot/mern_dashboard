@@ -4,14 +4,23 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from "@mui/material/TextField";
 import AddIcon from "../NewImageFiles/Resident/addResident.svg"
 import SearchIcon from '@mui/icons-material/Search';
-
 import Print from "../NewImageFiles/Topbar/Print.svg"
-
-function Header() {
+import { useResidentContext } from "../../hooks/userResidentContext"
+function Header(props) {
     
     const [AddmodalShown, toggleAddModal] = useState(false);
 
     const getShown = get => toggleAddModal(get)
+
+    const { residents } = useResidentContext()
+
+    const requestSearch = (searchedVal) => {
+        const filteredRows = residents.filter((row) => {
+            let name = row.firstName.toLowerCase() + row.lastName.toLowerCase()
+            return name.includes(searchedVal.toLowerCase());
+        });
+        props.get(filteredRows)
+    };
     return (
         <div>
             <AddResidentTab shown={AddmodalShown} setShown={getShown} />
@@ -24,7 +33,7 @@ function Header() {
                     <div style={{ flexGrow: "9" }}>
                         <TextField
                             id="outlined-multiline-static"
-                            placeholder="Search for Name, Position, Email..."
+                            placeholder="Search resident's name"
                             sx={{ backgroundColor: "white" }}
                             InputProps={{
                                 startAdornment: (
@@ -33,6 +42,7 @@ function Header() {
                                     </InputAdornment>
                                 ),
                             }}
+                            onChange={(e) => requestSearch((e.target.value).toString())}
                         />
                     </div>
                     <div className="flex-row center">

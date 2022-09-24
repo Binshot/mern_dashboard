@@ -17,9 +17,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useOrganizationContext } from "../../hooks/useOrganizationContext"
 import { format } from "date-fns";
 
-function Header() {
+function Header(props) {
     //context dispatch
-    const { dispatch } = useOrganizationContext()
+    const { organizations, dispatch } = useOrganizationContext()
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
@@ -128,6 +128,14 @@ function Header() {
             setEmptyFields(json.emptyFields)
         }
     }
+
+    const requestSearch = (searchedVal) => {
+        const filteredRows = organizations.filter((row) => {
+            let name = row.official.lastName.toLowerCase() + row.official.firstName.toLowerCase()
+            return name.includes(searchedVal.toLowerCase());
+        });
+        props.get(filteredRows)
+    };
     return (
         <div>
             <Modal
@@ -248,6 +256,7 @@ function Header() {
                 </form>
 
             </Modal>
+
             {selectedResident && (
                 <Snackbar
                     anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -274,7 +283,7 @@ function Header() {
                 <div className="flex-row headerActions bottomHeader">
                     <div style={{ flexGrow: "9" }}>
                         <TextField
-                            placeholder="Search for Name, Position, Email..."
+                            placeholder="Search official's name"
                             sx={{ backgroundColor: "white", borderRadius: "8px" }}
                             InputProps={{
                                 startAdornment: (
@@ -283,6 +292,7 @@ function Header() {
                                     </InputAdornment>
                                 )
                             }}
+                            onChange={(e) => requestSearch((e.target.value).toString())}
                         />
                     </div>
                     <div className="flex-row center">

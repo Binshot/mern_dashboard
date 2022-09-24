@@ -16,11 +16,13 @@ import AddFamilyMember from "./AddResident"
 
 import { useResidentContext } from "../../hooks/userResidentContext"
 
-const Table = () => {
+const Table = (props) => {
     
     //get all resident
-    const { residents, dispatch } = useResidentContext()
+    const { dispatch } = useResidentContext()
 
+    const residents = props.list
+    // console.log(props.list)
     useEffect(() => {
         const fetchResidents = async () => {
             const response = await fetch('https://drims-demo.herokuapp.com/api/residents/')
