@@ -2,25 +2,26 @@ import React, { useState, useEffect } from 'react';
 import Activities from './ActivityLogsTableContents';
 import PageNumber from './ActivityLogsPageNumber';
 import { useActivityLogsContext } from "../../hooks/useActivtyLogsContext"
-const Table = () => {
+const Table = (props) => {
 
-    const { activity, activityDispatch } = useActivityLogsContext()
+    const { activityDispatch } = useActivityLogsContext()
 
-    useEffect(() => {
-        const fetchActivities = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/activity/')
-            const json = await response.json()
-            if (response.ok) {
-                activityDispatch({ type: 'SET_ACTIVITY', payload: json })
-            }
-        }
+    // useEffect(() => {
+    //     const fetchActivities = async () => {
+    //         const response = await fetch('https://drims-demo.herokuapp.com/api/activity/')
+    //         const json = await response.json()
+    //         if (response.ok) {
+    //             activityDispatch({ type: 'SET_ACTIVITY', payload: json })
+    //         }
+    //     }
 
-        fetchActivities()
-    }, [activityDispatch])
+    //     fetchActivities()
+    // }, [activityDispatch])
 
     const [currentPage, setCurrentPage] = useState(1);
     const ActivityPerPage = 5;
-
+    const activity = props.list
+    console.log(activity)
     if (activity) {
 
         // Get current activity

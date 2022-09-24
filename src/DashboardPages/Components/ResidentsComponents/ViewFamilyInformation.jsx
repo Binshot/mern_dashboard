@@ -180,7 +180,6 @@ function ViewFamilyInformation(props) {
                             const relation = (props.familyHead.familyMembers.filter(member => member.member_id == res._id).map(a => {
                                 return a.relationship
                             })).toString()
-                            console.log(relation)
                             return (
                                 <div className='flex-row viewFamilyMemberContainer' key={res._id}>
                                     <img src={avatar} alt="" style={{ height: "100px", width: "100px", marginRight: "16px" }} />

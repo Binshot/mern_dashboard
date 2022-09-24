@@ -17,23 +17,24 @@ import { useEventContext } from "../../hooks/useEventContext"
 
 import { format } from 'date-fns'
 
-const Table = () => {
+const Table = (props) => {
 
     //get all announcement
-    const { events, dispatch } = useEventContext()
+    const { dispatch } = useEventContext()
 
-    useEffect(() => {
-        const fetchWorkouts = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/events/')
-            const json = await response.json()
-            if (response.ok) {
-                dispatch({ type: 'SET_EVENT', payload: json })
-            }
-        }
+    // useEffect(() => {
+    //     const fetchWorkouts = async () => {
+    //         const response = await fetch('https://drims-demo.herokuapp.com/api/events/')
+    //         const json = await response.json()
+    //         if (response.ok) {
+    //             dispatch({ type: 'SET_EVENT', payload: json })
+    //         }
+    //     }
 
-        fetchWorkouts()
-    }, [dispatch])
+    //     fetchWorkouts()
+    // }, [dispatch])
 
+    const events = props.list
     const [currentPage, setCurrentPage] = useState(1);
     const eventsPerPage = 5;
 

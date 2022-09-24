@@ -31,7 +31,7 @@ function Login() {
         <form className='dashboardLogin' onSubmit={handleSubmit}>
             <div className='loginForm'>
                 <div className='loginHeader'>
-                    <h2>LOGIN</h2>
+                    <h2>Welcome Back!</h2>
                     <p>Enter your details to login to your account</p>
                 </div>
                 <div className='loginInputContainer'>

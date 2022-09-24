@@ -12,23 +12,23 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
 
-const Table = () => {
+const Table = (props) => {
     //get all announcement
-    const { announcements, dispatch } = useAnnouncementContext()
+    const {  dispatch } = useAnnouncementContext()
 
-    useEffect(() => {
-        const fetchWorkouts = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/announcements/')
-            const json = await response.json()
-            if (response.ok) {
-                dispatch({ type: 'SET_ANNOUNCEMENT', payload: json })
-            }
-        }
+    // useEffect(() => {
+    //     const fetchWorkouts = async () => {
+    //         const response = await fetch('https://drims-demo.herokuapp.com/api/announcements/')
+    //         const json = await response.json()
+    //         if (response.ok) {
+    //             dispatch({ type: 'SET_ANNOUNCEMENT', payload: json })
+    //         }
+    //     }
 
-        fetchWorkouts()
-    }, [dispatch])
+    //     fetchWorkouts()
+    // }, [dispatch])
 
-    // const announcement = props.list
+    const announcements = props.list
     const [currentPage, setCurrentPage] = useState(1);
     const announcementsPerPage = 5;
     //Get Id of selected Resident

@@ -19,12 +19,11 @@ import CloseIcon from '@mui/icons-material/Close';
 //Context
 import { useEventContext } from "../../hooks/useEventContext"
 
-function Header() {
+function Header(props) {
     const [AddmodalShown, toggleAddModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
-    console.log(emptyFields)
 
     const tagOption = ['Business', 'Work', 'Legal', 'Community'];
 
@@ -57,7 +56,7 @@ function Header() {
     const [file, setFile] = useState(null);
 
     //context dispatch
-    const { dispatch } = useEventContext()
+    const { events, dispatch } = useEventContext()
 
     const handleSubmit = async (e) => {
         setIsLoading(true)
@@ -116,6 +115,13 @@ function Header() {
             console.log(error);
         }
     }
+
+    const requestSearch = (searchedVal) => {
+        const filteredRows = events.filter((row) => {
+            return row.eventTitle.toLowerCase().includes(searchedVal.toLowerCase());
+        });
+        props.get(filteredRows)
+    };
 
     return (
         <div>
@@ -371,7 +377,7 @@ function Header() {
                     <div style={{ flexGrow: "9" }}>
                         <TextField
                             id="outlined-multiline-static"
-                            placeholder="Search for Name, Position, Email..."
+                            placeholder="Search events title"
                             sx={{ backgroundColor: "white" }}
                             InputProps={{
                                 startAdornment: (
@@ -380,6 +386,7 @@ function Header() {
                                     </InputAdornment>
                                 ),
                             }}
+                            onChange={(e) => requestSearch((e.target.value).toString())}
                         />
                     </div>
                     <div className="flex-row center"

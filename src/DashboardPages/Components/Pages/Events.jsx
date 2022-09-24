@@ -1,5 +1,4 @@
-import Header from "../EventsComponent/Header"
-import ResidentsTable from "../EventsComponent/Table"
+import Container from "../EventsComponent/Container"
 import { EventContextProvider } from '../../context/EventsContext'
 import React from "react";
 
@@ -7,10 +6,7 @@ function Events() {
 
     return (
         <EventContextProvider>
-            <div className="content">
-                <Header />
-                <ResidentsTable />
-            </div>
+            <Container />
         </EventContextProvider>
     );
 }

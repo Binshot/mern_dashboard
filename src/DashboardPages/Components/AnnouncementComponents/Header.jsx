@@ -15,16 +15,15 @@ import CloseIcon from '@mui/icons-material/Close';
 
 //context
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
-function Header() {
+function Header(props) {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
-    console.log(emptyFields)
     const [AddmodalShown, toggleAddModal] = useState(false);
 
     //context dispatch
-    const { dispatch } = useAnnouncementContext()
+    const { announcements, dispatch } = useAnnouncementContext()
 
     //FOR SNACKBAR
     const [snackbar, toggleSnackbar] = useState(false);
@@ -101,6 +100,13 @@ function Header() {
         document.getElementById("contentBlur").className = "resident";
         document.getElementById("headerBlur").className = "header";
     }
+
+    const requestSearch = (searchedVal) => {
+        const filteredRows = announcements.filter((row) => {
+            return row.announcementTitle.toLowerCase().includes(searchedVal.toLowerCase());
+        });
+        props.get(filteredRows)
+    };
     return (
         <div>
             <Modal
@@ -208,7 +214,7 @@ function Header() {
                     <div style={{ flexGrow: "9" }}>
                         <TextField
                             id="outlined-multiline-static"
-                            placeholder="Search for Name, Position, Email..."
+                            placeholder="Search announcement title"
                             sx={{ backgroundColor: "white" }}
                             InputProps={{
                                 startAdornment: (
@@ -217,6 +223,7 @@ function Header() {
                                     </InputAdornment>
                                 ),
                             }}
+                            onChange={(e) => requestSearch((e.target.value).toString())}
                         />
                     </div>
                     <div className="flex-row center"
