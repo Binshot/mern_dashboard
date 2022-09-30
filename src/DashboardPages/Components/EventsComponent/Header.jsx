@@ -4,7 +4,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import AddIcon from "../NewImageFiles/Sidebar/Events.svg"
 import SearchIcon from '@mui/icons-material/Search';
 import Print from "../NewImageFiles/Topbar/Print.svg"
-
+import axios from "axios";
 import Box from '@mui/material/Box';
 import uploadEventBanner from "../NewImageFiles/Event/uploadEventBanner.svg"
 
@@ -19,6 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 //Context
 import { useEventContext } from "../../hooks/useEventContext"
 
+import imageIcon from "../NewImageFiles/Event/imageIcon.svg"
 function Header(props) {
     const [AddmodalShown, toggleAddModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
@@ -39,6 +40,25 @@ function Header(props) {
                 aria-label="close"
                 color="inherit"
                 onClick={() => { toggleSnackbar(false) }}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
+    const xButton = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                    toggleAddModal(false)
+                    document.getElementById("topBlur").className = "topbar flex-row";
+                    document.getElementById("sideBlur").className = "sidebar";
+                    document.getElementById("ResidentcontentBlur").className = "resident";
+                    document.getElementById("headerBlur").className = "header";
+                }}
             >
                 <CloseIcon fontSize="small" />
             </IconButton>
@@ -89,6 +109,12 @@ function Header(props) {
                 toggleSnackbar(true)
                 console.log('new event added:', json)
                 toggleAddModal(false)
+                setFile(null)
+                setName('')
+                setTotalSize('')
+                setUploadButtonFlag(true)
+                setProgressflag(true)
+                setUploadedFlag(true)
                 document.getElementById("topBlur").className = "topbar flex-row";
                 document.getElementById("sideBlur").className = "sidebar";
                 document.getElementById("ResidentcontentBlur").className = "resident";
@@ -123,6 +149,67 @@ function Header(props) {
         props.get(filteredRows)
     };
 
+    // image upload
+    const [totalSize, setTotalSize] = useState('')
+    const [name, setName] = useState('')
+    const [percent, setPercent] = useState(0)
+    const [progressFlag, setProgressflag] = useState(true)
+    const [uploadedFlag, setUploadedFlag] = useState(true)
+    const [uploadButtonFlag, setUploadButtonFlag] = useState(true)
+    const [previewImage, setPreviewImage] = useState(false)
+    const [imageURL, setImageURL] = useState(null)
+    const onImageUpload = (image) => {
+        setProgressflag(false)
+        setUploadButtonFlag(false)
+
+        setImageURL(URL.createObjectURL(image))
+        setName(image.name)
+
+        const config = {
+            onUploadProgress: function (progressEvent) {
+                setPercent(Math.floor((progressEvent.loaded / progressEvent.total) * 100))
+                setTotalSize((progressEvent.total / 1000000).toFixed(2) + "MB")
+            }
+        }
+        axios.post("https://httpbin.org/post", image, config)
+            .then(res => {
+                setProgressflag(true)
+                setUploadedFlag(false)
+            })
+            .catch(err => console.log(err))
+    }
+
+    const deleteImage = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                    setFile(null)
+                    setUploadButtonFlag(true)
+                }}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
+    const xButtonPreview = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                    setPreviewImage(false)
+                }}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
     return (
         <div>
             <Modal
@@ -132,7 +219,11 @@ function Header(props) {
                 }}>
                 <form onSubmit={handleSubmit}>
                     <div className="eventModals">
-                        <h2 className="marginBottom">Add Event</h2>
+                        <div className='modalHeader'>
+                            <h2 className="marginBottom">Add Event</h2>
+                            {xButton}
+                        </div>
+
                         <Box sx={{ width: '100%', height: '400px', overflow: 'auto', paddingRight: '10px', mb: 4, borderBottom: 1, borderColor: '#9C9C9C' }}>
                             <div className="flex-column">
                                 <h4>Tittle</h4>
@@ -164,7 +255,7 @@ function Header(props) {
                                         }}
                                         disabled={isLoading}
                                         sx={{
-                                            width: 330,
+                                            width: 340,
                                             "& .MuiOutlinedInput-root:hover": {
                                                 "& > fieldset": {
                                                     borderColor: "#7175F4"
@@ -182,7 +273,7 @@ function Header(props) {
                                         onChange={(e) => setEventLocation(e.target.value)}
                                         disabled={isLoading}
                                         sx={{
-                                            width: 330,
+                                            width: 340,
                                             "& .MuiOutlinedInput-root:hover": {
                                                 "& > fieldset": {
                                                     borderColor: "#7175F4"
@@ -216,7 +307,19 @@ function Header(props) {
                                 />
                             </div>
                             <h4>Events Banner</h4>
-                            <div className="uploadArticleBanner" style={{ marginBottom: "16px" }}>
+                            <Modal
+                                shown={previewImage}
+                                close={() => {
+                                    setPreviewImage(false);
+                                }}>
+                                <div className="previewImage" >
+                                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+                                        {xButtonPreview}
+                                        <img src={imageURL} />
+                                    </div>
+                                </div>
+                            </Modal>
+                            <div className="uploadArticleBanner" style={uploadButtonFlag ? { marginBottom: "16px" } : { display: "none", marginBottom: "16px" }}>
                                 <label className="fileUpload">
                                     <div className="flex-row fileUploadContent">
                                         <div className="flex-row">
@@ -229,9 +332,40 @@ function Header(props) {
 
                                         <div className="upload" style={{ cursor: "pointer" }}>Upload</div>
                                     </div>
-                                    <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files[0])} />
+                                    <input type="file" accept="image/*"
+                                        onChange={(e) => {
+                                            setFile(e.target.files[0])
+                                            onImageUpload(e.target.files[0])
+                                        }} />
                                 </label>
                             </div>
+                            <section className="progress-area" style={progressFlag ? { display: "none" } : { display: "flex" }}>
+                                <img src={imageIcon} alt="" />
+                                <div className="center-div">
+                                    <div className="progress-details">
+                                        <span id="fileName">{name}</span>
+                                        <span id="fileSize">{totalSize}</span>
+                                    </div>
+                                    <div className="progress-bar">
+                                        <div className="progress" style={{ width: `${percent}%` }}></div>
+                                    </div>
+                                </div>
+                                <div>{deleteImage}</div>
+                            </section>
+                            <section className="uploaded-area" style={uploadedFlag ? { display: "none" } : { display: "flex" }}>
+                                <img src={imageIcon} alt="" />
+                                <div className="center-div">
+                                    <div className="progress-details">
+                                        <div className="left">
+                                            <span>{name}</span>
+                                            <div />
+                                            <button type="button" onClick={() => setPreviewImage(true)}>Preview</button>
+                                        </div>
+                                        <span>{totalSize}</span>
+                                    </div>
+                                </div>
+                                <div>{deleteImage}</div>
+                            </section>
                             <div className="flex-row space-between marginBottom" style={{ marginBottom: "16px" }}>
                                 <div>
                                     <h4>Start Date</h4>
@@ -247,7 +381,7 @@ function Header(props) {
                                         onChange={(e) => setDateFrom(e.target.value)}
                                         disabled={isLoading}
                                         sx={{
-                                            width: 330,
+                                            width: 340,
                                             "& .MuiOutlinedInput-root:hover": {
                                                 "& > fieldset": {
                                                     borderColor: "#7175F4"
@@ -268,7 +402,7 @@ function Header(props) {
                                         onChange={(e) => setDateTo(e.target.value)}
                                         disabled={isLoading}
                                         sx={{
-                                            width: 330,
+                                            width: 340,
                                             "& .MuiOutlinedInput-root:hover": {
                                                 "& > fieldset": {
                                                     borderColor: "#7175F4"
@@ -292,7 +426,7 @@ function Header(props) {
                                         onChange={(e) => setTimeFrom(e.target.value)}
                                         disabled={isLoading}
                                         sx={{
-                                            width: 330,
+                                            width: 340,
                                             "& .MuiOutlinedInput-root:hover": {
                                                 "& > fieldset": {
                                                     borderColor: "#7175F4"
@@ -313,7 +447,7 @@ function Header(props) {
                                         onChange={(e) => setTimeTo(e.target.value)}
                                         disabled={isLoading}
                                         sx={{
-                                            width: 330,
+                                            width: 340,
                                             "& .MuiOutlinedInput-root:hover": {
                                                 "& > fieldset": {
                                                     borderColor: "#7175F4"
@@ -342,6 +476,12 @@ function Header(props) {
                                         document.getElementById("sideBlur").className = "sidebar";
                                         document.getElementById("ResidentcontentBlur").className = "resident";
                                         document.getElementById("headerBlur").className = "header";
+                                        setFile(null)
+                                        setName('')
+                                        setTotalSize('')
+                                        setUploadButtonFlag(true)
+                                        setProgressflag(true)
+                                        setUploadedFlag(true)
                                     }}>
                                     Cancel
                                 </button>
@@ -378,7 +518,14 @@ function Header(props) {
                         <TextField
                             id="outlined-multiline-static"
                             placeholder="Search events title"
-                            sx={{ backgroundColor: "white" }}
+                            sx={{
+                                backgroundColor: "white",
+                                "& .MuiOutlinedInput-root:hover": {
+                                    "& > fieldset": {
+                                        borderColor: "#7175F4"
+                                    }
+                                }
+                            }}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">

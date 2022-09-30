@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Residents from './TableContents';
 import PageNumber from './PageNumber';
 
@@ -17,36 +17,27 @@ import { useEventContext } from "../../hooks/useEventContext"
 
 import { format } from 'date-fns'
 
+import imageIcon from "../NewImageFiles/Event/imageIcon.svg"
+
 const Table = (props) => {
 
     //get all announcement
     const { dispatch } = useEventContext()
-
-    // useEffect(() => {
-    //     const fetchWorkouts = async () => {
-    //         const response = await fetch('https://drims-demo.herokuapp.com/api/events/')
-    //         const json = await response.json()
-    //         if (response.ok) {
-    //             dispatch({ type: 'SET_EVENT', payload: json })
-    //         }
-    //     }
-
-    //     fetchWorkouts()
-    // }, [dispatch])
 
     const events = props.list
     const [currentPage, setCurrentPage] = useState(1);
     const eventsPerPage = 5;
 
     //Get Id of selected Resident
-    const [eventTitle, setEventTitle] = useState("");
-    const [eventDescription, setEventDescription] = useState("");
-    const [eventTag, setEventTag] = useState("");
-    const [eventLocation, setEventLocation] = useState("");
-    const [dateFrom, setDateFrom] = useState("");
-    const [dateTo, setDateTo] = useState("");
-    const [timeFrom, setTimeFrom] = useState("");
-    const [timeTo, setTimeTo] = useState("");
+    // const [eventTitle, setEventTitle] = useState("");
+    const eventTitle = useRef()
+    const eventDescription = useRef()
+    const eventTag = useRef()
+    const eventLocation = useRef()
+    const dateFrom = useRef()
+    const dateTo = useRef()
+    const timeFrom = useRef()
+    const timeTo = useRef()
     const [file, setFile] = useState(null);
 
     //get Selected Event
@@ -116,6 +107,80 @@ const Table = (props) => {
         }
     }
 
+    const xButton = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                    setShowModal(false)
+                    setShowDeleteModal(false)
+                    document.getElementById("topBlur").className = "topbar flex-row";
+                    document.getElementById("sideBlur").className = "sidebar";
+                    document.getElementById("ResidentcontentBlur").className = "resident";
+                    document.getElementById("headerBlur").className = "header";
+                }}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
+    const deleteImage = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                    setFile(null)
+                    setUploadButtonFlag(true)
+                }}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
+    const xButtonPreview = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                    setPreviewImage(false)
+                }}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
+    const [previewImage, setPreviewImage] = useState(false)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(
+            eventTitle.current.value,
+            eventDescription.current.value,
+            eventTag.current.value,
+            eventLocation.current.value,
+            dateFrom.current.value,
+            dateTo.current.value,
+            timeFrom.current.value,
+            timeTo.current.value)
+        // setIsLoading(false)
+        // setShowModal(false)
+        // document.getElementById("topBlur").className = "topbar flex-row";
+        // document.getElementById("sideBlur").className = "sidebar";
+        // document.getElementById("ResidentcontentBlur").className = "resident";
+        // document.getElementById("headerBlur").className = "header";
+        // toggleSnackbar(true)
+        // setIsLoading(true)
+        console.log("submitted update")
+    }
 
     if (events) {
         // Get current events
@@ -136,200 +201,314 @@ const Table = (props) => {
         return (
             <div>
 
-                {/* View/Update Resident */}
+                {/* View/Update Events */}
                 {showModal && (
                     <Modal
                         shown={showModal}
                         close={() => {
                             setShowModal(false);
                         }}>
-                        <div className="eventModals">
-                            <h2 className="marginBottom">{action === 'view' ? "View Event" : "Update Event"}</h2>
-                            <Box sx={{ width: '100%', height: '400px', overflow: 'auto', paddingRight: '10px', mb: 4, borderBottom: 1, borderColor: '#9C9C9C' }}>
-                                <div className="flex-column">
-                                    <h4>Tittle</h4>
-                                    <input
-                                        type="text"
-                                        placeholder="Input Title"
-                                        required
-                                        defaultValue={selectedEvent.eventTitle}
-                                        onChange={(e) => setEventTitle(e.target.value)}
-                                        className='marginBottom'
-                                        disabled={action === 'view' ? true : false}
-                                    />
+                        <form onSubmit={handleSubmit}>
+                            <div className="eventModals">
+                                <div className='modalHeader'>
+                                    <h2 className="marginBottom">{action == 'view' ? "View Event" : "Update Event"}</h2>
+                                    {xButton}
                                 </div>
-                                <div className="flex-row space-between marginBottom">
+                                <Box sx={{ width: '100%', height: '400px', overflow: 'auto', paddingRight: '10px', mb: 4, borderBottom: 1, borderColor: '#9C9C9C' }}>
                                     <div className="flex-column">
-                                        <h4>Tag</h4>
-                                        {action !== 'view' ?
-                                            <Autocomplete
-                                                disablePortal
-                                                id="combo-box-demo"
-                                                options={tag}
-                                                sx={{ width: 330 }}
-                                                renderInput={(params) => <TextField {...params} />}
-                                                required
-                                                defaultValue={selectedEvent.eventTag}
-                                                onChange={(event, newValue) => {
-                                                    setEventTag(newValue);
-                                                }}
-                                            />
-                                            :
+                                        <h4>Tittle</h4>
+                                        {action == 'view' ?
+                                            <TextField
+                                                defaultValue={selectedEvent.eventTitle}
+                                                disabled
+                                            /> :
                                             <TextField
                                                 id="outlined-multiline-static"
-                                                sx={{ width: 330 }}
-                                                value={selectedEvent.eventTag}
-                                                disabled={true}
+                                                defaultValue={selectedEvent.eventTitle}
+                                                inputRef={eventTitle}
+                                                disabled={action == 'view' ? true : false}
+                                                sx={{
+                                                    "& .MuiOutlinedInput-root:hover": {
+                                                        "& > fieldset": {
+                                                            borderColor: "#7175F4"
+                                                        }
+                                                    }
+                                                }}
                                             />
                                         }
                                     </div>
-                                    <div className="flex-column">
-                                        <h4>Location</h4>
-                                        <TextField
-                                            id="outlined-multiline-static"
-                                            placeholder="Input Location"
-                                            sx={{ width: 330 }}
-                                            defaultValue={selectedEvent.eventLocation}
-                                            onChange={(e) => setEventLocation(e.target.value)}
-                                            disabled={action === 'view' ? true : false}
-
-                                        />
+                                    <div className="flex-row space-between marginBottom" style={{ marginTop: "16px" }}>
+                                        <div className="flex-column">
+                                            <h4>Tag</h4>
+                                            {action != 'view' ?
+                                                <Autocomplete
+                                                    disablePortal
+                                                    id="combo-box-demo"
+                                                    options={tag}
+                                                    sx={{
+                                                        width: 340,
+                                                        "& .MuiOutlinedInput-root:hover": {
+                                                            "& > fieldset": {
+                                                                borderColor: "#7175F4"
+                                                            }
+                                                        }
+                                                    }}
+                                                    renderInput={(params) => <TextField {...params} inputRef={eventTag}/>}
+                                                    defaultValue={selectedEvent.eventTag}
+                                                    
+                                                />
+                                                :
+                                                <TextField
+                                                    id="outlined-multiline-static"
+                                                    sx={{ width: 340 }}
+                                                    value={selectedEvent.eventTag}
+                                                    disabled
+                                                />
+                                            }
+                                        </div>
+                                        <div className="flex-column">
+                                            <h4>Location</h4>
+                                            {action == 'view' ?
+                                                <TextField
+                                                    defaultValue={selectedEvent.eventLocation}
+                                                    disabled
+                                                    sx={{ width: 340 }}
+                                                /> :
+                                                <TextField
+                                                    id="outlined-multiline-static"
+                                                    placeholder="Input Location"
+                                                    sx={{
+                                                        width: 340,
+                                                        "& .MuiOutlinedInput-root:hover": {
+                                                            "& > fieldset": {
+                                                                borderColor: "#7175F4"
+                                                            }
+                                                        }
+                                                    }}
+                                                    defaultValue={selectedEvent.eventLocation}
+                                                    inputRef={eventLocation}
+                                                />
+                                            }
+                                        </div>
                                     </div>
-                                </div>
-                                <div style={{ marginBottom: "16px" }}>
-                                    <h4>Description</h4>
-                                    <TextField
-                                        id="outlined-multiline-static"
-                                        placeholder="Input Description"
-                                        multiline
-                                        rows={6}
-                                        fullWidth
-                                        defaultValue={selectedEvent.eventDescription}
-                                        onChange={(e) => setEventDescription(e.target.value)}
-                                        inputProps={{
-                                            maxLength: 400
-                                        }}
-                                        disabled={action === 'view' ? true : false}
-
-                                    />
-                                </div>
-                                <h4>Events Banner</h4>
-                                <div className="uploadArticleBanner" style={{ marginBottom: "16px" }}>
-                                    <label className="fileUpload" style={{cursor: "pointer"}}>
-                                        <div className="flex-row fileUploadContent">
-                                            <div className="flex-row">
-                                                <img src={uploadEventBanner} alt="" />
-                                                <div className="flex-column">
-                                                    <h4>Upload an image or drag and drop here</h4>
-                                                    <p>JPG or PNG, smaller than 10MB</p>
+                                    <div style={{ marginBottom: "16px" }}>
+                                        <h4>Description</h4>
+                                        {action == 'view' ?
+                                            <TextField
+                                                defaultValue={selectedEvent.eventTitle}
+                                                disabled
+                                                rows={6}
+                                                fullWidth
+                                                multiline
+                                            /> :
+                                            <TextField
+                                                id="outlined-multiline-static"
+                                                placeholder="Input Description"
+                                                multiline
+                                                rows={6}
+                                                fullWidth
+                                                defaultValue={selectedEvent.eventDescription}
+                                                inputRef={eventDescription}
+                                                inputProps={{
+                                                    maxLength: 400
+                                                }}
+                                                sx={{
+                                                    "& .MuiOutlinedInput-root:hover": {
+                                                        "& > fieldset": {
+                                                            borderColor: "#7175F4"
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                        }
+                                    </div>
+                                    <h4>Events Banner</h4>
+                                    <Modal
+                                        shown={previewImage}
+                                        close={() => {
+                                            setPreviewImage(false);
+                                        }}>
+                                        <div className="previewImage" >
+                                            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+                                                {xButtonPreview}
+                                                <img src={"https://drims-demo.herokuapp.com/api/uploads/" + selectedEvent.eventImage} />
+                                            </div>
+                                        </div>
+                                    </Modal>
+                                    {action == "view" &&
+                                        <section className="uploaded-area view">
+                                            <div className='imageIcon' />
+                                            <div className="center-div">
+                                                <div className="progress-details">
+                                                    <div className="left">
+                                                        <span>{selectedEvent.eventImage}</span>
+                                                        <div />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setPreviewImage(true)}>
+                                                            Preview
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="upload">Upload</div>
+                                            <div><CloseIcon fontSize="small" /></div>
+                                        </section>}
+                                    {action != "view" &&
+                                        <section className="uploaded-area" style={{ borderColor: "#7175F4" }} >
+                                            <img src={imageIcon} alt="" />
+                                            <div className="center-div">
+                                                <div className="progress-details">
+                                                    <div className="left">
+                                                        <span>{selectedEvent.eventImage}</span>
+                                                        <div />
+                                                        <button type="button" onClick={() => setPreviewImage(true)}>Preview</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>{deleteImage}</div>
+                                        </section>
+                                    }
+
+                                    <div className="flex-row space-between marginBottom" style={{ marginBottom: "16px" }}>
+                                        <div className="flex-column">
+                                            <h4>Start Date</h4>
+                                            {action == 'view' ?
+                                                <TextField
+                                                    defaultValue={format(new Date(selectedEvent.eventDateTime.from), 'MMMM dd, yyyy')}
+                                                    disabled
+                                                    style={{ width: '340px' }}
+                                                /> : <TextField
+                                                    id="date"
+                                                    type="date"
+                                                    sx={{
+                                                        width: 340,
+                                                        "& .MuiOutlinedInput-root:hover": {
+                                                            "& > fieldset": {
+                                                                borderColor: "#7175F4"
+                                                            }
+                                                        }
+                                                    }}
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                    defaultValue={format(new Date(selectedEvent.eventDateTime.from), 'yyyy-MM-dd')}
+                                                    inputRef={dateFrom}
+                                                />
+                                            }
                                         </div>
-                                        <input type="file" accept="image/*" />
-                                    </label>
+                                        <div>
+                                            <h4>End Date</h4>
+                                            {action == 'view' ?
+                                                <TextField
+                                                    defaultValue={format(new Date(selectedEvent.eventDateTime.to), 'MMMM dd, yyyy')}
+                                                    disabled
+                                                    style={{ width: '340px' }}
+                                                /> :
+                                                <TextField
+                                                    id="date"
+                                                    type="date"
+                                                    sx={{
+                                                        width: 340,
+                                                        "& .MuiOutlinedInput-root:hover": {
+                                                            "& > fieldset": {
+                                                                borderColor: "#7175F4"
+                                                            }
+                                                        }
+                                                    }}
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+
+                                                    defaultValue={format(new Date(selectedEvent.eventDateTime.to), 'yyyy-MM-dd')}
+                                                    inputRef={dateTo}
+                                                />
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className="flex-row space-between marginBottom" >
+                                        <div>
+                                            <h4>Start Time</h4>
+                                            {action == 'view' ?
+                                                <TextField
+                                                    defaultValue={format(new Date(selectedEvent.eventDateTime.from.substr(0, 23)), 'hh:mm aa')}
+                                                    disabled
+                                                    style={{ width: '340px' }}
+                                                /> :
+                                                <TextField
+                                                    id="time"
+                                                    type="time"
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                    sx={{
+                                                        width: 340,
+                                                        "& .MuiOutlinedInput-root:hover": {
+                                                            "& > fieldset": {
+                                                                borderColor: "#7175F4"
+                                                            }
+                                                        }
+                                                    }}
+                                                    defaultValue={format(new Date(selectedEvent.eventDateTime.from.substr(0, 23)), 'HH:mm')}
+                                                    inputRef={timeFrom}
+                                                />
+                                            }
+                                        </div>
+                                        <div>
+                                            <h4>End Time</h4>
+                                            {action == 'view' ?
+                                                <TextField
+                                                    defaultValue={format(new Date(selectedEvent.eventDateTime.to.substr(0, 23)), 'hh:mm aa')}
+                                                    disabled
+                                                    style={{ width: '340px' }}
+                                                /> :
+                                                <TextField
+                                                    id="time"
+                                                    type="time"
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                    sx={{
+                                                        width: 340,
+                                                        "& .MuiOutlinedInput-root:hover": {
+                                                            "& > fieldset": {
+                                                                borderColor: "#7175F4"
+                                                            }
+                                                        }
+                                                    }}
+                                                    defaultValue={format(new Date(selectedEvent.eventDateTime.to.substr(0, 23)), 'HH:mm')}
+                                                    inputRef={timeTo}
+                                                />
+                                            }
+                                        </div>
+                                    </div>
+                                </Box>
+                                <div className="ModalButtons rightAlign">
+                                    <button
+                                        hidden={action == "view" ? true : false}
+                                        disabled={isLoading}
+                                        className="solidButton buttonBlue"
+
+                                        type={'submit'}>
+                                        Update
+                                    </button>
+                                    <button
+                                        className="borderedButton"
+                                        onClick={() => {
+                                            setShowModal(false)
+                                            document.getElementById("topBlur").className = "topbar flex-row";
+                                            document.getElementById("sideBlur").className = "sidebar";
+                                            document.getElementById("ResidentcontentBlur").className = "resident";
+                                            document.getElementById("headerBlur").className = "header";
+                                        }}
+                                        type={'button'}>
+                                        Cancel
+                                    </button>
                                 </div>
-                                <div className="flex-row space-between marginBottom" style={{ marginBottom: "16px" }}>
-                                    <div>
-                                        <h4>Start Date</h4>
-                                        <TextField
-                                            id="date"
-                                            type="date"
-                                            sx={{ width: '330px' }}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            required
-                                            defaultValue={format(new Date(selectedEvent.eventDateTime.from), 'yyyy-MM-dd')}
-                                            onChange={(e) => setDateFrom(e.target.value)}
-                                            disabled={action === 'view' ? true : false}
-
-                                        />
-                                    </div>
-                                    <div>
-                                        <h4>End Date</h4>
-                                        <TextField
-                                            id="date"
-                                            type="date"
-                                            sx={{ width: '330px' }}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            required
-                                            defaultValue={format(new Date(selectedEvent.eventDateTime['to']), 'yyyy-MM-dd')}
-                                            onChange={(e) => setDateTo(e.target.value)}
-                                            disabled={action === 'view' ? true : false}
-
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex-row space-between marginBottom" >
-                                    <div>
-                                        <h4>Start Time</h4>
-                                        <TextField
-                                            id="time"
-                                            type="time"
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            sx={{ width: '330px' }}
-                                            defaultValue={format(new Date(selectedEvent.eventDateTime['from']), 'kk:mm')}
-                                            required
-                                            onChange={(e) => setTimeFrom(e.target.value)}
-                                            disabled={action === 'view' ? true : false}
-
-                                        />
-                                    </div>
-                                    <div>
-                                        <h4>End Time</h4>
-                                        <TextField
-                                            id="time"
-                                            type="time"
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            sx={{ width: '330px' }}
-                                            required
-                                            defaultValue={format(new Date(selectedEvent.eventDateTime['to']), 'kk:mm')}
-                                            onChange={(e) => setTimeTo(e.target.value)}
-                                            disabled={action === 'view' ? true : false}
-
-                                        />
-                                    </div>
-
-                                </div>
-                            </Box>
-                            <div className="ModalButtons rightAlign">
-                                <button
-                                    hidden={action === "view" ? true : false}
-                                    disabled={isLoading}
-                                    className="solidButton buttonBlue"
-                                    onClick={() => {
-                                        setShowModal(false)
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("ResidentcontentBlur").className = "resident";
-                                        document.getElementById("headerBlur").className = "header";
-                                        toggleSnackbar(true)
-                                        setIsLoading(true)
-                                    }}>
-                                    Update
-                                </button>
-                                <button
-                                    className="borderedButton"
-                                    onClick={() => {
-                                        setShowModal(false)
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("ResidentcontentBlur").className = "resident";
-                                        document.getElementById("headerBlur").className = "header";
-                                    }}>
-                                    Cancel
-                                </button>
                             </div>
-                        </div>
+                        </form>
                     </Modal>
-                )}
+                )
+                }
 
                 {/* Delete Resident */}
                 <Modal
@@ -338,7 +517,10 @@ const Table = (props) => {
                         setShowDeleteModal(false);
                     }}>
                     <div className="deleteModals">
-                        <h2> Remove Event?</h2>
+                        <div className='modalHeader'>
+                            <h2> Remove Event?</h2>
+                            {xButton}
+                        </div>
                         <div>
                             <p>Are you sure you want to remove this Event? All data removed are archived and can be restored.</p>
                         </div>
@@ -443,7 +625,7 @@ const Table = (props) => {
                         </tfoot>
                     </table>
                 </div>
-            </div>
+            </div >
         );
     }
 };

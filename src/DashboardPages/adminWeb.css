@@ -398,10 +398,6 @@ button:disabled {
     filter: blur(8px);
 }
 
-.Editmodal {
-    padding: 24px
-}
-
 .modal-backdrop {
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
@@ -409,7 +405,6 @@ button:disabled {
     bottom: 0;
     left: 0;
     right: 0;
-    /* padding-left: 20%; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -422,7 +417,6 @@ button:disabled {
     bottom: 0;
     left: 0;
     right: 0;
-    /* padding-left: 20%; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -433,7 +427,7 @@ button:disabled {
     height: fit-content;
     background-color: white;
     border-radius: 8px;
-    padding-bottom: 24px;
+    padding: 24px;
 }
 
 .modalAvatar {
@@ -697,7 +691,6 @@ button:disabled {
 
 .profileModals {
     width: 340px;
-    padding: 24px 24px 0;
 }
 
 .profileModals .email input {
@@ -927,7 +920,6 @@ button:disabled {
 .officalModal {
     width: 750px;
     min-height: 400px;
-    padding-bottom: 0;
 }
 
 /* ================== RESIDENTS =========================== */
@@ -1052,7 +1044,6 @@ tfoot td {
 .deleteModals {
     width: 350px;
     height: fit-content;
-    padding: 24px 24px 0 24px
 }
 
 .deleteModals p {
@@ -1136,8 +1127,6 @@ tfoot td {
 
 .announcementModals {
     width: 690px;
-    padding: 24px;
-    padding-bottom: 0;
 }
 
 .addAnnouncement h4 {
@@ -1149,8 +1138,6 @@ tfoot td {
 
 .eventModals {
     width: 700px;
-    padding: 24px;
-    padding-bottom: 0;
 }
 
 /* tittle */
@@ -1241,6 +1228,128 @@ input[type="file"] {
     justify-content: space-between;
 }
 
+/* event banner */
+.progress-area,
+.uploaded-area {
+    padding: 24px 16px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: white;
+    margin-bottom: 16px;
+}
+
+.progress-area {
+    border: 2px solid #070A57;
+}
+
+.uploaded-area {
+    border: 1px solid #C4C4C4;
+}
+
+.progress-area .center-div,
+.uploaded-area .center-div {
+    width: 100%;
+    margin: 0 10px
+}
+
+/* file name and file size container */
+.progress-area .center-div .progress-details,
+.uploaded-area .center-div .progress-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* file name */
+.progress-area .center-div .progress-details span:nth-child(1),
+.uploaded-area .center-div .progress-details span:nth-child(1) {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+/* file size */
+.progress-area .center-div .progress-details span:nth-child(2),
+.uploaded-area .center-div .progress-details span:nth-child(2) {
+    font-weight: 400;
+    font-size: 12px;
+    color: #636363;
+}
+
+.progress-area .progress-bar {
+    margin-top: 8px;
+    height: 5px;
+    width: 100%;
+    background-color: rgb(202, 202, 202);
+    border-radius: 5px;
+}
+
+.progress-area .progress-bar .progress {
+    height: 100%;
+    background-color: #070A57;
+    border-radius: inherit;
+}
+
+.uploaded-area .center-div .progress-details {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.uploaded-area .center-div .progress-details .left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.uploaded-area .center-div .progress-details .left div {
+    width: 3px;
+    height: 3px;
+    margin: 0 8px;
+    border-radius: 5px;
+    background-color: #9C9C9C;
+}
+
+.uploaded-area .center-div .progress-details .left button {
+    margin-top: 2px;
+    background-color: white;
+    border: 0;
+    color: #0C1096;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 0;
+}
+
+/* preview image modal */
+.previewImage img {
+    max-width: 700px;
+    max-height: 500px;
+}
+
+.view {
+    background-color: #D4D4D4;
+}
+
+.view .center-div .progress-details .left button {
+    color: #FFFFFF;
+    background-color: #D4D4D4;
+}
+
+.view .center-div .progress-details .left span {
+    color: #636363;
+}
+
+.imageIcon {
+    background-color: #636363;
+    -webkit-mask: url(Components/NewImageFiles/Event/imageIcon.svg) no-repeat center;
+    mask: url(Components/NewImageFiles/Event/imageIcon.svg) no-repeat center;
+    width: 23px;
+}
+
 /* ================== HELP =========================== */
 .help {
     width: 700px;
@@ -1305,91 +1414,4 @@ input[type="file"] {
 
 .PDFTemplate tfoot {
     display: table-footer-group
-}
-
-/* event banner */
-.progress-area,
-.uploaded-area {
-    margin-left: 50px;
-    width: 600px;
-    padding: 24px 16px;
-    border: 1px solid #070A57;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: white;
-}
-
-.progress-area .center-div,
-.uploaded-area .center-div {
-    width: 100%;
-    margin: 0 16px
-}
-
-/* file name and file size container */
-.progress-area .center-div .progress-details,
-.uploaded-area .center-div .progress-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* file name */
-.progress-area .center-div .progress-details span:nth-child(1),
-.uploaded-area .center-div .progress-details span:nth-child(1) {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-}
-
-/* file size */
-.progress-area .center-div .progress-details span:nth-child(2),
-.uploaded-area .center-div .progress-details span:nth-child(2) {
-    font-weight: 400;
-    font-size: 12px;
-    color: #636363;
-}
-
-.progress-area .progress-bar {
-    margin-top: 8px;
-    height: 5px;
-    width: 100%;
-    background-color: rgb(202, 202, 202);
-    border-radius: 5px;
-}
-
-.progress-area .progress-bar .progress {
-    height: 100%;
-    width: 50%;
-    background-color: #070A57;
-    border-radius: inherit;
-}
-.uploaded-area .center-div .progress-details{
-    width: 100%;
-    justify-content: space-between;
-}
-.uploaded-area .center-div .progress-details .left {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.uploaded-area .center-div .progress-details .left div{
-    width: 3px;
-    height: 3px;
-    margin: 0 8px;
-    border-radius: 5px;
-    background-color: #9C9C9C;
-}   
-
-.uploaded-area .center-div .progress-details .left button {
-    margin-top: 2px;
-    background-color: white;
-    border: 0;
-    color: #0C1096;
-    font-weight: 400;
-    font-size: 14px;
-    padding: 0;
 }
