@@ -10,7 +10,7 @@ function TopBar() {
     const dateNow = new Date()
 
     return (
-        <div id='topBlur' className="topbar flex-row">
+        <div id="topBlur" className="topbar flex-row">
             <div className="gretings" style={{ flexGrow: "1" }}>
                 <p>DEL ROSARIO INFORMATION MANAGEMENT SYSTEM</p>
             </div>

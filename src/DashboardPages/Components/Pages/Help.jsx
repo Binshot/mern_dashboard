@@ -3,7 +3,7 @@ import Content from "../HelpComponents/Content"
 import React from "react";
 function Help() {
     return (
-        <div className="content">
+        <div id="mainContentBlur" className="content">
             <Header />
             <Content />
         </div>

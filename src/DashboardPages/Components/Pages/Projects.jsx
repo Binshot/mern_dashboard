@@ -4,7 +4,7 @@ import ProjectList from "../dummyDB/Projects"
 import React from "react";
 function Projects() {
     return (
-        <div className="content">
+        <div id="mainContentBlur" className="content">
             <Header />
             <Table list={ProjectList} />
         </div>

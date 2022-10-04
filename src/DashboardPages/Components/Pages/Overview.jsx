@@ -6,7 +6,7 @@ import { ResidentContextProvider } from '../../context/ResidentContext'
 
 export default function Overview() {
     return (
-        <div>
+        <div id="mainContentBlur">
             <ResidentContextProvider>
                 <div className="flex-row">
                     <Summary />

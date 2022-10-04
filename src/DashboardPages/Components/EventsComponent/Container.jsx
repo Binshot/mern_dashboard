@@ -25,7 +25,7 @@ function Container() {
 
     if (rows) {
         return (
-            <div className="content">
+            <div id="mainContentBlur" className="content">
                 <Header get={getRows} />
                 <ResidentsTable list={rows} />
             </div>

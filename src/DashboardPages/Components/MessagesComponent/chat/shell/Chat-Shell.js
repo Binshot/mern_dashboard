@@ -14,7 +14,7 @@ function ChatShell() {
     const getModal = modal => setShowModal(modal);
 
     return (
-        <div>
+        <div id="mainContentBlur">
             <ViewResident
                 shown={showModal}
                 setShown={getModal}
