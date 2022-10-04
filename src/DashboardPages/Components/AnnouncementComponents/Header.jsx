@@ -107,6 +107,19 @@ function Header(props) {
         });
         props.get(filteredRows)
     };
+
+    const xButton = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => { handleCancel() }}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    )
     return (
         <div>
             <Modal
@@ -116,7 +129,10 @@ function Header(props) {
                 }}>
                 <form onSubmit={handleSubmit}>
                     <div className="announcementModals">
-                        <h2 className="marginBottom">Add Announcement</h2>
+                        <div className='modalHeader'>
+                            <h2>Add Announcement</h2>
+                            {xButton}
+                        </div>
                         <div className="flex-column addAnnouncement">
                             <div>
                                 <h4>Title</h4>
@@ -215,7 +231,14 @@ function Header(props) {
                         <TextField
                             id="outlined-multiline-static"
                             placeholder="Search announcement title"
-                            sx={{ backgroundColor: "white" }}
+                            sx={{
+                                backgroundColor: "white",
+                                "& .MuiOutlinedInput-root:hover": {
+                                    "& > fieldset": {
+                                        borderColor: "#7175F4"
+                                    }
+                                }
+                            }}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">

@@ -132,6 +132,28 @@ function Officials(props) {
         }
     }
 
+    const xButton = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => cancelForm()}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    )
+
+    const cancelForm = () => {
+        toggleUpdateModal(false)
+        toggleDeleteModal(false)
+        document.getElementById("topBlur").className = "topbar flex-row";
+        document.getElementById("sideBlur").className = "sidebar";
+        document.getElementById("contentBlur").className = "flex-row";
+        document.getElementById("headerBlur").className = "header";
+    }
+
     if (organizations) {
         return (
             <div className="official">
@@ -199,7 +221,10 @@ function Officials(props) {
                             toggleUpdateModal(false);
                         }}>
                         <div className="Editmodal officalModal">
-                            <h2 className="marginBottom">Edit Official</h2>
+                            <div className='modalHeader'>
+                                <h2 className="marginBottom">Edit Official</h2>
+                                {xButton}
+                            </div>
                             <div className="flex-row addOfficial space-between">
                                 <div className="selects">
                                     <h4>Resident's Name</h4>
@@ -274,13 +299,7 @@ function Officials(props) {
                                 </button>
                                 <button
                                     className="borderedButton"
-                                    onClick={() => {
-                                        toggleUpdateModal(false)
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("contentBlur").className = "flex-row";
-                                        document.getElementById("headerBlur").className = "header";
-                                    }}>
+                                    onClick={() => cancelForm()}>
                                     Cancel
                                 </button>
                             </div>
@@ -295,7 +314,10 @@ function Officials(props) {
                         toggleDeleteModal(false)
                     }}>
                     <div className="deleteModals">
-                        <h2> Remove Official?</h2>
+                        <div className='modalHeader'>
+                            <h2>Remove Official?</h2>
+                            {xButton}
+                        </div>
                         <div>
                             <p>Are you sure you want to remove <span style={{ fontWeight: "bold" }}>{nameOfMember}</span>? All data removed are archived and can be restored.</p>
                         </div>
@@ -309,13 +331,7 @@ function Officials(props) {
                             </button>
                             <button
                                 className="borderedButton"
-                                onClick={() => {
-                                    toggleDeleteModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("contentBlur").className = "flex-row";
-                                    document.getElementById("headerBlur").className = "header";
-                                }}>
+                                onClick={() => cancelForm()}>
                                 Cancel
                             </button>
                         </div>

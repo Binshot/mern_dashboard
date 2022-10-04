@@ -10,6 +10,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import VisibilityOn from '@mui/icons-material/Visibility';
+import { TextField } from '@mui/material';
 
 function ProfileSettings() {
 
@@ -87,12 +88,12 @@ function ProfileSettings() {
         if (response.ok) {
             setIsLoading(false)
             setShowModal(false)
-            // toggleAddModal(false)
-            // document.getElementById("topBlur").className = "topbar flex-row";
-            // document.getElementById("sideBlur").className = "sidebar";
-            // document.getElementById("contentBlur").className = "resident";
-            // document.getElementById("headerBlur").className = "header";
-            // toggleSnackbar(true)
+            toggleAddModal(false)
+            document.getElementById("topBlur").className = "topbar flex-row";
+            document.getElementById("sideBlur").className = "sidebar";
+            document.getElementById("profileHeaderBlur").className = "borderBottom2 topHeader";
+            document.getElementById("profileContentBlur").classList.remove("blur");
+            toggleSnackbar(true)
         } else {
             setError(json.error)
             setEmptyFields(json.emptyFields)
@@ -106,14 +107,20 @@ function ProfileSettings() {
                 close={() => {
                     setShowModal(false);
                 }}>
-                <form onSubmit={action === "email" ? handleChangeEmailSubmit : handleChangePasswordSubmit}>
+                <form onSubmit={action == "email" ? handleChangeEmailSubmit : handleChangePasswordSubmit}>
                     <div className="profileModals">
-                        <h2 className="marginBottom">Change {action === "email" ? "Email" : "Password"}?</h2>
-                        <div hidden={action === "email" ? true : false} className="password">
+                        <h2 className="marginBottom">Change {action == "email" ? "Email" : "Password"}?</h2>
+                        {action != "email" &&
+                            <p style={{ fontSize: "14px", marginBottom: "24px", color: "#9C9C9C" }}>
+                                Passwod must be at least 8 charactes with both uppercase and lowercase letters, numbers, and symbols. <br></br>
+                                Allowed symbols: [ ! @ # $ % ^ & * - _ . ]
+                            </p>
+                        }
+                        <div hidden={action == "email" ? true : false} className="password">
                             <div className='textfield'>
                                 <h3>Current Password</h3>
                                 <OutlinedInput
-                                    className={emptyFields.includes('Current Password') ? 'error' : ''}
+                                    error={emptyFields.includes('Current Password') ? true : false}
                                     placeholder='Input current password'
                                     type={type1 ? "text" : "password"}
                                     onChange={(e) => setCurrentPassword(e.target.value)}
@@ -127,12 +134,20 @@ function ProfileSettings() {
                                             </IconButton>
                                         </InputAdornment>
                                     }
+                                    sx={{
+                                        backgroundColor: "white",
+                                        "& .MuiOutlinedInput-root:hover": {
+                                            "& > fieldset": {
+                                                borderColor: "#7175F4"
+                                            }
+                                        }
+                                    }}
                                 />
                             </div>
                             <div className='textfield'>
                                 <h3>New Password</h3>
                                 <OutlinedInput
-                                    className={emptyFields.includes('New Password') ? 'error' : ''}
+                                    error={emptyFields.includes('New Password') ? true : false}
                                     placeholder='Input new password'
                                     type={type2 ? "text" : "password"}
                                     onChange={(e) => setNewPassword(e.target.value)}
@@ -151,7 +166,7 @@ function ProfileSettings() {
                             <div className='textfield'>
                                 <h3>Confirm Password</h3>
                                 <OutlinedInput
-                                    className={emptyFields.includes('Confirm Password') ? 'error' : ''}
+                                    error={emptyFields.includes('Confirm Password') ? true : false}
                                     placeholder='Confirm new password'
                                     type={type3 ? "text" : "password"}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -168,22 +183,40 @@ function ProfileSettings() {
                                 />
                             </div>
                         </div>
-                        <div hidden={action === "email" ? false : true} className="email">
+                        <div hidden={action == "email" ? false : true} className="email">
                             <h4>Current Email</h4>
-                            <input
-                                className={emptyFields.includes('Current Email') ? 'error' : ''}
+                            <TextField
+                                error={emptyFields.includes('Current Email') ? true : false}
                                 type="text"
                                 placeholder="Input Current Email"
                                 value={currentEmail}
+                                fullWidth
                                 onChange={(e) => setCurrentEmail(e.target.value)}
+                                sx={{
+                                    backgroundColor: "white",
+                                    "& .MuiOutlinedInput-root:hover": {
+                                        "& > fieldset": {
+                                            borderColor: "#7175F4"
+                                        }
+                                    }
+                                }}
                             />
                             <h4>New Email</h4>
-                            <input
-                                className={emptyFields.includes('New Email') ? 'error' : ''}
+                            <TextField
+                                error={emptyFields.includes('New Email') ? true : false}
+                                fullWidth
                                 type="text"
                                 placeholder="Input New Email"
                                 value={newEmail}
                                 onChange={(e) => setNewEmail(e.target.value)}
+                                sx={{
+                                    backgroundColor: "white",
+                                    "& .MuiOutlinedInput-root:hover": {
+                                        "& > fieldset": {
+                                            borderColor: "#7175F4"
+                                        }
+                                    }
+                                }}
                             />
                         </div>
                         <div className="profileModalButtons">
@@ -200,10 +233,10 @@ function ProfileSettings() {
                                     setCurrentPassword('')
                                     setNewPassword('')
                                     setConfirmPassword('')
-                                    // document.getElementById("topBlur").className = "topbar flex-row";
-                                    // document.getElementById("sideBlur").className = "sidebar";
-                                    // document.getElementById("contentBlur").className = "resident";
-                                    // document.getElementById("headerBlur").className = "header";
+                                    document.getElementById("topBlur").className = "topbar flex-row";
+                                    document.getElementById("sideBlur").className = "sidebar";
+                                    document.getElementById("profileHeaderBlur").className = "borderBottom2 topHeader";
+                                    document.getElementById("profileContentBlur").classList.remove("blur");
                                 }}>
                                 Back
                             </button>
@@ -213,15 +246,15 @@ function ProfileSettings() {
                                 Submit
                             </button>
                         </div>
-                        {error && <div className="divError">{error}</div>}
+                        {error && <div className="divError" style={{ marginTop: "16px" }}>{error}</div>}
                     </div>
                 </form>
             </Modal>
 
-            <div className="borderBottom2 topHeader">
+            <div className="borderBottom2 topHeader" id='profileHeaderBlur' >
                 <h1>PROFILE SETTING</h1>
             </div>
-            <div style={{ height: "75vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div id='profileContentBlur' style={{ height: "75vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <div className='profileContainer'>
                     <img src={Avatar} alt="" />
                     <div className='name'>
@@ -231,12 +264,20 @@ function ProfileSettings() {
                         <button onClick={() => {
                             setAction("email")
                             setShowModal(true)
+                            document.getElementById("sideBlur").className += " blur";
+                            document.getElementById("topBlur").className += " blur";
+                            document.getElementById("profileHeaderBlur").className += " blur";
+                            document.getElementById("profileContentBlur").className = " blur";
                         }}>
                             Change Email
                         </button>
                         <button onClick={() => {
                             setAction("password")
                             setShowModal(true)
+                            document.getElementById("sideBlur").className += " blur";
+                            document.getElementById("topBlur").className += " blur";
+                            document.getElementById("profileHeaderBlur").className += " blur";
+                            document.getElementById("profileContentBlur").className = " blur";
                         }}>
                             Change Password
                         </button>

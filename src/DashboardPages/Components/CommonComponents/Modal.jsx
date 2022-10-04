@@ -5,7 +5,7 @@ export default function Modal({ children, shown, close, align, topbar }) {
         <div
             className="modal-backdrop">
             <div
-                className={align ? align + " modal-content" : "modal-content"}
+                className={align ? align + " viewOfficial" : "modal-content"}
                 >
                 {children}
             </div>

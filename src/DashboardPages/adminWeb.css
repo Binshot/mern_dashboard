@@ -309,16 +309,18 @@ button:disabled {
 }
 
 .loginHeader {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .loginHeader h2 {
-    margin-bottom: 24px;
     font-size: 32px;
 }
 
 .loginHeader p {
     margin-bottom: 8px;
+    text-align: center;
 }
 
 .loginInputContainer {
@@ -332,41 +334,91 @@ button:disabled {
     margin-top: 24px;
 }
 
+.loginButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .loginButton {
     padding: 14px;
     text-align: center;
     background-color: #0C1096;
     color: white;
     font-size: 18px;
-    border-radius: 10px;
-    border: none;
-    width: 100%;
+    border-radius: 8px;
+    border: 2px solid #0C1096;
+    width: -webkit-fill-available;
+    margin-bottom: 8px;
 }
 
 .loginButton:hover {
     background-color: #7175F4;
+    border: 2px solid #7175F4;
 }
 
 .loginButton:disabled {
     background-color: #D0D1FB;
+    border: 2px solid #D0D1FB;
 }
 
-.loginForm a {
-    text-decoration: none;
-    color: white;
+.backToWebsite {
+    padding: 14px;
+    text-align: center;
+    background-color: white;
+    color: #0C1096;
+    font-size: 18px;
+    border: 2px solid #0C1096;
+    border-radius: 8px;
+    width: -webkit-fill-available;
 }
 
-.lowerActions p {
+.backToWebsite:hover {
+    color: #7175F4;
+    border-color: #7175F4;
+}
+
+.backToWebsite:disabled {
+    color: #D0D1FB;
+    background-color: #D0D1FB;
+}
+
+.forgotPassword {
     color: #0C1096;
     cursor: pointer;
     text-align: center;
     font-size: 18px;
     font-weight: bold;
-    margin: 25px 25px 0;
+    margin: 25px 25px 8px;
 }
 
-.lowerActions p:hover {
+.forgotPassword:hover {
     color: #7175F4;
+}
+
+.loginPassword {
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    padding: 10px 14px;
+
+}
+
+.loginPassword:hover,
+.loginPassword:focus-within {
+    border-color: #7175F4;
+}
+
+.sentIcon {
+    width: 48px;
+    height: 48px;
+    background: #D7F4D8;
+    border-radius: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
 }
 
 .divError {
@@ -423,11 +475,17 @@ button:disabled {
     z-index: 2;
 }
 
-.modal-content {
+.modal-content, .viewOfficial {
     height: fit-content;
     background-color: white;
-    border-radius: 8px;
+    border-radius: 8px;   
+}
+.modal-content{
     padding: 24px;
+}
+
+.viewOfficial{
+    padding-bottom: 24px;
 }
 
 .modalAvatar {
@@ -475,7 +533,11 @@ button:disabled {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 16px;
+    /* margin-bottom: 16px; */
+}
+
+.modalHeader h2{
+    font-size: 28px;
 }
 
 /* ===================== SIDE BAR ================= */
@@ -693,9 +755,8 @@ button:disabled {
     width: 340px;
 }
 
-.profileModals .email input {
-    width: 91%;
-    margin: 8px 0 16px 0;
+.profileModals .email h4 {
+    margin: 16px 0 8px 0;
 }
 
 .profileModals .password .textfield {
@@ -1042,7 +1103,7 @@ tfoot td {
 }
 
 .deleteModals {
-    width: 350px;
+    width: 400px;
     height: fit-content;
 }
 

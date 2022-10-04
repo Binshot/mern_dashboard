@@ -29,7 +29,7 @@ function Header(props) {
     const [officialList, setOfficialList] = useState(null)
     const [selectedResident, setSelectedResident] = useState(null)
     const [position, setPosition] = useState(null)
-    const [name, setName] = useState('')
+    const [name, setName] = useState(null)
 
     useEffect(() => {
         const fetchResident = async () => {
@@ -101,11 +101,7 @@ function Header(props) {
         console.log(json)
 
         if (response.ok) {
-            toggleAddModal(false)
-            document.getElementById("topBlur").className = "topbar flex-row";
-            document.getElementById("sideBlur").className = "sidebar";
-            document.getElementById("contentBlur").className = "resident";
-            document.getElementById("headerBlur").className = "header";
+            cancelForm()
             setIsLoading(false)
             toggleSnackbar(true)
             console.log('new official added:', json)
@@ -136,6 +132,30 @@ function Header(props) {
         });
         props.get(filteredRows)
     };
+
+    const xButton = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => cancelForm() }
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    )
+
+    const cancelForm = () => {
+        toggleAddModal(false)
+        setError(null)
+        setEmptyFields([])
+        document.getElementById("topBlur").className = "topbar flex-row";
+        document.getElementById("sideBlur").className = "sidebar";
+        document.getElementById("contentBlur").className = "flex-row";
+        document.getElementById("headerBlur").className = "header";
+    }
+
     return (
         <div>
             <Modal
@@ -145,7 +165,10 @@ function Header(props) {
                 }}>
                 <form onSubmit={handleSubmit}>
                     <div className="Editmodal officalModal">
-                        <h2 className="marginBottom">Add Official</h2>
+                        <div className='modalHeader'>
+                            <h2 className="marginBottom">Add Official</h2>
+                            {xButton}
+                        </div>
                         <div className="flex-row addOfficial space-between">
                             <div className="selects">
                                 <h4 style={{ marginBottom: "8px" }}>Resident's Name</h4>
@@ -177,7 +200,7 @@ function Header(props) {
                                     id="combo-box-demo"
                                     options={positionOptions}
                                     renderInput={(params) => <TextField {...params} placeholder="Choose Position"
-                                    error={emptyFields.includes('Position') ? true : false} />}
+                                        error={emptyFields.includes('Position') ? true : false} />}
                                     onChange={(event, newValue) => {
                                         setPosition(newValue)
                                     }}
@@ -237,15 +260,7 @@ function Header(props) {
                                 <button
                                     type="reset"
                                     className="borderedButton"
-                                    onClick={() => {
-                                        toggleAddModal(false)
-                                        setError(null)
-                                        setEmptyFields([])
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("contentBlur").className = "flex-row";
-                                        document.getElementById("headerBlur").className = "header";
-                                    }}
+                                    onClick={() => cancelForm()}
                                     disabled={isLoading}>
                                     Cancel
                                 </button>
@@ -284,7 +299,14 @@ function Header(props) {
                     <div style={{ flexGrow: "9" }}>
                         <TextField
                             placeholder="Search official's name"
-                            sx={{ backgroundColor: "white", borderRadius: "8px" }}
+                            sx={{
+                                backgroundColor: "white",
+                                "& .MuiOutlinedInput-root:hover": {
+                                    "& > fieldset": {
+                                        borderColor: "#7175F4"
+                                    }
+                                }
+                            }}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">

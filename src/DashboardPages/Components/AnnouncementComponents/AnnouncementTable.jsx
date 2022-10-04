@@ -14,7 +14,7 @@ import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
 
 const Table = (props) => {
     //get all announcement
-    const {  dispatch } = useAnnouncementContext()
+    const { dispatch } = useAnnouncementContext()
 
     // useEffect(() => {
     //     const fetchWorkouts = async () => {
@@ -68,6 +68,26 @@ const Table = (props) => {
             </IconButton>
         </React.Fragment>
     );
+
+    const xButton = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                    setShowModal(false)
+                    setShowDeleteModal(false)
+                    document.getElementById("topBlur").className = "topbar flex-row";
+                    document.getElementById("sideBlur").className = "sidebar";
+                    document.getElementById("contentBlur").className = "resident";
+                    document.getElementById("headerBlur").className = "header";
+                }}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    )
 
     if (announcements) {
 
@@ -155,49 +175,66 @@ const Table = (props) => {
                         setShowModal(false);
                     }}>
                     <div className="announcementModals">
-                        <h2 className="marginBottom">{action === "view" ? "View" : "Update"}  Announcement</h2>
+                        <div className='modalHeader'>
+                            <h2>{action === "view" ? "View" : "Update"}  Announcement</h2>
+                            {xButton}
+                        </div>
                         <div className="flex-column addAnnouncement">
                             <div>
                                 <h4>Tittle</h4>
-                                <TextField
-                                    id="outlined-multiline-static"
-                                    defaultValue={title}
-                                    fullWidth
-                                    inputProps={{
-                                        maxLength: 80
-                                    }}
-                                    disabled={action === "view" ? true : false}
-                                    onChange={(e) => setTitle(e.target.value)}
-                                    sx={{
-                                        "& .MuiOutlinedInput-root:hover": {
-                                            "& > fieldset": {
-                                                borderColor: "#7175F4"
+                                {action === "view" ?
+                                    <TextField
+                                        defaultValue={title}
+                                        fullWidth
+                                        disabled
+                                    /> :
+                                    <TextField
+                                        id="outlined-multiline-static"
+                                        defaultValue={title}
+                                        fullWidth
+                                        inputProps={{
+                                            maxLength: 80
+                                        }}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                        sx={{
+                                            "& .MuiOutlinedInput-root:hover": {
+                                                "& > fieldset": {
+                                                    borderColor: "#7175F4"
+                                                }
                                             }
-                                        }
-                                    }}
-                                />
+                                        }}
+                                    />
+                                }
                             </div>
                             <div>
                                 <h4>Description (Optional)</h4>
-                                <TextField
-                                    id="outlined-multiline-static"
-                                    multiline
-                                    defaultValue={description}
-                                    rows={7}
-                                    fullWidth
-                                    inputProps={{
-                                        maxLength: 400
-                                    }}
-                                    disabled={action === "view" ? true : false}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    sx={{
-                                        "& .MuiOutlinedInput-root:hover": {
-                                            "& > fieldset": {
-                                                borderColor: "#7175F4"
+                                {action === "view" ?
+                                    <TextField
+                                        defaultValue={description}
+                                        rows={7}
+                                        fullWidth
+                                        disabled
+                                        multiline
+                                    /> :
+                                    <TextField
+                                        id="outlined-multiline-static"
+                                        multiline
+                                        defaultValue={description}
+                                        rows={7}
+                                        fullWidth
+                                        inputProps={{
+                                            maxLength: 400
+                                        }}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        sx={{
+                                            "& .MuiOutlinedInput-root:hover": {
+                                                "& > fieldset": {
+                                                    borderColor: "#7175F4"
+                                                }
                                             }
-                                        }
-                                    }}
-                                />
+                                        }}
+                                    />
+                                }
                             </div>
                         </div>
                         <div className="rightAlign ModalButtons" style={{ marginTop: "23px" }}>
@@ -237,7 +274,10 @@ const Table = (props) => {
                         setShowDeleteModal(false)
                     }}>
                     <div className="deleteModals">
-                        <h2> Remove Announcement?</h2>
+                        <div className='modalHeader'>
+                            <h2> Remove Announcement?</h2>
+                            {xButton}
+                        </div>
                         <div>
                             <p>Are you sure you want to remove this announcement? All data removed are archived and can be restored.</p>
                         </div>

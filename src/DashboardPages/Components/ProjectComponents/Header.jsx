@@ -15,9 +15,17 @@ function Header() {
                         multiple
                         id="tags-outlined"
                         options={options}
-                        sx={{ width: '350px', backgroundColor: "White" }}
+                        sx={{
+                            width: '350px',
+                            backgroundColor: "White",
+                            "& .MuiOutlinedInput-root:hover": {
+                                "& > fieldset": {
+                                    borderColor: "#7175F4"
+                                }
+                            }
+                        }}
                         filterSelectedOptions
-                        renderInput={(params) => (<TextField {...params} placeholder="Choose Target Beneficiaries" /> )}
+                        renderInput={(params) => (<TextField {...params} placeholder="Choose Target Beneficiaries" />)}
                     />
                 </div>
                 <div className="rightAlign action">

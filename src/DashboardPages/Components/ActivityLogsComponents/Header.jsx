@@ -24,7 +24,14 @@ function Header(props) {
                     <TextField
                         id="outlined-multiline-static"
                         placeholder="Search activity title"
-                        sx={{ backgroundColor: "white" }}
+                        sx={{
+                            backgroundColor: "white",
+                            "& .MuiOutlinedInput-root:hover": {
+                                "& > fieldset": {
+                                    borderColor: "#7175F4"
+                                }
+                            }
+                        }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">

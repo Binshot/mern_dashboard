@@ -7,7 +7,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Print from "../NewImageFiles/Topbar/Print.svg"
 import { useResidentContext } from "../../hooks/userResidentContext"
 function Header(props) {
-    
+
     const [AddmodalShown, toggleAddModal] = useState(false);
 
     const getShown = get => toggleAddModal(get)
@@ -34,7 +34,14 @@ function Header(props) {
                         <TextField
                             id="outlined-multiline-static"
                             placeholder="Search resident's name"
-                            sx={{ backgroundColor: "white" }}
+                            sx={{
+                                backgroundColor: "white",
+                                "& .MuiOutlinedInput-root:hover": {
+                                    "& > fieldset": {
+                                        borderColor: "#7175F4"
+                                    }
+                                }
+                            }}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
