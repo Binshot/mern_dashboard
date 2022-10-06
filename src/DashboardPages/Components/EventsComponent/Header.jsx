@@ -53,11 +53,7 @@ function Header(props) {
                 aria-label="close"
                 color="inherit"
                 onClick={() => {
-                    toggleAddModal(false)
-                    document.getElementById("topBlur").className = "topbar flex-row";
-                    document.getElementById("sideBlur").className = "sidebar";
-                    document.getElementById("ResidentcontentBlur").className = "resident";
-                    document.getElementById("headerBlur").className = "header";
+                    changed ? setCancelModal(true) : toggleAddModal(false)
                 }}
             >
                 <CloseIcon fontSize="small" />
@@ -115,10 +111,6 @@ function Header(props) {
                 setUploadButtonFlag(true)
                 setProgressflag(true)
                 setUploadedFlag(true)
-                document.getElementById("topBlur").className = "topbar flex-row";
-                document.getElementById("sideBlur").className = "sidebar";
-                document.getElementById("ResidentcontentBlur").className = "resident";
-                document.getElementById("headerBlur").className = "header";
                 setIsLoading(false)
                 dispatch({ type: 'CREATE_EVENT', payload: json })
 
@@ -158,6 +150,9 @@ function Header(props) {
     const [uploadButtonFlag, setUploadButtonFlag] = useState(true)
     const [previewImage, setPreviewImage] = useState(false)
     const [imageURL, setImageURL] = useState(null)
+    const [cancelModal, setCancelModal] = useState(false)
+    const [changed, setChanged] = useState(false)
+
     const onImageUpload = (image) => {
         setProgressflag(false)
         setUploadButtonFlag(false)
@@ -210,6 +205,20 @@ function Header(props) {
         </React.Fragment>
     );
 
+    const cancelForm = () => {
+        toggleAddModal(false)
+        setError(null)
+        setEmptyFields([])
+        setFile(null)
+        setName('')
+        setTotalSize('')
+        setUploadButtonFlag(true)
+        setProgressflag(true)
+        setUploadedFlag(true)
+        setChanged(false)
+        setCancelModal(false)
+    }
+
     return (
         <div>
             <Modal
@@ -232,7 +241,10 @@ function Header(props) {
                                     disabled={isLoading}
                                     placeholder="Input Title"
                                     style={{ width: "100%", marginBottom: "16px" }}
-                                    onChange={(e) => setEventTitle(e.target.value)}
+                                    onChange={(e) => {
+                                        setEventTitle(e.target.value)
+                                        setChanged(true)
+                                    }}
                                     sx={{
                                         "& .MuiOutlinedInput-root:hover": {
                                             "& > fieldset": {
@@ -252,6 +264,7 @@ function Header(props) {
                                         renderInput={(params) => <TextField {...params} placeholder="Choose Tag" error={emptyFields.includes('Event Tag') ? true : false} />}
                                         onChange={(event, newValue) => {
                                             setEventTag(newValue);
+                                            setChanged(true)
                                         }}
                                         disabled={isLoading}
                                         sx={{
@@ -270,7 +283,10 @@ function Header(props) {
                                         error={emptyFields.includes('Event Location') ? true : false}
                                         id="outlined-multiline-static"
                                         placeholder="Input Location"
-                                        onChange={(e) => setEventLocation(e.target.value)}
+                                        onChange={(e) => {
+                                            setEventLocation(e.target.value)
+                                            setChanged(true)
+                                        }}
                                         disabled={isLoading}
                                         sx={{
                                             width: 340,
@@ -295,7 +311,10 @@ function Header(props) {
                                     inputProps={{
                                         maxLength: 400
                                     }}
-                                    onChange={(e) => setEventDescription(e.target.value)}
+                                    onChange={(e) => {
+                                        setEventDescription(e.target.value)
+                                        setChanged(true)
+                                    }}
                                     disabled={isLoading}
                                     sx={{
                                         "& .MuiOutlinedInput-root:hover": {
@@ -336,6 +355,7 @@ function Header(props) {
                                         onChange={(e) => {
                                             setFile(e.target.files[0])
                                             onImageUpload(e.target.files[0])
+                                            setChanged(true)
                                         }} />
                                 </label>
                             </div>
@@ -378,7 +398,10 @@ function Header(props) {
                                         }}
                                         placeholder="Input start Date"
                                         value={dateFrom}
-                                        onChange={(e) => setDateFrom(e.target.value)}
+                                        onChange={(e) => {
+                                            setDateFrom(e.target.value)
+                                            setChanged(true)
+                                        }}
                                         disabled={isLoading}
                                         sx={{
                                             width: 340,
@@ -399,7 +422,10 @@ function Header(props) {
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
-                                        onChange={(e) => setDateTo(e.target.value)}
+                                        onChange={(e) => {
+                                            setDateTo(e.target.value)
+                                            setChanged(true)
+                                        }}
                                         disabled={isLoading}
                                         sx={{
                                             width: 340,
@@ -423,7 +449,10 @@ function Header(props) {
                                             shrink: true,
                                         }}
                                         value={timeFrom}
-                                        onChange={(e) => setTimeFrom(e.target.value)}
+                                        onChange={(e) => {
+                                            setTimeFrom(e.target.value)
+                                            setChanged(true)
+                                        }}
                                         disabled={isLoading}
                                         sx={{
                                             width: 340,
@@ -444,7 +473,10 @@ function Header(props) {
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
-                                        onChange={(e) => setTimeTo(e.target.value)}
+                                        onChange={(e) => {
+                                            setTimeTo(e.target.value)
+                                            setChanged(true)
+                                            }}
                                         disabled={isLoading}
                                         sx={{
                                             width: 340,
@@ -467,21 +499,10 @@ function Header(props) {
                                 </button>
                                 <button
                                     disabled={isLoading}
+                                    type="button"
                                     className="borderedButton"
                                     onClick={() => {
-                                        toggleAddModal(false)
-                                        setError(null)
-                                        setEmptyFields([])
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("ResidentcontentBlur").className = "resident";
-                                        document.getElementById("headerBlur").className = "header";
-                                        setFile(null)
-                                        setName('')
-                                        setTotalSize('')
-                                        setUploadButtonFlag(true)
-                                        setProgressflag(true)
-                                        setUploadedFlag(true)
+                                        changed ? setCancelModal(true) : cancelForm()
                                     }}>
                                     Cancel
                                 </button>
@@ -508,6 +529,40 @@ function Header(props) {
                 }}
                 action={action}
             />
+
+            {/* cancel modal */}
+            <Modal
+                shown={cancelModal}
+                close={() => {
+                    setCancelModal(false)
+                }}>
+                <div className="deleteModals">
+                    <div className='modalHeader'>
+                        <h2>Cancel Changes?</h2>
+                        {xButton}
+                    </div>
+                    <div>
+                        <p>
+                            You have added information that haven’t been saved yet. Do you still want to quit?
+                        </p>
+                    </div>
+                    <div className="rightAlign ModalButtons">
+                        <button
+                            className="solidButton buttonRed"
+                            onClick={() => {
+                                setCancelModal(false)
+                                cancelForm()
+                            }}>
+                            Yes
+                        </button>
+                        <button
+                            className="borderedButton"
+                            onClick={() => setCancelModal(false)}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </Modal>
 
             <div id='headerBlur' className='header'>
                 <div className="flex-row borderBottom2 topHeader">
@@ -539,10 +594,6 @@ function Header(props) {
                     <div className="flex-row center"
                         onClick={() => {
                             toggleAddModal(true)
-                            document.getElementById("sideBlur").className += " blur";
-                            document.getElementById("topBlur").className += " blur";
-                            document.getElementById("headerBlur").className += " blur";
-                            document.getElementById("ResidentcontentBlur").className += " blur";
                         }}>
                         <img src={Print} alt="" className="export" style={{ cursor: "pointer" }} />
                         <button className="solidButton add buttonBlue">

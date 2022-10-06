@@ -46,6 +46,9 @@ const Table = (props) => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
 
+    const [cancelModal, setCancelModal] = useState(false)
+    const [changed, setChanged] = useState(false)
+
     const actionButton = (
         <React.Fragment>
             {/* <Button size="small"
@@ -76,12 +79,8 @@ const Table = (props) => {
                 aria-label="close"
                 color="inherit"
                 onClick={() => {
-                    setShowModal(false)
+                    changed ? setCancelModal(true) : setShowModal(false)
                     setShowDeleteModal(false)
-                    document.getElementById("topBlur").className = "topbar flex-row";
-                    document.getElementById("sideBlur").className = "sidebar";
-                    document.getElementById("contentBlur").className = "resident";
-                    document.getElementById("headerBlur").className = "header";
                 }}
             >
                 <CloseIcon fontSize="small" />
@@ -195,7 +194,10 @@ const Table = (props) => {
                                         inputProps={{
                                             maxLength: 80
                                         }}
-                                        onChange={(e) => setTitle(e.target.value)}
+                                        onChange={(e) => {
+                                            setTitle(e.target.value)
+                                            setChanged(true)
+                                        }}
                                         sx={{
                                             "& .MuiOutlinedInput-root:hover": {
                                                 "& > fieldset": {
@@ -225,7 +227,10 @@ const Table = (props) => {
                                         inputProps={{
                                             maxLength: 400
                                         }}
-                                        onChange={(e) => setDescription(e.target.value)}
+                                        onChange={(e) => {
+                                            setDescription(e.target.value)
+                                            setChanged(true)
+                                        }}
                                         sx={{
                                             "& .MuiOutlinedInput-root:hover": {
                                                 "& > fieldset": {
@@ -243,10 +248,6 @@ const Table = (props) => {
                                 hidden={action === "view" ? "hidden" : ""}
                                 onClick={() => {
                                     setShowModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("contentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
                                     handleUpdate()
                                     toggleSnackbar(true)
                                 }}>
@@ -255,11 +256,7 @@ const Table = (props) => {
                             <button
                                 className="borderedButton"
                                 onClick={() => {
-                                    setShowModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("contentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
+                                    changed ? setCancelModal(true) : setShowModal(false)
                                 }}>
                                 Cancel
                             </button>
@@ -286,10 +283,6 @@ const Table = (props) => {
                                 className="solidButton buttonRed"
                                 onClick={() => {
                                     setShowDeleteModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("contentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
                                     handleDelete()
                                     toggleDeletesnackbar(true)
                                 }}>
@@ -299,10 +292,6 @@ const Table = (props) => {
                                 className="borderedButton"
                                 onClick={() => {
                                     setShowDeleteModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("contentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
                                 }}>
                                 Cancel
                             </button>
@@ -344,6 +333,41 @@ const Table = (props) => {
                     }}
                     action={actionButton}
                 />
+
+                {/* cancel modal */}
+                <Modal
+                    shown={cancelModal}
+                    close={() => {
+                        setCancelModal(false)
+                    }}>
+                    <div className="deleteModals">
+                        <div className='modalHeader'>
+                            <h2>Cancel Changes?</h2>
+                            {xButton}
+                        </div>
+                        <div>
+                            <p>
+                                You have made changes that haven’t been saved yet. Do you still want to quit?
+                            </p>
+                        </div>
+                        <div className="rightAlign ModalButtons">
+                            <button
+                                className="solidButton buttonRed"
+                                onClick={() => {
+                                    setCancelModal(false)
+                                    setShowModal(false)
+                                    setChanged(false)
+                                }}>
+                                Yes
+                            </button>
+                            <button
+                                className="borderedButton"
+                                onClick={() => setCancelModal(false)}>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
 
                 <div id='contentBlur' className='resident'>
                     {/* {isPending && <div>Loading...</div>}

@@ -8,10 +8,9 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { Tabs } from '@mui/material';
-import Upload from "../../NewImageFiles/Resident/UploadAvatar.svg"
 import Avatar from "../../NewImageFiles/Resident/Avatar.svg"
 import ViewFamily from "../ViewFamilyInformation"
-
+import Modal from '../../CommonComponents/Modal';
 //FOR SNACKBAR
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -21,7 +20,7 @@ import { useResidentContext } from "../../../hooks/userResidentContext"
 
 function UpdateResident(props) {
     const { dispatch } = useResidentContext()
-    
+
     const [loading, setLoading] = useState(false)
     const genderOptions = ['Male', 'Female', 'Other'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
@@ -57,6 +56,8 @@ function UpdateResident(props) {
     const [gsis, setGSIS] = useState(props.resident.membership.gsis)
     const [pagibig, setPagibig] = useState(props.resident.membership.pagibig)
     const [philhealth, setPhilhealth] = useState(props.resident.membership.philhealth)
+    const [cancelModal, setCancelModal] = useState(false)
+    const [changed, setChanged] = useState(false)
 
     const handleSubmit = async (e) => {
         setLoading(true)
@@ -101,10 +102,6 @@ function UpdateResident(props) {
             dispatch({ type: 'UPDATE_RESIDENT', payload: json })
             props.setShown(false)
             props.snackbar(true)
-            document.getElementById("topBlur").className = "topbar flex-row";
-            document.getElementById("sideBlur").className = "sidebar";
-            document.getElementById("ResidentcontentBlur").className = "resident";
-            document.getElementById("headerBlur").className = "header";
             props.headName(lastName + ", " + firstName)
 
             // update family head
@@ -129,60 +126,86 @@ function UpdateResident(props) {
                 aria-label="close"
                 color="inherit"
                 onClick={() => {
-                    props.setShown(false)
-                    document.getElementById("topBlur").className = "topbar flex-row";
-                    document.getElementById("sideBlur").className = "sidebar";
-                    document.getElementById("ResidentcontentBlur").className = "resident";
-                    document.getElementById("headerBlur").className = "header";
+                    changed ? setCancelModal(true) : props.setShown(false)
                 }}>
                 <CloseIcon fontSize="small" />
             </IconButton>
         </React.Fragment>
     )
+
     return (
         <div>
             {props.shown ? (
                 <div className="modal-backdrop">
+                    {/* cancel modal */}
+                    <Modal
+                        shown={cancelModal}
+                        close={() => {
+                            setCancelModal(false)
+                        }}>
+                        <div className="deleteModals">
+                            <div className='modalHeader'>
+                                <h2>Cancel Changes?</h2>
+                                {xButton}
+                            </div>
+                            <div>
+                                <p>
+                                    You have made changes that haven’t been saved yet. Do you still want to quit?
+                                </p>
+                            </div>
+                            <div className="rightAlign ModalButtons">
+                                <button
+                                    className="solidButton buttonRed"
+                                    onClick={() => {
+                                        setCancelModal(false)
+                                        setChanged(false)
+                                        props.setShown(false)
+                                    }}>
+                                    Yes
+                                </button>
+                                <button
+                                    className="borderedButton"
+                                    onClick={() => setCancelModal(false)}>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </Modal>
                     <form onSubmit={handleSubmit}>
                         <div className="residentModals modal-content">
                             <div className='modalHeader'>
-                                <h2 className="marginBottom">{props.action === "view" ? "View Head of the Family" : "Update Head of the Family"} </h2>
+                                <h2 className="marginBottom">{props.action == "view" ? "View Head of the Family" : "Update Head of the Family"} </h2>
                                 {xButton}
                             </div>
                             <div>
                                 <div className="flex-column center">
                                     <div className='profileAvatar' style={{ marginBottom: "24px" }}>
                                         <img src={Avatar} alt="" />
-                                        {props.action !== "view" && (
-                                            <div className='uploadAvatar'>
-                                                <label>
-                                                    <img src={Upload} alt="" style={{ cursor: "pointer" }} />
-                                                    <input type="file" />
-                                                </label>
-                                            </div>
-                                        )}
-
                                     </div>
                                     <h4>{props.resident.lastName}, {props.resident.firstName} {props.resident.middleName}</h4>
-                                    <p>{props.resident.role}</p>
+                                    <p>head of the Family</p>
                                 </div>
                                 <Box sx={{ width: '100%', height: '348px', mb: 4, borderBottom: 1, borderColor: '#9C9C9C' }}>
                                     <Box sx={{ borderBottom: 1, borderColor: '#9C9C9C' }}>
                                         <Tabs value={value} onChange={handleTabChange}>
                                             <Tab label="Personal Information" />
                                             <Tab label="Background Information" />
+                                            <Tab label="Family Information" />
                                         </Tabs>
                                     </Box>
                                     <Box sx={{ height: '250px', overflow: 'auto', padding: "24px 0" }}>
-                                        {value === 0 && (
+                                        {value == 0 && (
                                             <div className="flex-column tab">
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
                                                         <h4>Last Name</h4>
                                                         <TextField
                                                             name='lastName'
-                                                            value={lastName}
-                                                            onChange={(e) => setLastName(e.target.value)}
+                                                            defaultValue={lastName}
+                                                            onChange={(e) => {
+                                                                setLastName(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -195,8 +218,11 @@ function UpdateResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>First Name</h4>
                                                         <TextField
-                                                            value={firstName}
-                                                            onChange={(e) => setFirstName(e.target.value)}
+                                                            defaultValue={firstName}
+                                                            onChange={(e) => {
+                                                                setFirstName(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -211,8 +237,11 @@ function UpdateResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Middle Name</h4>
                                                         <TextField
-                                                            value={middleName}
-                                                            onChange={(e) => setMiddleName(e.target.value)}
+                                                            defaultValue={middleName}
+                                                            onChange={(e) => {
+                                                                setMiddleName(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -226,8 +255,11 @@ function UpdateResident(props) {
                                                         <h4>Suffix (If Applicable)</h4>
                                                         <TextField
                                                             placeholder="Input Suffix"
-                                                            value={suffix}
-                                                            onChange={(e) => setSuffix(e.target.value)}
+                                                            defaultValue={suffix}
+                                                            onChange={(e) => {
+                                                                setSuffix(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -244,8 +276,11 @@ function UpdateResident(props) {
                                                         <TextField
                                                             id="date"
                                                             type="date"
-                                                            value={birthday}
-                                                            onChange={(e) => setBday(e.target.value)}
+                                                            defaultValue={birthday}
+                                                            onChange={(e) => {
+                                                                setBday(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -258,8 +293,11 @@ function UpdateResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Birth Place</h4>
                                                         <TextField
-                                                            value={birthPlace}
-                                                            onChange={(e) => setBirthplace(e.target.value)}
+                                                            defaultValue={birthPlace}
+                                                            onChange={(e) => {
+                                                                setBirthplace(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -277,10 +315,13 @@ function UpdateResident(props) {
                                                             style={{ width: "99%" }}
                                                             disablePortal
                                                             id="combo-box-demo"
-                                                            value={gender}
+                                                            defaultValue={gender}
                                                             options={genderOptions}
                                                             renderInput={(params) => <TextField {...params} />}
-                                                            onChange={(e, newValue) => setGender(newValue)}
+                                                            onChange={(e, newValue) => {
+                                                                setGender(newValue)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -295,10 +336,13 @@ function UpdateResident(props) {
                                                         <Autocomplete
                                                             disablePortal
                                                             id="combo-box-demo"
-                                                            value={religion}
+                                                            defaultValue={religion}
                                                             options={religionOptions}
                                                             renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
-                                                            onChange={(e, newValue) => setReligion(newValue)}
+                                                            onChange={(e, newValue) => {
+                                                                setReligion(newValue)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -314,8 +358,11 @@ function UpdateResident(props) {
                                                         <h4>Email Address</h4>
                                                         <TextField
                                                             placeholder="Input Email"
-                                                            value={email}
-                                                            onChange={(e) => setEmail(e.target.value)}
+                                                            defaultValue={email}
+                                                            onChange={(e) => {
+                                                                setEmail(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -328,8 +375,11 @@ function UpdateResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Contact Number</h4>
                                                         <TextField
-                                                            value={phone}
-                                                            onChange={(e) => setPhone(e.target.value)}
+                                                            defaultValue={phone}
+                                                            onChange={(e) => {
+                                                                setPhone(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -342,8 +392,11 @@ function UpdateResident(props) {
                                                 </div>
                                                 <h4>Address</h4>
                                                 <TextField
-                                                    value={address}
-                                                    onChange={(e) => setAddress(e.target.value)}
+                                                    defaultValue={address}
+                                                    onChange={(e) => {
+                                                        setAddress(e.target.value)
+                                                        setChanged(true)
+                                                    }}
                                                     sx={{
                                                         "& .MuiOutlinedInput-root:hover": {
                                                             "& > fieldset": {
@@ -354,7 +407,7 @@ function UpdateResident(props) {
                                                 />
                                             </div>
                                         )}
-                                        {value === 1 && (
+                                        {value == 1 && (
                                             <div className="flex-column tab">
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
@@ -362,10 +415,13 @@ function UpdateResident(props) {
                                                         <Autocomplete
                                                             disablePortal
                                                             id="combo-box-demo"
-                                                            value={civilStatus}
+                                                            defaultValue={civilStatus}
                                                             options={civilStatusOptions}
                                                             renderInput={(params) => <TextField {...params} placeholder="Choose Civil Status" />}
-                                                            onChange={(e, newValue) => setCivilStatus(newValue)}
+                                                            onChange={(e, newValue) => {
+                                                                setCivilStatus(newValue)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -380,10 +436,13 @@ function UpdateResident(props) {
                                                         <Autocomplete
                                                             disablePortal
                                                             id="combo-box-demo"
-                                                            value={educationalAttainment}
+                                                            defaultValue={educationalAttainment}
                                                             options={educationAttainment}
                                                             renderInput={(params) => <TextField {...params} />}
-                                                            onChange={(e, newValue) => setEducationalAttainment(newValue)}
+                                                            onChange={(e, newValue) => {
+                                                                setEducationalAttainment(newValue)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -399,8 +458,11 @@ function UpdateResident(props) {
                                                         <h4>Occupation</h4>
                                                         <TextField
                                                             placeholder="Input Occupation"
-                                                            value={occupation}
-                                                            onChange={(e) => setOccupation(e.target.value)}
+                                                            defaultValue={occupation}
+                                                            onChange={(e) => {
+                                                                setOccupation(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -414,8 +476,11 @@ function UpdateResident(props) {
                                                         <h4>Monthly Income</h4>
                                                         <TextField
                                                             placeholder="Input monthly income"
-                                                            value={monthlyIncome}
-                                                            onChange={(e) => setMonthlyIncome(e.target.value)}
+                                                            defaultValue={monthlyIncome}
+                                                            onChange={(e) => {
+                                                                setMonthlyIncome(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -433,8 +498,11 @@ function UpdateResident(props) {
                                                             <RadioGroup
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
-                                                                value={sss}
-                                                                onChange={(e) => setSSS(e.target.value)}
+                                                                defaultValue={sss}
+                                                                onChange={(e) => {
+                                                                    setSSS(e.target.value)
+                                                                    setChanged(true)
+                                                                }}
                                                             >
                                                                 <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                                                 <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -447,8 +515,11 @@ function UpdateResident(props) {
                                                             <RadioGroup
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
-                                                                value={gsis}
-                                                                onChange={(e) => setGSIS(e.target.value)}
+                                                                defaultValue={gsis}
+                                                                onChange={(e) => {
+                                                                    setGSIS(e.target.value)
+                                                                    setChanged(true)
+                                                                }}
                                                             >
                                                                 <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                                                 <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -463,8 +534,11 @@ function UpdateResident(props) {
                                                             <RadioGroup
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
-                                                                value={pagibig}
-                                                                onChange={(e) => setPagibig(e.target.value)}
+                                                                defaultValue={pagibig}
+                                                                onChange={(e) => {
+                                                                    setPagibig(e.target.value)
+                                                                    setChanged(true)
+                                                                }}
                                                             >
                                                                 <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                                                 <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -477,8 +551,11 @@ function UpdateResident(props) {
                                                             <RadioGroup
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
-                                                                value={philhealth}
-                                                                onChange={(e) => setPhilhealth(e.target.value)}
+                                                                defaultValue={philhealth}
+                                                                onChange={(e) => {
+                                                                    setPhilhealth(e.target.value)
+                                                                    setChanged(true)
+                                                                }}
                                                             >
                                                                 <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                                                 <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -488,11 +565,44 @@ function UpdateResident(props) {
                                                 </div>
                                             </div>
                                         )}
+                                        {value == 2 && (
+                                            <div className="flex-column tab">
+                                                <div className="flex-row space-between">
+                                                    <div className="flex-column inputs">
+                                                        <h4>Relationship</h4>
+                                                        <input
+                                                            value={"Head of the Family"}
+                                                            disabled
+                                                        />
+                                                    </div>
+                                                    <div className="flex-column inputs">
+                                                        <h4>Assign new Head of  the Family</h4>
+                                                        <Autocomplete
+                                                            disablePortal
+                                                            id="combo-box-demo"
+                                                            options={familyMember}
+                                                            renderInput={(params) => <TextField {...params} placeholder="Select new Head of the Family" />}
+                                                            onChange={(event, e) => {
+                                                                // setRelationship(e)
+                                                                setChanged(true)
+                                                            }}
+                                                            sx={{
+                                                                "& .MuiOutlinedInput-root:hover": {
+                                                                    "& > fieldset": {
+                                                                        borderColor: "#7175F4"
+                                                                    }
+                                                                }
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
                                     </Box>
                                 </Box>
                             </div>
                             <div className="rightAlign ModalButtons">
-                                {(value === 1 && props.action !== "view") && (
+                                {(value == 1 && props.action !== "view") && (
                                     <button
                                         disabled={loading}
                                         type="submit"
@@ -521,33 +631,25 @@ function UpdateResident(props) {
                                         Back
                                     </button>
                                 )}
-                                {value === 0 && props.action !== "view" && (
+                                {value == 0 && props.action !== "view" && (
                                     <button
                                         disabled={loading}
                                         type="reset"
                                         className="borderedButton"
                                         onClick={() => {
-                                            props.setShown(false)
-                                            document.getElementById("topBlur").className = "topbar flex-row";
-                                            document.getElementById("sideBlur").className = "sidebar";
-                                            document.getElementById("ResidentcontentBlur").className = "resident";
-                                            document.getElementById("headerBlur").className = "header";
+                                            changed ? setCancelModal(true) : props.setShown(false)
                                             setValue(0)
                                         }}>
                                         Cancel
                                     </button>
                                 )}
-                                {props.action === "view" && (
+                                {props.action == "view" && (
                                     <button
                                         disabled={loading}
                                         type="button"
                                         className="borderedButton"
                                         onClick={() => {
                                             props.setShown(false)
-                                            document.getElementById("topBlur").className = "topbar flex-row";
-                                            document.getElementById("sideBlur").className = "sidebar";
-                                            document.getElementById("ResidentcontentBlur").className = "resident";
-                                            document.getElementById("headerBlur").className = "header";
                                             setValue(0)
                                         }}>
                                         Exit

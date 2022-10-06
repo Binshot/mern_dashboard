@@ -52,6 +52,8 @@ const Table = (props) => {
     //set modal state
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [cancelModal, setCancelModal] = useState(false)
+    const [changed, setChanged] = useState(false)
 
     //FOR SNACKBAR
     const [snackbar, toggleSnackbar] = useState(false);
@@ -114,12 +116,8 @@ const Table = (props) => {
                 aria-label="close"
                 color="inherit"
                 onClick={() => {
-                    setShowModal(false)
+                    changed ? setCancelModal(true) : setShowModal(false)
                     setShowDeleteModal(false)
-                    document.getElementById("topBlur").className = "topbar flex-row";
-                    document.getElementById("sideBlur").className = "sidebar";
-                    document.getElementById("ResidentcontentBlur").className = "resident";
-                    document.getElementById("headerBlur").className = "header";
                 }}
             >
                 <CloseIcon fontSize="small" />
@@ -172,11 +170,7 @@ const Table = (props) => {
             timeFrom.current.value,
             timeTo.current.value)
         // setIsLoading(false)
-        // setShowModal(false)
-        // document.getElementById("topBlur").className = "topbar flex-row";
-        // document.getElementById("sideBlur").className = "sidebar";
-        // document.getElementById("ResidentcontentBlur").className = "resident";
-        // document.getElementById("headerBlur").className = "header";
+        // setShowModal(false) 
         // toggleSnackbar(true)
         // setIsLoading(true)
         console.log("submitted update")
@@ -234,6 +228,9 @@ const Table = (props) => {
                                                         }
                                                     }
                                                 }}
+                                                onChange={(e) => {
+                                                    setChanged(true)
+                                                }}
                                             />
                                         }
                                     </div>
@@ -253,9 +250,11 @@ const Table = (props) => {
                                                             }
                                                         }
                                                     }}
-                                                    renderInput={(params) => <TextField {...params} inputRef={eventTag}/>}
+                                                    renderInput={(params) => <TextField {...params} inputRef={eventTag} />}
                                                     defaultValue={selectedEvent.eventTag}
-                                                    
+                                                    onChange={(e) => {
+                                                        setChanged(true)
+                                                    }}
                                                 />
                                                 :
                                                 <TextField
@@ -287,6 +286,9 @@ const Table = (props) => {
                                                     }}
                                                     defaultValue={selectedEvent.eventLocation}
                                                     inputRef={eventLocation}
+                                                    onChange={(e) => {
+                                                        setChanged(true)
+                                                    }}
                                                 />
                                             }
                                         </div>
@@ -318,6 +320,9 @@ const Table = (props) => {
                                                             borderColor: "#7175F4"
                                                         }
                                                     }
+                                                }}
+                                                onChange={(e) => {
+                                                    setChanged(true)
                                                 }}
                                             />
                                         }
@@ -393,6 +398,9 @@ const Table = (props) => {
                                                     }}
                                                     defaultValue={format(new Date(selectedEvent.eventDateTime.from), 'yyyy-MM-dd')}
                                                     inputRef={dateFrom}
+                                                    onChange={(e) => {
+                                                        setChanged(true)
+                                                    }}
                                                 />
                                             }
                                         </div>
@@ -421,6 +429,9 @@ const Table = (props) => {
 
                                                     defaultValue={format(new Date(selectedEvent.eventDateTime.to), 'yyyy-MM-dd')}
                                                     inputRef={dateTo}
+                                                    onChange={(e) => {
+                                                        setChanged(true)
+                                                    }}
                                                 />
                                             }
                                         </div>
@@ -450,6 +461,9 @@ const Table = (props) => {
                                                     }}
                                                     defaultValue={format(new Date(selectedEvent.eventDateTime.from.substr(0, 23)), 'HH:mm')}
                                                     inputRef={timeFrom}
+                                                    onChange={(e) => {
+                                                        setChanged(true)
+                                                    }}
                                                 />
                                             }
                                         </div>
@@ -477,6 +491,9 @@ const Table = (props) => {
                                                     }}
                                                     defaultValue={format(new Date(selectedEvent.eventDateTime.to.substr(0, 23)), 'HH:mm')}
                                                     inputRef={timeTo}
+                                                    onChange={(e) => {
+                                                        setChanged(true)
+                                                    }}
                                                 />
                                             }
                                         </div>
@@ -494,13 +511,9 @@ const Table = (props) => {
                                     <button
                                         className="borderedButton"
                                         onClick={() => {
-                                            setShowModal(false)
-                                            document.getElementById("topBlur").className = "topbar flex-row";
-                                            document.getElementById("sideBlur").className = "sidebar";
-                                            document.getElementById("ResidentcontentBlur").className = "resident";
-                                            document.getElementById("headerBlur").className = "header";
+                                            changed ? setCancelModal(true) : setShowModal(false)
                                         }}
-                                        type={'button'}>
+                                        type='button'>
                                         Cancel
                                     </button>
                                 </div>
@@ -529,10 +542,6 @@ const Table = (props) => {
                                 className="solidButton buttonRed"
                                 onClick={() => {
                                     setShowDeleteModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("ResidentcontentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
                                     toggleDeletesnackbar(true)
                                     handleDelete()
                                 }}>
@@ -542,10 +551,6 @@ const Table = (props) => {
                                 className="borderedButton"
                                 onClick={() => {
                                     setShowDeleteModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("ResidentcontentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
                                 }}>
                                 Cancel
                             </button>
@@ -587,6 +592,41 @@ const Table = (props) => {
                     }}
                     action={actionButton}
                 />
+
+                {/* cancel modal */}
+                <Modal
+                    shown={cancelModal}
+                    close={() => {
+                        setCancelModal(false)
+                    }}>
+                    <div className="deleteModals">
+                        <div className='modalHeader'>
+                            <h2>Cancel Changes?</h2>
+                            {xButton}
+                        </div>
+                        <div>
+                            <p>
+                                You have made changes that haven’t been saved yet. Do you still want to quit?
+                            </p>
+                        </div>
+                        <div className="rightAlign ModalButtons">
+                            <button
+                                className="solidButton buttonRed"
+                                onClick={() => {
+                                    setCancelModal(false)
+                                    setChanged(false)
+                                    setShowModal()
+                                }}>
+                                Yes
+                            </button>
+                            <button
+                                className="borderedButton"
+                                onClick={() => setCancelModal(false)}>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
 
                 <div id='ResidentcontentBlur' className='resident'>
                     <table className='Events_table'>

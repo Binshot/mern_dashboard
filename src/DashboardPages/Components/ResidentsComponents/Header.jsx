@@ -57,10 +57,6 @@ function Header(props) {
                         <button className="solidButton add buttonBlue"
                             onClick={() => {
                                 toggleAddModal(true)
-                                document.getElementById("sideBlur").className += " blur";
-                                document.getElementById("topBlur").className += " blur";
-                                document.getElementById("headerBlur").className += " blur";
-                                document.getElementById("ResidentcontentBlur").className += " blur";
                             }}>
                             <img src={AddIcon} alt="" className="deleteSVG" />
                             <p>Add Head of the Family</p>

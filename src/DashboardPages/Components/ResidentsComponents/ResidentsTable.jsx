@@ -81,10 +81,6 @@ const Table = (props) => {
                 color="inherit"
                 onClick={() => {
                     setShowDeleteModal(false)
-                    document.getElementById("topBlur").className = "topbar flex-row";
-                    document.getElementById("sideBlur").className = "sidebar";
-                    document.getElementById("ResidentcontentBlur").className = "resident";
-                    document.getElementById("headerBlur").className = "header";
                 }}
             >
                 <CloseIcon fontSize="small" />
@@ -200,10 +196,6 @@ const Table = (props) => {
                                     onClick={() => {
                                         setShowDeleteModal(false)
                                         toggleDeletesnackbar(true)
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("ResidentcontentBlur").className = "resident";
-                                        document.getElementById("headerBlur").className = "header";
                                         handleDelete()
                                     }}>
                                     Remove
@@ -212,10 +204,6 @@ const Table = (props) => {
                                     className="borderedButton"
                                     onClick={() => {
                                         setShowDeleteModal(false)
-                                        document.getElementById("topBlur").className = "topbar flex-row";
-                                        document.getElementById("sideBlur").className = "sidebar";
-                                        document.getElementById("ResidentcontentBlur").className = "resident";
-                                        document.getElementById("headerBlur").className = "header";
                                     }}>
                                     Cancel
                                 </button>

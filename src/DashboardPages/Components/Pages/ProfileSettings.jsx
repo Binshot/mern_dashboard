@@ -57,12 +57,8 @@ function ProfileSettings() {
             setShowModal(false)
             localStorage.removeItem('user')
             localStorage.setItem('user', JSON.stringify({ ...user, email: json.email }))
-            // toggleAddModal(false)
-            // document.getElementById("topBlur").className = "topbar flex-row";
-            // document.getElementById("sideBlur").className = "sidebar";
-            // document.getElementById("contentBlur").className = "resident";
-            // document.getElementById("headerBlur").className = "header";
-            // toggleSnackbar(true)
+            toggleAddModal(false)
+            toggleSnackbar(true)
         } else {
             setError(json.error)
             setEmptyFields(json.emptyFields)
@@ -89,10 +85,6 @@ function ProfileSettings() {
             setIsLoading(false)
             setShowModal(false)
             toggleAddModal(false)
-            document.getElementById("topBlur").className = "topbar flex-row";
-            document.getElementById("sideBlur").className = "sidebar";
-            document.getElementById("profileHeaderBlur").className = "borderBottom2 topHeader";
-            document.getElementById("profileContentBlur").classList.remove("blur");
             toggleSnackbar(true)
         } else {
             setError(json.error)
@@ -233,10 +225,6 @@ function ProfileSettings() {
                                     setCurrentPassword('')
                                     setNewPassword('')
                                     setConfirmPassword('')
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("profileHeaderBlur").className = "borderBottom2 topHeader";
-                                    document.getElementById("profileContentBlur").classList.remove("blur");
                                 }}>
                                 Back
                             </button>
@@ -264,20 +252,12 @@ function ProfileSettings() {
                         <button onClick={() => {
                             setAction("email")
                             setShowModal(true)
-                            document.getElementById("sideBlur").className += " blur";
-                            document.getElementById("topBlur").className += " blur";
-                            document.getElementById("profileHeaderBlur").className += " blur";
-                            document.getElementById("profileContentBlur").className = " blur";
                         }}>
                             Change Email
                         </button>
                         <button onClick={() => {
                             setAction("password")
                             setShowModal(true)
-                            document.getElementById("sideBlur").className += " blur";
-                            document.getElementById("topBlur").className += " blur";
-                            document.getElementById("profileHeaderBlur").className += " blur";
-                            document.getElementById("profileContentBlur").className = " blur";
                         }}>
                             Change Password
                         </button>

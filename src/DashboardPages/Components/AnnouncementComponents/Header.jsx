@@ -45,6 +45,9 @@ function Header(props) {
     const [announcementTitle, setTitle] = useState('')
     const [announcementDetail, setDescription] = useState('')
 
+    const [cancelModal, setCancelModal] = useState(false)
+    const [changed, setChanged] = useState(false)
+
     const handleSubmit = async (e) => {
         setIsLoading(true)
         e.preventDefault()
@@ -63,10 +66,6 @@ function Header(props) {
 
         if (response.ok) {
             toggleAddModal(false)
-            document.getElementById("topBlur").className = "topbar flex-row";
-            document.getElementById("sideBlur").className = "sidebar";
-            document.getElementById("contentBlur").className = "resident";
-            document.getElementById("headerBlur").className = "header";
             setIsLoading(false)
             toggleSnackbar(true)
             console.log('new announcement added:', json)
@@ -95,10 +94,9 @@ function Header(props) {
         toggleAddModal(false)
         setDescription('')
         setTitle('')
-        document.getElementById("topBlur").className = "topbar flex-row";
-        document.getElementById("sideBlur").className = "sidebar";
-        document.getElementById("contentBlur").className = "resident";
-        document.getElementById("headerBlur").className = "header";
+        setChanged(false)
+        setCancelModal(false)
+        toggleAddModal(false)
     }
 
     const requestSearch = (searchedVal) => {
@@ -114,7 +112,7 @@ function Header(props) {
                 size="small"
                 aria-label="close"
                 color="inherit"
-                onClick={() => { handleCancel() }}
+                onClick={() => { changed ? setCancelModal(true) : handleCancel() }}
             >
                 <CloseIcon fontSize="small" />
             </IconButton>
@@ -145,7 +143,10 @@ function Header(props) {
                                         maxLength: 80
                                     }}
                                     value={announcementTitle}
-                                    onChange={(e) => setTitle(e.target.value)}
+                                    onChange={(e) => {
+                                        setTitle(e.target.value)
+                                        setChanged(true)
+                                    }}
                                     sx={{
                                         "& .MuiOutlinedInput-root:hover": {
                                             "& > fieldset": {
@@ -168,7 +169,10 @@ function Header(props) {
                                         maxLength: 400
                                     }}
                                     value={announcementDetail}
-                                    onChange={(e) => setDescription(e.target.value)}
+                                    onChange={(e) => {
+                                        setDescription(e.target.value)
+                                        setChanged(true)
+                                    }}
                                     sx={{
                                         "& .MuiOutlinedInput-root:hover": {
                                             "& > fieldset": {
@@ -190,7 +194,7 @@ function Header(props) {
                                     type="button"
                                     className="borderedButton"
                                     onClick={() => {
-                                        handleCancel()
+                                        changed ? setCancelModal(true) : handleCancel()
                                     }}>
                                     Cancel
                                 </button>
@@ -222,6 +226,40 @@ function Header(props) {
                 action={action}
             />
 
+            {/* cancel modal */}
+            <Modal
+                shown={cancelModal}
+                close={() => {
+                    setCancelModal(false)
+                }}>
+                <div className="deleteModals">
+                    <div className='modalHeader'>
+                        <h2>Cancel Changes?</h2>
+                        {xButton}
+                    </div>
+                    <div>
+                        <p>
+                            You have added information that haven’t been saved yet. Do you still want to quit?
+                        </p>
+                    </div>
+                    <div className="rightAlign ModalButtons">
+                        <button
+                            className="solidButton buttonRed"
+                            onClick={() => {
+                                setCancelModal(false)
+                                handleCancel()
+                            }}>
+                            Yes
+                        </button>
+                        <button
+                            className="borderedButton"
+                            onClick={() => setCancelModal(false)}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+
             <div id='headerBlur' className='header'>
                 <div className="flex-row borderBottom2 topHeader">
                     <h1>ANNOUNCEMENTS</h1>
@@ -252,10 +290,6 @@ function Header(props) {
                     <div className="flex-row center"
                         onClick={() => {
                             toggleAddModal(true)
-                            document.getElementById("sideBlur").className += " blur";
-                            document.getElementById("topBlur").className += " blur";
-                            document.getElementById("headerBlur").className += " blur";
-                            document.getElementById("contentBlur").className += " blur";
                         }}>
                         <img src={Print} alt="" className="export" style={{ cursor: "pointer" }} />
                         <button className="solidButton add buttonBlue">

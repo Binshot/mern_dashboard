@@ -446,13 +446,6 @@ button:disabled {
 
 /* ================== MODALS =========================== */
 
-#blurContent,
-#blurTop,
-#blurSide,
-.blur {
-    filter: blur(8px);
-}
-
 .modal-backdrop {
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
@@ -464,6 +457,7 @@ button:disabled {
     justify-content: center;
     align-items: center;
     z-index: 2;
+    backdrop-filter: blur(10px);
 }
 
 .FamModal {
@@ -1097,13 +1091,11 @@ tfoot td {
 
 .residentModals {
     width: 755px;
-    height: 690px;
     padding: 24px
 }
 
 .addResidentModals {
     width: 755px;
-    height: 655px;
     padding: 24px
 }
 

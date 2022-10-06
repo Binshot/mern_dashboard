@@ -10,6 +10,7 @@ import FormControl from '@mui/material/FormControl';
 import { Tabs } from '@mui/material';
 import Upload from "../NewImageFiles/Resident/UploadAvatar.svg"
 import Avatar from "../NewImageFiles/Resident/Avatar.svg"
+import Modal from "../CommonComponents/Modal"
 //FOR SNACKBAR
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
@@ -25,6 +26,9 @@ function AddResident(props) {
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
     const [emptyFields, setEmptyFields] = useState([])
+    const [cancelModal, setCancelModal] = useState(false)
+    const [changed, setChanged] = useState(false)
+
     const genderOptions = ['Male', 'Female'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed'];
@@ -93,10 +97,6 @@ function AddResident(props) {
             dispatch({ type: 'CREATE_RESIDENT', payload: json })
             props.setShown(false)
             toggleSnackbar(true)
-            document.getElementById("topBlur").className = "topbar flex-row";
-            document.getElementById("sideBlur").className = "sidebar";
-            document.getElementById("ResidentcontentBlur").className = "resident";
-            document.getElementById("headerBlur").className = "header";
 
             //Added a Head of the family
             const activity = "Added a member of the family: " + lastName + ", " + firstName
@@ -141,10 +141,6 @@ function AddResident(props) {
 
             props.setShown(false)
             toggleSnackbar(true)
-            document.getElementById("topBlur").className = "topbar flex-row";
-            document.getElementById("sideBlur").className = "sidebar";
-            document.getElementById("ResidentcontentBlur").className = "resident";
-            document.getElementById("headerBlur").className = "header";
 
             //Added a member of the family
             const activity = "Added a member of the family: " + lastName + ", " + firstName
@@ -164,7 +160,7 @@ function AddResident(props) {
                 size="small"
                 aria-label="close"
                 color="inherit"
-                onClick={() => { cancelForm() }}
+                onClick={() => { changed ? setCancelModal(true) : cancelForm() }}
             >
                 <CloseIcon fontSize="small" />
             </IconButton>
@@ -189,10 +185,6 @@ function AddResident(props) {
 
     const cancelForm = () => {
         props.setShown(false)
-        document.getElementById("topBlur").className = "topbar flex-row";
-        document.getElementById("sideBlur").className = "sidebar";
-        document.getElementById("ResidentcontentBlur").className = "resident";
-        document.getElementById("headerBlur").className = "header";
         setFirstName('')
         setLastName('')
         setMiddleName('')
@@ -236,25 +228,53 @@ function AddResident(props) {
             />
 
             {props.shown ? (
+
                 <div className="modal-backdrop">
-                    <form onSubmit={props.action === "addMember" ? handleFamilyMemberSubmit : handleFamilyHeadSubmit}>
+                    {/* cancel modal */}
+                    <Modal
+                        shown={cancelModal}
+                        close={() => {
+                            setCancelModal(false)
+                        }}>
+                        <div className="deleteModals">
+                            <div className='modalHeader'>
+                                <h2>Cancel Changes?</h2>
+                                {xButton}
+                            </div>
+                            <div>
+                                <p>
+                                    You have added information that haven’t been saved yet. Do you still want to quit?
+                                </p>
+                            </div>
+                            <div className="rightAlign ModalButtons">
+                                <button
+                                    className="solidButton buttonRed"
+                                    onClick={() => {
+                                        setCancelModal(false)
+                                        cancelForm()
+                                        setChanged(false)
+                                    }}>
+                                    Yes
+                                </button>
+                                <button
+                                    className="borderedButton"
+                                    onClick={() => setCancelModal(false)}>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </Modal>
+                    <form onSubmit={props.action == "addMember" ? handleFamilyMemberSubmit : handleFamilyHeadSubmit}>
                         <div className="addResidentModals modal-content">
                             <div className='modalHeader'>
-                                <h2>{props.action === "addMember" ? "Add Family Member" : "Add Head of the Family"}</h2>
+                                <h2>{props.action == "addMember" ? "Add Family Member" : "Add Head of the Family"}</h2>
                                 {xButton}
                             </div>
                             <div>
                                 <div className="flex-column center">
-                                    <div className='profileAvatar' style={{ marginBottom: "24px" }}>
+                                    <div className='profileAvatar' style={{ marginBottom: "24px", marginTop: "24px" }}>
                                         <img src={Avatar} alt="" />
-                                        <div className='uploadAvatar'>
-                                            <label>
-                                                <img src={Upload} alt="" style={{ cursor: "pointer", verticalAlign: "middle" }} />
-                                                <input type="file" />
-                                            </label>
-                                        </div>
                                     </div>
-
                                 </div>
 
                                 <Box sx={{ width: '100%', height: '348px', mb: 4, borderBottom: 1, borderColor: '#9C9C9C' }}>
@@ -262,11 +282,11 @@ function AddResident(props) {
                                         <Tabs value={value} onChange={handleTabChange}>
                                             <Tab label="Personal Information" />
                                             <Tab label="Background Information" />
-                                            <Tab label="Family Information" />
+                                            {props.action == "addMember" && <Tab label="Family Information" />}
                                         </Tabs>
                                     </Box>
                                     <Box sx={{ height: '250px', overflow: 'auto', padding: "24px 0" }}>
-                                        {value === 0 && (
+                                        {value == 0 && (
                                             <div className="flex-column tab">
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
@@ -276,7 +296,10 @@ function AddResident(props) {
                                                             id={'outlined-error'}
                                                             placeholder='Input last name'
                                                             value={lastName}
-                                                            onChange={(e) => setLastName(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setLastName(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -293,7 +316,10 @@ function AddResident(props) {
                                                             id={'outlined-error'}
                                                             placeholder='Input first name'
                                                             value={firstName}
-                                                            onChange={(e) => setFirstName(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setFirstName(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -312,7 +338,10 @@ function AddResident(props) {
                                                             id={'outlined-error'}
                                                             placeholder='Input middle name'
                                                             value={middleName}
-                                                            onChange={(e) => setMiddleName(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setMiddleName(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -327,7 +356,10 @@ function AddResident(props) {
                                                         <TextField
                                                             placeholder='Input suffix'
                                                             value={suffix}
-                                                            onChange={(e) => setSuffix(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setSuffix(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -350,7 +382,10 @@ function AddResident(props) {
                                                             InputLabelProps={{
                                                                 shrink: true,
                                                             }}
-                                                            onChange={(e) => setBday(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setBday(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -367,7 +402,10 @@ function AddResident(props) {
                                                             id={'outlined-error'}
                                                             placeholder='Input birth place'
                                                             value={birthplace}
-                                                            onChange={(e) => setBirthplace(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setBirthplace(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -392,7 +430,10 @@ function AddResident(props) {
                                                                 />
                                                             }
                                                             value={gender}
-                                                            onChange={(event, e) => setGender(e)}
+                                                            onChange={(event, e) => {
+                                                                setGender(e)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -409,7 +450,10 @@ function AddResident(props) {
                                                             options={religionOptions}
                                                             renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
                                                             value={religion}
-                                                            onChange={(event, e) => setReligion(e)}
+                                                            onChange={(event, e) => {
+                                                                setReligion(e)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -426,7 +470,10 @@ function AddResident(props) {
                                                         <TextField
                                                             placeholder="Input Email"
                                                             value={email}
-                                                            onChange={(e) => setEmail(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setEmail(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -441,7 +488,10 @@ function AddResident(props) {
                                                         <TextField
                                                             placeholder="Input Contact Number"
                                                             value={contactNumber}
-                                                            onChange={(e) => setPhone(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setPhone(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -458,7 +508,10 @@ function AddResident(props) {
                                                     id={'outlined-error'}
                                                     placeholder='Input address'
                                                     value={address}
-                                                    onChange={(e) => setAddress(e.target.value)}
+                                                    onChange={(e) => {
+                                                        setAddress(e.target.value)
+                                                        setChanged(true)
+                                                    }}
                                                     sx={{
                                                         "& .MuiOutlinedInput-root:hover": {
                                                             "& > fieldset": {
@@ -469,7 +522,7 @@ function AddResident(props) {
                                                 />
                                             </div>
                                         )}
-                                        {value === 1 && (
+                                        {value == 1 && (
                                             <div className="flex-column tab">
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
@@ -481,7 +534,10 @@ function AddResident(props) {
                                                             options={civilStatusOptions}
                                                             renderInput={(params) => <TextField {...params} placeholder="Choose Civil Status" required />}
                                                             value={civilStatus}
-                                                            onChange={(event, e) => setCivilStatus(e)}
+                                                            onChange={(event, e) => {
+                                                                setCivilStatus(e)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -500,7 +556,10 @@ function AddResident(props) {
                                                             options={educationAttainmentOptions}
                                                             value={educationalAttainment}
                                                             renderInput={(params) => <TextField {...params} placeholder="Choose Educational Background" required />}
-                                                            onChange={(event, e) => setEducationalAttainment(e)}
+                                                            onChange={(event, e) => {
+                                                                setEducationalAttainment(e)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -517,7 +576,10 @@ function AddResident(props) {
                                                         <TextField
                                                             placeholder="Input occupation"
                                                             value={occupation}
-                                                            onChange={(e) => setOccupation(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setOccupation(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -532,7 +594,10 @@ function AddResident(props) {
                                                         <TextField
                                                             placeholder="Input monthly income"
                                                             value={monthlyIncome}
-                                                            onChange={(e) => setMonthlyIncome(e.target.value)}
+                                                            onChange={(e) => {
+                                                                setMonthlyIncome(e.target.value)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -552,7 +617,10 @@ function AddResident(props) {
                                                                 name="radio-buttons-group"
                                                                 required
                                                                 value={sss}
-                                                                onChange={(e) => setSSS(e.target.value)}
+                                                                onChange={(e) => {
+                                                                    setSSS(e.target.value)
+                                                                    setChanged(true)
+                                                                }}
                                                             >
                                                                 <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                                                 <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -567,7 +635,10 @@ function AddResident(props) {
                                                                 name="radio-buttons-group"
                                                                 required
                                                                 value={gsis}
-                                                                onChange={(e) => setGSIS(e.target.value)}
+                                                                onChange={(e) => {
+                                                                    setGSIS(e.target.value)
+                                                                    setChanged(true)
+                                                                }}
                                                             >
                                                                 <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                                                 <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -584,7 +655,10 @@ function AddResident(props) {
                                                                 name="radio-buttons-group"
                                                                 required
                                                                 value={pagibig}
-                                                                onChange={(e) => setPagibig(e.target.value)}
+                                                                onChange={(e) => {
+                                                                    setPagibig(e.target.value)
+                                                                    setChanged(true)
+                                                                }}
                                                             >
                                                                 <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                                                 <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -599,7 +673,10 @@ function AddResident(props) {
                                                                 name="radio-buttons-group"
                                                                 required
                                                                 value={philhealth}
-                                                                onChange={(e) => setPhilhealth(e.target.value)}
+                                                                onChange={(e) => {
+                                                                    setPhilhealth(e.target.value)
+                                                                    setChanged(true)
+                                                                }}
                                                             >
                                                                 <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                                                 <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -609,18 +686,21 @@ function AddResident(props) {
                                                 </div>
                                             </div>
                                         )}
-                                        {value === 2 && (
+                                        {value == 2 && props.action == "addMember" && (
                                             <div className="flex-column tab">
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
-                                                        <h4>Family Member</h4>
+                                                        <h4>Relationship</h4>
                                                         <Autocomplete
                                                             style={{ width: "99%" }}
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={familyMember}
-                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Kind of Family Member" />}
-                                                            onChange={(event, e) => setRelationship(e)}
+                                                            renderInput={(params) => <TextField {...params} placeholder="Choose relationship to the head of the family" />}
+                                                            onChange={(event, e) => {
+                                                                setRelationship(e)
+                                                                setChanged(true)
+                                                            }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
                                                                     "& > fieldset": {
@@ -638,7 +718,7 @@ function AddResident(props) {
                             </div>
                             <div className='bottomPartModal'>
                                 <div className="rightAlign ModalButtons">
-                                    {value === 2 && (
+                                    {value == 2 && (
                                         <button
                                             disabled={loading}
                                             type="submit"
@@ -667,13 +747,13 @@ function AddResident(props) {
                                             Back
                                         </button>
                                     )}
-                                    {value === 0 && (
+                                    {value == 0 && (
                                         <button
                                             disabled={loading}
                                             type="reset"
                                             className="borderedButton"
                                             onClick={() => {
-                                                cancelForm()
+                                                changed ? setCancelModal(true) : cancelForm()
                                             }}>
                                             Cancel
                                         </button>

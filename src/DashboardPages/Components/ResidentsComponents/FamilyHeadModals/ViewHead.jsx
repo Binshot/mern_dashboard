@@ -32,10 +32,6 @@ function UpdateResident(props) {
                 color="inherit"
                 onClick={() => {
                     props.setShown(false)
-                    document.getElementById("topBlur").className = "topbar flex-row";
-                    document.getElementById("sideBlur").className = "sidebar";
-                    document.getElementById("ResidentcontentBlur").className = "resident";
-                    document.getElementById("headerBlur").className = "header";
                 }}>
                 <CloseIcon fontSize="small" />
             </IconButton>
@@ -54,18 +50,9 @@ function UpdateResident(props) {
                             <div className="flex-column center">
                                 <div className='profileAvatar' style={{ marginBottom: "24px" }}>
                                     <img src={Avatar} alt="" />
-                                    {props.action !== "view" && (
-                                        <div className='uploadAvatar'>
-                                            <label>
-                                                <img src={Upload} alt="" style={{ cursor: "pointer" }} />
-                                                <input type="file" />
-                                            </label>
-                                        </div>
-                                    )}
-
                                 </div>
                                 <h4>{props.resident.lastName}, {props.resident.firstName} {props.resident.middleName}</h4>
-                                <p>{props.resident.role}</p>
+                                <p>Head of the Family</p>
                             </div>
                             <Box sx={{ width: '100%', height: '348px', mb: 4, borderBottom: 1, borderColor: '#9C9C9C' }}>
                                 <Box sx={{ borderBottom: 1, borderColor: '#9C9C9C' }}>
@@ -280,10 +267,6 @@ function UpdateResident(props) {
                                 className="borderedButton"
                                 onClick={() => {
                                     props.setShown(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("ResidentcontentBlur").className = "resident";
-                                    document.getElementById("headerBlur").className = "header";
                                     setValue(0)
                                 }}>
                                 Exit

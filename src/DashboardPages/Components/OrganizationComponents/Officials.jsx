@@ -60,6 +60,8 @@ function Officials(props) {
     const [bday, setBday] = useState('')
     const [id, setId] = useState(null)
     const [residentID, setResidentID] = useState(null)
+    const [changed, setChanged] = useState(false)
+    const [cancelModal, setCancelModal] = useState(false)
 
     // handle update official
     const handleUpdate = async () => {
@@ -82,10 +84,6 @@ function Officials(props) {
         if (response.ok) {
             dispatch({ type: 'UPDATE_OFFICIAL', payload: json })
             toggleUpdateModal(false)
-            document.getElementById("topBlur").className = "topbar flex-row";
-            document.getElementById("sideBlur").className = "sidebar";
-            document.getElementById("contentBlur").className = "flex-row";
-            document.getElementById("headerBlur").className = "header";
             toggleSnackbar(true)
 
             //update announcement
@@ -113,10 +111,6 @@ function Officials(props) {
         if (response.ok) {
             dispatch({ type: 'DELETE_OFFICIAL', payload: json })
             toggleDeleteModal(false)
-            document.getElementById("topBlur").className = "topbar flex-row";
-            document.getElementById("sideBlur").className = "sidebar";
-            document.getElementById("contentBlur").className = "flex-row";
-            document.getElementById("headerBlur").className = "header";
             toggleDeleteSnackbar(true)
 
             //delete announcement
@@ -148,10 +142,7 @@ function Officials(props) {
     const cancelForm = () => {
         toggleUpdateModal(false)
         toggleDeleteModal(false)
-        document.getElementById("topBlur").className = "topbar flex-row";
-        document.getElementById("sideBlur").className = "sidebar";
-        document.getElementById("contentBlur").className = "flex-row";
-        document.getElementById("headerBlur").className = "header";
+        setChanged(false)
     }
 
     if (organizations) {
@@ -202,10 +193,6 @@ function Officials(props) {
                                 className='borderedButton exit marginTop'
                                 onClick={() => {
                                     toggleModal(false)
-                                    document.getElementById("topBlur").className = "topbar flex-row";
-                                    document.getElementById("sideBlur").className = "sidebar";
-                                    document.getElementById("contentBlur").className = "flex-row";
-                                    document.getElementById("headerBlur").className = "header";
                                 }}>
                                 EXIT
                             </button>
@@ -241,7 +228,10 @@ function Officials(props) {
                                         options={positionOptions}
                                         fullWidth
                                         renderInput={(params) => <TextField {...params} />}
-                                        onChange={(e, newValue) => setPosition(newValue)}
+                                        onChange={(e, newValue) => {
+                                            setPosition(newValue)
+                                            setChanged(true)
+                                            }}
                                         sx={{
                                             "& .MuiOutlinedInput-root:hover": {
                                                 "& > fieldset": {
@@ -299,7 +289,7 @@ function Officials(props) {
                                 </button>
                                 <button
                                     className="borderedButton"
-                                    onClick={() => cancelForm()}>
+                                    onClick={() => changed ? setCancelModal(true) : cancelForm()}>
                                     Cancel
                                 </button>
                             </div>
@@ -375,6 +365,40 @@ function Officials(props) {
                     action={action}
                 />
 
+                {/* cancel modal */}
+                <Modal
+                    shown={cancelModal}
+                    close={() => {
+                        setCancelModal(false)
+                    }}>
+                    <div className="deleteModals">
+                        <div className='modalHeader'>
+                            <h2>Cancel Changes?</h2>
+                            {xButton}
+                        </div>
+                        <div>
+                            <p>
+                                You have made changes that haven’t been saved yet. Do you still want to quit?
+                            </p>
+                        </div>
+                        <div className="rightAlign ModalButtons">
+                            <button
+                                className="solidButton buttonRed"
+                                onClick={() => {
+                                    setCancelModal(false)
+                                    cancelForm()
+                                }}>
+                                Yes
+                            </button>
+                            <button
+                                className="borderedButton"
+                                onClick={() => setCancelModal(false)}>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+
                 <div id="contentBlur" className="flex-row">
                     {organizations.map((props) => {
                         return (
@@ -396,10 +420,6 @@ function Officials(props) {
                                             setNameOfMember(props.official.firstName + " " + props.official.lastName)
                                             setBday(props.official.birthday)
                                             toggleModal(true)
-                                            document.getElementById("sideBlur").className += " blur";
-                                            document.getElementById("topBlur").className += " blur";
-                                            document.getElementById("headerBlur").className += " blur";
-                                            document.getElementById("contentBlur").className += " blur";
                                         }}>
                                         <img src={View} alt="" />
                                     </button>
@@ -414,10 +434,6 @@ function Officials(props) {
                                             setId(props._id)
                                             setResidentID(props.resident_id)
                                             toggleUpdateModal(true)
-                                            document.getElementById("sideBlur").className += " blur";
-                                            document.getElementById("topBlur").className += " blur";
-                                            document.getElementById("headerBlur").className += " blur";
-                                            document.getElementById("contentBlur").className += " blur";
                                         }}>
                                         <img src={Update} alt="" />
                                     </button>
@@ -426,10 +442,6 @@ function Officials(props) {
                                             setNameOfMember(props.official.firstName + " " + props.official.lastName)
                                             setId(props._id)
                                             toggleDeleteModal(true)
-                                            document.getElementById("sideBlur").className += " blur";
-                                            document.getElementById("topBlur").className += " blur";
-                                            document.getElementById("headerBlur").className += " blur";
-                                            document.getElementById("contentBlur").className += " blur";
                                         }}>
                                         <img src={Delete} alt="" />
                                     </button>

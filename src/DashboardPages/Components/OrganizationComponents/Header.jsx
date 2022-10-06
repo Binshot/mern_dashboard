@@ -25,6 +25,8 @@ function Header(props) {
     const [emptyFields, setEmptyFields] = useState([])
 
     const [AddmodalShown, toggleAddModal] = useState(false);
+    const [cancelModal, setCancelModal] = useState(false)
+    const [changed, setChanged] = useState(false)
 
     const [officialList, setOfficialList] = useState(null)
     const [selectedResident, setSelectedResident] = useState(null)
@@ -139,7 +141,7 @@ function Header(props) {
                 size="small"
                 aria-label="close"
                 color="inherit"
-                onClick={() => cancelForm() }
+                onClick={() => changed ? setCancelModal(true) : cancelForm()}
             >
                 <CloseIcon fontSize="small" />
             </IconButton>
@@ -150,10 +152,9 @@ function Header(props) {
         toggleAddModal(false)
         setError(null)
         setEmptyFields([])
-        document.getElementById("topBlur").className = "topbar flex-row";
-        document.getElementById("sideBlur").className = "sidebar";
-        document.getElementById("contentBlur").className = "flex-row";
-        document.getElementById("headerBlur").className = "header";
+        setName(null)
+        setPosition(null)
+        setChanged(false)
     }
 
     return (
@@ -185,6 +186,7 @@ function Header(props) {
                                     onChange={(event, newValue) => {
                                         newValue && fetchSingleResident(newValue.id)
                                         setName(newValue.label)
+                                        setChanged(true)
                                     }}
                                     sx={{
                                         "& .MuiOutlinedInput-root:hover": {
@@ -203,6 +205,7 @@ function Header(props) {
                                         error={emptyFields.includes('Position') ? true : false} />}
                                     onChange={(event, newValue) => {
                                         setPosition(newValue)
+                                        setChanged(true)
                                     }}
                                     sx={{
                                         "& .MuiOutlinedInput-root:hover": {
@@ -260,7 +263,7 @@ function Header(props) {
                                 <button
                                     type="reset"
                                     className="borderedButton"
-                                    onClick={() => cancelForm()}
+                                    onClick={() => changed ? setCancelModal(true) : cancelForm()}
                                     disabled={isLoading}>
                                     Cancel
                                 </button>
@@ -270,6 +273,40 @@ function Header(props) {
                     </div>
                 </form>
 
+            </Modal>
+
+            {/* cancel add */}
+            <Modal
+                shown={cancelModal}
+                close={() => {
+                    setCancelModal(false)
+                }}>
+                <div className="deleteModals">
+                    <div className='modalHeader'>
+                        <h2>Cancel Add?</h2>
+                        {xButton}
+                    </div>
+                    <div>
+                        <p>
+                            You have added information that haven’t been saved yet. Do you still want to quit?
+                        </p>
+                    </div>
+                    <div className="rightAlign ModalButtons">
+                        <button
+                            className="solidButton buttonRed"
+                            onClick={() => {
+                                setCancelModal(false)
+                                cancelForm()
+                            }}>
+                            Yes
+                        </button>
+                        <button
+                            className="borderedButton"
+                            onClick={() => setCancelModal(false)}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
             </Modal>
 
             {selectedResident && (
@@ -323,10 +360,6 @@ function Header(props) {
                             className="solidButton add buttonBlue"
                             onClick={() => {
                                 toggleAddModal(true)
-                                document.getElementById("sideBlur").className += " blur";
-                                document.getElementById("topBlur").className += " blur";
-                                document.getElementById("headerBlur").className += " blur";
-                                document.getElementById("contentBlur").className += " blur";
                             }}>
                             <img src={AddIcon} alt="" />
                             <p>Add Official</p>

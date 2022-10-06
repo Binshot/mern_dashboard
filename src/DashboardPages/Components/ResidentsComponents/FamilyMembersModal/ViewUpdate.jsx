@@ -10,7 +10,7 @@ import FormControl from '@mui/material/FormControl';
 import { Tabs } from '@mui/material';
 import Upload from "../../NewImageFiles/Resident/UploadAvatar.svg"
 import Avatar from "../../NewImageFiles/Resident/Avatar.svg"
-
+import Modal from '../../CommonComponents/Modal';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -57,6 +57,8 @@ function ViewUpdate(props) {
     const [gsis, setGSIS] = useState(props.resident.membership.gsis)
     const [pagibig, setPagibig] = useState(props.resident.membership.pagibig)
     const [philhealth, setPhilhealth] = useState(props.resident.membership.philhealth)
+    const [cancelModal, setCancelModal] = useState(false)
+    const [changed, setChanged] = useState(false)
 
     const handleSubmit = async (e) => {
         setLoading(true)
@@ -134,6 +136,40 @@ function ViewUpdate(props) {
     )
     return props.shown ? (
         <div className="FamModal">
+            {/* cancel modal */}
+            <Modal
+                shown={cancelModal}
+                close={() => {
+                    setCancelModal(false)
+                }}>
+                <div className="deleteModals">
+                    <div className='modalHeader'>
+                        <h2>Cancel Changes?</h2>
+                        {xButton}
+                    </div>
+                    <div>
+                        <p>
+                            You have made changes that haven’t been saved yet. Do you still want to quit?
+                        </p>
+                    </div>
+                    <div className="rightAlign ModalButtons">
+                        <button
+                            className="solidButton buttonRed"
+                            onClick={() => {
+                                setCancelModal(false)
+                                props.setShown(false)
+                                // cancelForm()
+                            }}>
+                            Yes
+                        </button>
+                        <button
+                            className="borderedButton"
+                            onClick={() => setCancelModal(false)}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </Modal>
             <form onSubmit={handleSubmit}>
                 <div className="residentModals modal-content">
                     <div className='modalHeader'>
@@ -144,15 +180,6 @@ function ViewUpdate(props) {
                         <div className="flex-column center">
                             <div className='profileAvatar' style={{ marginBottom: "24px" }}>
                                 <img src={Avatar} alt="" />
-                                {props.action !== "view" && (
-                                    <div className='uploadAvatar'>
-                                        <label>
-                                            <img src={Upload} alt="" style={{ cursor: "pointer" }} />
-                                            <input type="file" />
-                                        </label>
-                                    </div>
-                                )}
-
                             </div>
                             <h4>{lastName}, {firstName} </h4>
                             <p>{relationship}</p>
@@ -180,7 +207,10 @@ function ViewUpdate(props) {
                                                     <TextField
                                                         name='lastName'
                                                         value={lastName}
-                                                        onChange={(e) => setLastName(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setLastName(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -200,7 +230,10 @@ function ViewUpdate(props) {
                                                     /> :
                                                     <TextField
                                                         value={firstName}
-                                                        onChange={(e) => setFirstName(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setFirstName(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -222,7 +255,10 @@ function ViewUpdate(props) {
                                                     /> :
                                                     <TextField
                                                         value={middleName}
-                                                        onChange={(e) => setMiddleName(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setMiddleName(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -243,7 +279,10 @@ function ViewUpdate(props) {
                                                     <TextField
                                                         placeholder="Input Suffix"
                                                         value={suffix}
-                                                        onChange={(e) => setSuffix(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setSuffix(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -267,7 +306,10 @@ function ViewUpdate(props) {
                                                         id="date"
                                                         type="date"
                                                         value={bday}
-                                                        onChange={(e) => setBday(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setBday(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -287,7 +329,10 @@ function ViewUpdate(props) {
                                                     /> :
                                                     <TextField
                                                         value={birthplace}
-                                                        onChange={(e) => setBirthplace(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setBirthplace(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -314,7 +359,10 @@ function ViewUpdate(props) {
                                                         value={gender}
                                                         options={genderOptions}
                                                         renderInput={(params) => <TextField {...params} />}
-                                                        onChange={(e, newValue) => setGender(newValue)}
+                                                        onChange={(e, newValue) => {
+                                                            setGender(newValue)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -338,7 +386,10 @@ function ViewUpdate(props) {
                                                         value={religion}
                                                         options={religionOptions}
                                                         renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
-                                                        onChange={(e, newValue) => setReligion(newValue)}
+                                                        onChange={(e, newValue) => {
+                                                            setReligion(newValue)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -361,7 +412,10 @@ function ViewUpdate(props) {
                                                     <TextField
                                                         placeholder="Input Email"
                                                         value={email}
-                                                        onChange={(e) => setEmail(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setEmail(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -381,7 +435,10 @@ function ViewUpdate(props) {
                                                     /> :
                                                     <TextField
                                                         value={phone}
-                                                        onChange={(e) => setPhone(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setPhone(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -402,7 +459,10 @@ function ViewUpdate(props) {
                                             /> :
                                             <TextField
                                                 value={address}
-                                                onChange={(e) => setAddress(e.target.value)}
+                                                onChange={(e) => {
+                                                    setAddress(e.target.value)
+                                                    setChanged(true)
+                                                }}
                                                 sx={{
                                                     "& .MuiOutlinedInput-root:hover": {
                                                         "& > fieldset": {
@@ -430,7 +490,10 @@ function ViewUpdate(props) {
                                                         value={civilStatus}
                                                         options={civilStatusOptions}
                                                         renderInput={(params) => <TextField {...params} placeholder="Choose Civil Status" />}
-                                                        onChange={(e, newValue) => setCivilStatus(newValue)}
+                                                        onChange={(e, newValue) => {
+                                                            setCivilStatus(newValue)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -454,7 +517,10 @@ function ViewUpdate(props) {
                                                         value={educationalAttainment}
                                                         options={educationAttainment}
                                                         renderInput={(params) => <TextField {...params} />}
-                                                        onChange={(e, newValue) => setEducationalAttainment(newValue)}
+                                                        onChange={(e, newValue) => {
+                                                            setEducationalAttainment(newValue)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -477,7 +543,10 @@ function ViewUpdate(props) {
                                                     <TextField
                                                         placeholder="Input Occupation"
                                                         value={occupation}
-                                                        onChange={(e) => setOccupation(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setOccupation(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -498,7 +567,10 @@ function ViewUpdate(props) {
                                                     <TextField
                                                         placeholder="Input monthly income"
                                                         value={monthlyIncome}
-                                                        onChange={(e) => setMonthlyIncome(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setMonthlyIncome(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -518,7 +590,10 @@ function ViewUpdate(props) {
                                                         aria-labelledby="demo-radio-buttons-group-label"
                                                         name="radio-buttons-group"
                                                         value={sss}
-                                                        onChange={(e) => setSSS(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setSSS(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                     >
                                                         <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
                                                         <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
@@ -532,7 +607,10 @@ function ViewUpdate(props) {
                                                         aria-labelledby="demo-radio-buttons-group-label"
                                                         name="radio-buttons-group"
                                                         value={gsis}
-                                                        onChange={(e) => setGSIS(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setGSIS(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                     >
                                                         <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
                                                         <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
@@ -548,7 +626,10 @@ function ViewUpdate(props) {
                                                         aria-labelledby="demo-radio-buttons-group-label"
                                                         name="radio-buttons-group"
                                                         value={pagibig}
-                                                        onChange={(e) => setPagibig(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setPagibig(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                     >
                                                         <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
                                                         <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
@@ -562,7 +643,10 @@ function ViewUpdate(props) {
                                                         aria-labelledby="demo-radio-buttons-group-label"
                                                         name="radio-buttons-group"
                                                         value={philhealth}
-                                                        onChange={(e) => setPhilhealth(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setPhilhealth(e.target.value)
+                                                            setChanged(true)
+                                                        }}
                                                     >
                                                         <FormControlLabel value="true" control={<Radio />} label="Yes" disabled={props.action === "view" ? true : false} />
                                                         <FormControlLabel value="false" control={<Radio />} label="No" disabled={props.action === "view" ? true : false} />
@@ -588,7 +672,10 @@ function ViewUpdate(props) {
                                                         value={relationship}
                                                         options={familyMember}
                                                         renderInput={(params) => <TextField {...params} placeholder="Choose Kind of Family Member" />}
-                                                        onChange={(e, newValue) => setRelationship(newValue)}
+                                                        onChange={(e, newValue) => {
+                                                            setRelationship(newValue)
+                                                            setChanged(true)
+                                                        }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
                                                                 "& > fieldset": {
@@ -619,7 +706,7 @@ function ViewUpdate(props) {
                             disabled={loading}
                             className="borderedButton"
                             onClick={() => {
-                                props.setShown(false)
+                                changed ? setCancelModal(true) : props.setShown(false)
                                 setValue(0)
                             }}>
                             {props.action === "view" ? "Exit" : "Cancel"}

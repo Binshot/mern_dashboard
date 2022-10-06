@@ -21,10 +21,6 @@ const Residents = ({ residents, flag, action, del, returnResident}) => {
                             flag(true)
                             action("view")
                             returnResident(residents)
-                            document.getElementById("sideBlur").className += " blur";
-                            document.getElementById("topBlur").className += " blur";
-                            document.getElementById("headerBlur").className += " blur";
-                            document.getElementById("ResidentcontentBlur").className += " blur";
                         }}>
                         <img src={View} alt="" />
                     </button>
@@ -33,10 +29,6 @@ const Residents = ({ residents, flag, action, del, returnResident}) => {
                             flag(true)
                             action("addMember")
                             returnResident(residents)
-                            document.getElementById("sideBlur").className += " blur";
-                            document.getElementById("topBlur").className += " blur";
-                            document.getElementById("headerBlur").className += " blur";
-                            document.getElementById("ResidentcontentBlur").className += " blur";
                         }} >
                         <img src={AddMember} alt="" />
                     </button>
@@ -45,10 +37,6 @@ const Residents = ({ residents, flag, action, del, returnResident}) => {
                             flag(true)
                             action("edit")
                             returnResident(residents)
-                            document.getElementById("sideBlur").className += " blur";
-                            document.getElementById("topBlur").className += " blur";
-                            document.getElementById("headerBlur").className += " blur";
-                            document.getElementById("ResidentcontentBlur").className += " blur";
                         }}>
                         <img src={Update} alt="" />
                     </button>
@@ -61,10 +49,6 @@ const Residents = ({ residents, flag, action, del, returnResident}) => {
                             del(true)
                             action("delete")
                             returnResident(residents)
-                            document.getElementById("sideBlur").className += " blur";
-                            document.getElementById("topBlur").className += " blur";
-                            document.getElementById("headerBlur").className += " blur";
-                            document.getElementById("ResidentcontentBlur").className += " blur";
                         }} >
                         <img src={Delete} />
                     </button>

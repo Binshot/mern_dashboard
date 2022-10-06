@@ -27,10 +27,6 @@ const Events = ({ events, flag, action, del, selectedEvents }) => {
                                     flag(true)
                                     action("view")
                                     selectedEvents(events)
-                                    document.getElementById("sideBlur").className += " blur";
-                                    document.getElementById("topBlur").className += " blur";
-                                    document.getElementById("headerBlur").className += " blur";
-                                    document.getElementById("ResidentcontentBlur").className += " blur";
                                 }}>
                                 <img src={View} alt="" />
                             </button>
@@ -39,10 +35,6 @@ const Events = ({ events, flag, action, del, selectedEvents }) => {
                                     flag(true)
                                     action("edit")
                                     selectedEvents(events)
-                                    document.getElementById("sideBlur").className += " blur";
-                                    document.getElementById("topBlur").className += " blur";
-                                    document.getElementById("headerBlur").className += " blur";
-                                    document.getElementById("ResidentcontentBlur").className += " blur";
                                 }}>
                                 <img src={Update} alt="" />
                             </button>
@@ -51,10 +43,6 @@ const Events = ({ events, flag, action, del, selectedEvents }) => {
                                     selectedEvents(events)
                                     del(true)
                                     action("delete")
-                                    document.getElementById("sideBlur").className += " blur";
-                                    document.getElementById("topBlur").className += " blur";
-                                    document.getElementById("headerBlur").className += " blur";
-                                    document.getElementById("ResidentcontentBlur").className += " blur";
                                 }} >
                                 <img src={Delete} alt="" />
                             </button>
