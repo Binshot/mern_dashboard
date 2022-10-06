@@ -106,6 +106,7 @@ function Header(props) {
             cancelForm()
             setIsLoading(false)
             toggleSnackbar(true)
+            setChanged(false)
             console.log('new official added:', json)
             dispatch({ type: 'CREATE_OFFICIAL', payload: json })
 
@@ -132,7 +133,7 @@ function Header(props) {
             let name = row.official.lastName.toLowerCase() + row.official.firstName.toLowerCase()
             return name.includes(searchedVal.toLowerCase());
         });
-        props.get(filteredRows)
+        searchedVal.length() == 0 ? props.get(null) : props.get(filteredRows)
     };
 
     const xButton = (

@@ -98,6 +98,7 @@ function UpdateResident(props) {
         const json = await response.json()
 
         if (response.ok) {
+            setChanged(false)
             setLoading(false)
             dispatch({ type: 'UPDATE_RESIDENT', payload: json })
             props.setShown(false)

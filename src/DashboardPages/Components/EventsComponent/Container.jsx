@@ -5,7 +5,7 @@ import { useEventContext } from "../../hooks/useEventContext"
 
 function Container() {
     //get all announcement
-    const { dispatch } = useEventContext()
+    const { events ,dispatch } = useEventContext()
     const [rows, setRows] = useState(null)
 
     useEffect(() => {
@@ -27,7 +27,7 @@ function Container() {
         return (
             <div id="mainContentBlur" className="content">
                 <Header get={getRows} />
-                <ResidentsTable list={rows} />
+                <ResidentsTable list={rows ? events : rows} />
             </div>
         );
     }

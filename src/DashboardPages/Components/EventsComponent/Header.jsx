@@ -117,7 +117,7 @@ function Header(props) {
                 //Add an Event
                 const activity = "Added an Event: " + eventTitle
                 const content = { activity }
-                fetch('/api/activity/', {
+                fetch('https://drims-demo.herokuapp.com/api/activity/', {
                     method: 'POST',
                     body: JSON.stringify(content),
                     headers: {
@@ -138,7 +138,7 @@ function Header(props) {
         const filteredRows = events.filter((row) => {
             return row.eventTitle.toLowerCase().includes(searchedVal.toLowerCase());
         });
-        props.get(filteredRows)
+        searchedVal.length() == 0 ? props.get(null) : props.get(filteredRows)
     };
 
     // image upload

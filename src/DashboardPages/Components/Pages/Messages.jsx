@@ -1,9 +1,9 @@
 import React from 'react';
-import ChatShell from '../MessagesComponent/chat/shell/Chat-Shell';
+import Container from '../MessagesComponent/Container';
 
 function App() {
   return (
-    <ChatShell />
+    <Container />
   );
 }
 

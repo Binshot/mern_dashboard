@@ -5,6 +5,7 @@ import PageNumber from './PageNumber';
 import Modal from "../CommonComponents/Modal"
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from "@mui/material/TextField";
+import axios from "axios";
 
 //FOR SNACKBAR
 import Snackbar from '@mui/material/Snackbar';
@@ -55,6 +56,14 @@ const Table = (props) => {
     const [cancelModal, setCancelModal] = useState(false)
     const [changed, setChanged] = useState(false)
 
+    const [totalSize, setTotalSize] = useState('')
+    const [name, setName] = useState('')
+    const [percent, setPercent] = useState(0)
+    const [progressFlag, setProgressflag] = useState(false)
+    const [uploadedFlag, setUploadedFlag] = useState(true)
+    const [uploadButtonFlag, setUploadButtonFlag] = useState(false)
+    const [imageURL, setImageURL] = useState(null)
+
     //FOR SNACKBAR
     const [snackbar, toggleSnackbar] = useState(false);
     const [Deletesnackbar, toggleDeletesnackbar] = useState(false);
@@ -95,7 +104,7 @@ const Table = (props) => {
 
         if (response.ok) {
             dispatch({ type: 'DELETE_EVENT', payload: json })
-
+            console.log(json)
             //Delete an Event
             const activity = "Deleted an Event: " + selectedEvent.eventTitle
             const content = { activity }
@@ -132,6 +141,7 @@ const Table = (props) => {
                 aria-label="close"
                 color="inherit"
                 onClick={() => {
+                    setUploadedFlag(false)
                     setFile(null)
                     setUploadButtonFlag(true)
                 }}
@@ -158,22 +168,96 @@ const Table = (props) => {
 
     const [previewImage, setPreviewImage] = useState(false)
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log(
-            eventTitle.current.value,
-            eventDescription.current.value,
-            eventTag.current.value,
-            eventLocation.current.value,
-            dateFrom.current.value,
-            dateTo.current.value,
-            timeFrom.current.value,
-            timeTo.current.value)
-        // setIsLoading(false)
-        // setShowModal(false) 
-        // toggleSnackbar(true)
-        // setIsLoading(true)
-        console.log("submitted update")
+    const handleSubmit = async (e) => {
+        setIsLoading(true)
+        e.preventDefault();
+
+        var eventImage = "";
+        if (eventTitle && file) {
+            const fileExtension = file.name.substring(file.name.lastIndexOf('.'));
+            const regex = /[!*'();:@&=+$,/?%#\\[\]\s]/gm;
+            const fileName = eventTitle.current.value.replaceAll(regex, "+").toLowerCase();
+            eventImage = fileName + fileExtension;
+        }
+
+        const eventObj = {
+            eventTitle: eventTitle.current.value,
+            eventDescription: eventDescription.current.value,
+            eventTag: eventTag.current.value,
+            eventLocation: eventLocation.current.value,
+            dateFrom: dateFrom.current.value,
+            dateTo: dateTo.current.value,
+            timeFrom: timeFrom.current.value,
+            timeTo: timeTo.current.value,
+            eventImage: eventImage
+        };
+
+        const formData = new FormData();
+        formData.append('eventInfo', JSON.stringify(eventObj));
+        formData.append('file', file);
+
+        try {
+            const response = await fetch('https://drims-demo.herokuapp.com/api/events/' +
+                selectedEvent._id, {
+                method: 'PATCH',
+                body: formData
+            })
+            const json = await response.json();
+
+            if (response.ok) {
+                toggleSnackbar(true)
+                console.log('upated an:', json)
+                setShowModal(false)
+                setFile(null)
+                setName('')
+                setTotalSize('')
+                setUploadButtonFlag(false)
+                setProgressflag(false)
+                setUploadedFlag(true)
+                setIsLoading(false)
+                setImageURL(null)
+                setChanged(false)
+                dispatch({ type: 'UPDATE_EVENT', payload: json })
+
+                //Add an Event
+                const activity = "Updated an Event: " + eventTitle
+                const content = { activity }
+                fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                    method: 'POST',
+                    body: JSON.stringify(content),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+            } else {
+                setIsLoading(false)
+                setError(json.error)
+                setEmptyFields(json.emptyFields)
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const onImageUpload = (image) => {
+        setProgressflag(true)
+        setUploadButtonFlag(false)
+
+        setImageURL(URL.createObjectURL(image))
+        setName(image.name)
+
+        const config = {
+            onUploadProgress: function (progressEvent) {
+                setPercent(Math.floor((progressEvent.loaded / progressEvent.total) * 100))
+                setTotalSize((progressEvent.total / 1000000).toFixed(2) + "MB")
+            }
+        }
+        axios.post("https://httpbin.org/post", image, config)
+            .then(res => {
+                setProgressflag(false)
+                setUploadedFlag(true)
+            })
+            .catch(err => console.log(err))
     }
 
     if (events) {
@@ -336,7 +420,7 @@ const Table = (props) => {
                                         <div className="previewImage" >
                                             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
                                                 {xButtonPreview}
-                                                <img src={"https://drims-demo.herokuapp.com/api/uploads/" + selectedEvent.eventImage} />
+                                                <img src={imageURL ? imageURL : "https://drims-demo.herokuapp.com/api/uploads/" + selectedEvent.eventImage} />
                                             </div>
                                         </div>
                                     </Modal>
@@ -358,13 +442,13 @@ const Table = (props) => {
                                             </div>
                                             <div><CloseIcon fontSize="small" /></div>
                                         </section>}
-                                    {action != "view" &&
+                                    {action != "view" && uploadedFlag &&
                                         <section className="uploaded-area" style={{ borderColor: "#7175F4" }} >
                                             <img src={imageIcon} alt="" />
                                             <div className="center-div">
                                                 <div className="progress-details">
                                                     <div className="left">
-                                                        <span>{selectedEvent.eventImage}</span>
+                                                        <span>{imageURL ? name : selectedEvent.eventImage}</span>
                                                         <div />
                                                         <button type="button" onClick={() => setPreviewImage(true)}>Preview</button>
                                                     </div>
@@ -373,6 +457,45 @@ const Table = (props) => {
                                             <div>{deleteImage}</div>
                                         </section>
                                     }
+                                    {action != "view" && uploadButtonFlag &&
+                                        <div className="uploadArticleBanner" style={{ marginBottom: "16px" }}>
+                                            <label className="fileUpload">
+                                                <div className="flex-row fileUploadContent">
+                                                    <div className="flex-row">
+                                                        <img src={uploadEventBanner} alt="" />
+                                                        <div className="flex-column">
+                                                            <h4>Upload an image or drag and drop here</h4>
+                                                            <p>JPG or PNG, smaller than 10MB</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="upload" style={{ cursor: "pointer" }}>Upload</div>
+                                                </div>
+                                                <input type="file" accept="image/*"
+                                                    onChange={(e) => {
+                                                        setFile(e.target.files[0])
+                                                        onImageUpload(e.target.files[0])
+                                                        setChanged(true)
+                                                    }} />
+                                            </label>
+                                        </div>
+                                    }
+                                    {action != "view" && progressFlag &&
+                                        <section className="progress-area" style={{ display: "flex" }}>
+                                            <img src={imageIcon} alt="" />
+                                            <div className="center-div">
+                                                <div className="progress-details">
+                                                    <span id="fileName">{name}</span>
+                                                    <span id="fileSize">{totalSize}</span>
+                                                </div>
+                                                <div className="progress-bar">
+                                                    <div className="progress" style={{ width: `${percent}%` }}></div>
+                                                </div>
+                                            </div>
+                                            <div>{deleteImage}</div>
+                                        </section>
+                                    }
+
 
                                     <div className="flex-row space-between marginBottom" style={{ marginBottom: "16px" }}>
                                         <div className="flex-column">
@@ -616,6 +739,8 @@ const Table = (props) => {
                                     setCancelModal(false)
                                     setChanged(false)
                                     setShowModal()
+                                    setFile(null)
+                                    setImageURL(null)
                                 }}>
                                 Yes
                             </button>

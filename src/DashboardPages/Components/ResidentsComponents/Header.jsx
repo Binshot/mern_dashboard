@@ -19,7 +19,7 @@ function Header(props) {
             let name = row.firstName.toLowerCase() + row.lastName.toLowerCase()
             return name.includes(searchedVal.toLowerCase());
         });
-        props.get(filteredRows)
+        searchedVal.length() == 0 ? props.get(null) : props.get(filteredRows)
     };
     return (
         <div>

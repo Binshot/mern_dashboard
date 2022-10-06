@@ -4,7 +4,7 @@ import ResidentsTable from "./ResidentsTable"
 import { useResidentContext } from "../../hooks/userResidentContext"
 
 function Container() {
-    const { dispatch } = useResidentContext()
+    const { residents, dispatch } = useResidentContext()
     const [rows, setRows] = useState(null)
 
     useEffect(() => {
@@ -21,11 +21,11 @@ function Container() {
     }, [dispatch])
 
     const getRows = rows => setRows(rows)
-    if (rows) {
+    if (residents) {
         return (
             <div id="mainContentBlur" className="content">
                 <Header get={getRows} />
-                <ResidentsTable list={rows} />
+                <ResidentsTable list={rows ? residents : rows} />
             </div>
         );
     }

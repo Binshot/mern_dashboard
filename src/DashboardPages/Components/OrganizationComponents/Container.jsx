@@ -36,7 +36,7 @@ function Container() {
         return (
             <div id="mainContentBlur" className="content">
                 <Header get={getRows} />
-                <Officials list={rows} />
+                <Officials list={rows ? organizations : rows} />
             </div>
         );
     }

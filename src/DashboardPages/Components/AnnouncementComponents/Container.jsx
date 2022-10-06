@@ -6,7 +6,7 @@ import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
 function Container() {
     //get all announcement
     const { announcements, dispatch } = useAnnouncementContext()
-    const [rows, setRows] = useState(null)
+    const [rows, setRows] = useState(announcements)
 
     useEffect(() => {
         const fetchWorkouts = async () => {
@@ -24,14 +24,14 @@ function Container() {
     const getRows = rows => setRows(rows)
 
     if (announcements) {
-
         return (
             <div id="mainContentBlur" className="content">
                 <Header get={getRows} />
-                <ResidentsTable list={rows} />
+                <ResidentsTable list={rows ? announcements : rows} get={getRows} />
             </div>
         );
     }
+    
 }
 
 export default Container;

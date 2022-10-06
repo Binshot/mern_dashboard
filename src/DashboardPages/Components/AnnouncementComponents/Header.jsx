@@ -68,6 +68,7 @@ function Header(props) {
             toggleAddModal(false)
             setIsLoading(false)
             toggleSnackbar(true)
+            setChanged(false)
             console.log('new announcement added:', json)
             dispatch({ type: 'CREATE_ANNOUNCEMENT', payload: json })
 
@@ -103,7 +104,7 @@ function Header(props) {
         const filteredRows = announcements.filter((row) => {
             return row.announcementTitle.toLowerCase().includes(searchedVal.toLowerCase());
         });
-        props.get(filteredRows)
+        searchedVal.length() == 0 ? props.get(null) : props.get(filteredRows)
     };
 
     const xButton = (

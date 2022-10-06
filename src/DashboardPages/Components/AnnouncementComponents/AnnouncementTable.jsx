@@ -14,21 +14,9 @@ import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
 
 const Table = (props) => {
     //get all announcement
-    const { dispatch } = useAnnouncementContext()
+    const { announcements, dispatch } = useAnnouncementContext()
 
-    // useEffect(() => {
-    //     const fetchWorkouts = async () => {
-    //         const response = await fetch('https://drims-demo.herokuapp.com/api/announcements/')
-    //         const json = await response.json()
-    //         if (response.ok) {
-    //             dispatch({ type: 'SET_ANNOUNCEMENT', payload: json })
-    //         }
-    //     }
-
-    //     fetchWorkouts()
-    // }, [dispatch])
-
-    const announcements = props.list
+    const announcement = props.list
     const [currentPage, setCurrentPage] = useState(1);
     const announcementsPerPage = 5;
     //Get Id of selected Resident
@@ -88,13 +76,13 @@ const Table = (props) => {
         </React.Fragment>
     )
 
-    if (announcements) {
+    if (announcement && announcements) {
 
         // Get current announcement
         let indexOfLastResident = currentPage * announcementsPerPage;
         let indexOfFirstResident = indexOfLastResident - announcementsPerPage;
         let currentAnnouncement;
-        currentAnnouncement = announcements.slice(indexOfFirstResident, indexOfLastResident);
+        currentAnnouncement = announcement.slice(indexOfFirstResident, indexOfLastResident);
 
         // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
@@ -117,7 +105,7 @@ const Table = (props) => {
 
             if (response.ok) {
                 dispatch({ type: 'DELETE_ANNOUNCEMENT', payload: json })
-
+                props.get(announcements)
                 //delete announcement
                 const activity = "Deleted an announcement: " + title
                 const content = { activity }
@@ -395,12 +383,12 @@ const Table = (props) => {
                         <tfoot>
                             <tr>
                                 <td colSpan={2}>
-                                    <h4>Total Announcement: {announcements.length}</h4>
+                                    <h4>Total Announcement: {announcement.length}</h4>
                                 </td>
                                 <td colSpan={2}>
                                     <PageNumber
                                         announcementsPerPage={announcementsPerPage}//ResidentPerPage
-                                        totalAnnouncement={announcements.length}
+                                        totalAnnouncement={announcement.length}
                                         paginate={paginate}
                                     />
                                 </td>

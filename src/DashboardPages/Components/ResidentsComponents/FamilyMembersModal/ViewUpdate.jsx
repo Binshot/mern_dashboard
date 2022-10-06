@@ -101,6 +101,7 @@ function ViewUpdate(props) {
 
         if (response.ok) {
             setLoading(false)
+            setChanged(false)
             dispatch({ type: 'UPDATE_RESIDENT_MEMBER', payload: json })
             props.setShown(false)
             props.snackbar(true)

@@ -91,6 +91,7 @@ function AddResident(props) {
             setEmptyFields(json.emptyFields)
         }
         if (response.ok) {
+            setChanged(false)
             setError(null)
             setLoading(false)
             console.log('new Resident added:', json)
@@ -136,6 +137,7 @@ function AddResident(props) {
         }
         if (response.ok) {
             setError(null)
+            setChanged(false)
             console.log('new Resident added:', json)
             dispatch({ type: 'CREATE_RESIDENT_MEMBER', payload: json })
 
