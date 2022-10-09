@@ -132,9 +132,6 @@ function AddResident(props) {
         const json = await response.json()
 
         console.log(json)
-        if (!response.ok) {
-            setError(json.error)
-        }
         if (response.ok) {
             setError(null)
             setChanged(false)
@@ -154,6 +151,9 @@ function AddResident(props) {
                     'Content-Type': 'application/json'
                 }
             })
+        } else {
+            setEmptyFields(json.emptyFields)
+            setError(json.error)
         }
     }
     const xButton = (
@@ -230,7 +230,6 @@ function AddResident(props) {
             />
 
             {props.shown ? (
-
                 <div className="modal-backdrop">
                     {/* cancel modal */}
                     <Modal
@@ -376,7 +375,7 @@ function AddResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Birthday</h4>
                                                         <TextField
-                                                            required
+
                                                             error={emptyFields.includes('Birthday') ? true : false}
                                                             id="date"
                                                             type="date"
@@ -534,7 +533,7 @@ function AddResident(props) {
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={civilStatusOptions}
-                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Civil Status" required />}
+                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Civil Status" />}
                                                             value={civilStatus}
                                                             onChange={(event, e) => {
                                                                 setCivilStatus(e)
@@ -557,7 +556,7 @@ function AddResident(props) {
                                                             id="combo-box-demo"
                                                             options={educationAttainmentOptions}
                                                             value={educationalAttainment}
-                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Educational Background" required />}
+                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Educational Background" />}
                                                             onChange={(event, e) => {
                                                                 setEducationalAttainment(e)
                                                                 setChanged(true)
@@ -617,7 +616,7 @@ function AddResident(props) {
                                                             <RadioGroup
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
-                                                                required
+
                                                                 value={sss}
                                                                 onChange={(e) => {
                                                                     setSSS(e.target.value)
@@ -635,7 +634,7 @@ function AddResident(props) {
                                                             <RadioGroup
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
-                                                                required
+
                                                                 value={gsis}
                                                                 onChange={(e) => {
                                                                     setGSIS(e.target.value)
@@ -655,7 +654,7 @@ function AddResident(props) {
                                                             <RadioGroup
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
-                                                                required
+
                                                                 value={pagibig}
                                                                 onChange={(e) => {
                                                                     setPagibig(e.target.value)
@@ -673,7 +672,7 @@ function AddResident(props) {
                                                             <RadioGroup
                                                                 aria-labelledby="demo-radio-buttons-group-label"
                                                                 name="radio-buttons-group"
-                                                                required
+
                                                                 value={philhealth}
                                                                 onChange={(e) => {
                                                                     setPhilhealth(e.target.value)
@@ -720,7 +719,7 @@ function AddResident(props) {
                             </div>
                             <div className='bottomPartModal'>
                                 <div className="rightAlign ModalButtons">
-                                    {value == 2 && (
+                                    {value == 2 && props.action == "addMember" && (
                                         <button
                                             disabled={loading}
                                             type="submit"
@@ -728,7 +727,7 @@ function AddResident(props) {
                                             Add
                                         </button>
                                     )}
-                                    {value !== 2 && (
+                                    {value != 2 && props.action == "addMember" && (
                                         <button
                                             type='button'
                                             className="solidButton buttonBlue"
@@ -738,7 +737,25 @@ function AddResident(props) {
                                             Next
                                         </button>
                                     )}
-                                    {value !== 0 && (
+                                    {value == 1 && props.action != "addMember" && (
+                                        <button
+                                            disabled={loading}
+                                            type="submit"
+                                            className="solidButton buttonBlue">
+                                            Add
+                                        </button>
+                                    )}
+                                    {value != 1 && props.action != "addMember" && (
+                                        <button
+                                            type='button'
+                                            className="solidButton buttonBlue"
+                                            onClick={() => {
+                                                setValue(value + 1)
+                                            }}>
+                                            Next
+                                        </button>
+                                    )}
+                                    {value != 0 && (
                                         <button
                                             disabled={loading}
                                             type='button'

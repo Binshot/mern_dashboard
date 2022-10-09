@@ -1442,7 +1442,7 @@ input[type="file"] {
 
 .message-container .left .contacts .contactTile {
     position: relative;
-    padding: 24px;
+    padding: 12px 12px 12px 24px;
     display: flex;
     flex-direction: column;
 }
