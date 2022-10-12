@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import Modal from "../CommonComponents/Modal"
 import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -16,6 +16,9 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { useOrganizationContext } from "../../hooks/useOrganizationContext"
 import { format } from "date-fns";
+
+import { useReactToPrint } from 'react-to-print';
+import { ComponentToPrint } from '../printPDF/OfficialsToPrint';
 
 function Header(props) {
     //context dispatch
@@ -157,6 +160,19 @@ function Header(props) {
         setPosition(null)
         setChanged(false)
     }
+
+    const pageStyle = `
+                        @page {
+                            size: landscape;
+                            margin: 10mm 10mm 10mm 10mm
+                        }                        
+                    `;
+
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        pageStyle: pageStyle,
+    });
 
     return (
         <div>
@@ -356,7 +372,10 @@ function Header(props) {
                         />
                     </div>
                     <div className="flex-row center">
-                        <img src={Print} alt="" className="export" style={{ cursor: "pointer" }} />
+                        <div className="rightAlign actions" style={{ cursor: "pointer" }} onClick={() => handlePrint()} >
+                            <img src={Print} alt="" className="export" />
+                        </div>
+                        <div style={{ display: "none" }}><ComponentToPrint ref={componentRef} list={organizations} /></div>
                         <button
                             className="solidButton add buttonBlue"
                             onClick={() => {

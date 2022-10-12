@@ -508,6 +508,9 @@ const Table = (props) => {
                                                 /> : <TextField
                                                     id="date"
                                                     type="date"
+                                                    inputProps={{
+                                                        min: new Date().toISOString().slice(0, 10)
+                                                    }}
                                                     sx={{
                                                         width: 340,
                                                         "& .MuiOutlinedInput-root:hover": {
@@ -538,6 +541,9 @@ const Table = (props) => {
                                                 <TextField
                                                     id="date"
                                                     type="date"
+                                                    inputProps={{
+                                                        min: new Date().toISOString().slice(0, 10)
+                                                    }}
                                                     sx={{
                                                         width: 340,
                                                         "& .MuiOutlinedInput-root:hover": {

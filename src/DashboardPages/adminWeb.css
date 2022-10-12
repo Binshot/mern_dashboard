@@ -1600,34 +1600,10 @@ input[type="file"] {
 
 /* ================== PDF Template =========================== */
 
-.PDFTemplate {
-    margin: 10px;
-}
-
-.PDFTemplate h2 {
-    margin-top: 0;
-}
-
-.PDFTemplate table td,
+.PDFTemplate table tbody td,
 .PDFTemplate table th {
     padding: 8px 24px;
     border-bottom: 1px solid #9C9C9C;
     font-size: 16px;
-}
-
-.PDFTemplate table {
-    page-break-inside: auto
-}
-
-.PDFTemplate tr {
-    page-break-inside: avoid;
-    page-break-after: auto
-}
-
-.PDFTemplate thead {
-    display: table-header-group
-}
-
-.PDFTemplate tfoot {
-    display: table-footer-group
+    text-align: center;
 }

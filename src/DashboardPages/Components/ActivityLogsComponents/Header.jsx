@@ -1,9 +1,13 @@
-import React from "react"
+import React, {useRef} from "react"
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import Print from "../NewImageFiles/Topbar/Print.svg"
 import TextField from "@mui/material/TextField";
 import { useActivityLogsContext } from "../../hooks/useActivtyLogsContext"
+
+import { useReactToPrint } from 'react-to-print';
+import { ComponentToPrint } from '../printPDF/ActivityLogsToPrint';
+
 function Header(props) {
     const { activity } = useActivityLogsContext()
 
@@ -13,6 +17,20 @@ function Header(props) {
         });
         props.get(filteredRows)
     };
+
+    const pageStyle = `
+                        @page {
+                            size: landscape;
+                            margin: 10mm 10mm 10mm 10mm
+                        }                        
+                    `;
+
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        pageStyle: pageStyle,
+    });
+
 
     return (
         <div id='headerBlur' className='header'>
@@ -42,9 +60,10 @@ function Header(props) {
                         onChange={(e) => requestSearch((e.target.value).toString())}
                     />
                 </div>
-                <div className="rightAlign action">
+                <div className="rightAlign actions" style={{ cursor: "pointer" }} onClick={() => handlePrint()} >
                     <img src={Print} alt="" className="export" />
                 </div>
+                <div style={{ display: "none" }}><ComponentToPrint ref={componentRef} list={activity} /></div>
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import Modal from "../CommonComponents/Modal"
 import InputAdornment from '@mui/material/InputAdornment';
 import AddIcon from "../NewImageFiles/Sidebar/Events.svg"
@@ -20,6 +20,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useEventContext } from "../../hooks/useEventContext"
 
 import imageIcon from "../NewImageFiles/Event/imageIcon.svg"
+
+import { useReactToPrint } from 'react-to-print';
+import { ComponentToPrint } from '../printPDF/EventsToPrint';
 function Header(props) {
     const [AddmodalShown, toggleAddModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
@@ -60,14 +63,15 @@ function Header(props) {
             </IconButton>
         </React.Fragment>
     );
-
+    // set time now
+    // new Date().toLocaleString().slice(12, 17)
     const [eventTitle, setEventTitle] = useState("");
     const [eventDescription, setEventDescription] = useState("");
     const [eventTag, setEventTag] = useState("");
     const [eventLocation, setEventLocation] = useState("");
-    const [dateFrom, setDateFrom] = useState("");
+    const [dateFrom, setDateFrom] = useState(new Date().toISOString().slice(0,10));
     const [dateTo, setDateTo] = useState("");
-    const [timeFrom, setTimeFrom] = useState("");
+    const [timeFrom, setTimeFrom] = useState('');
     const [timeTo, setTimeTo] = useState("");
     const [file, setFile] = useState(null);
 
@@ -217,8 +221,24 @@ function Header(props) {
         setUploadedFlag(true)
         setChanged(false)
         setCancelModal(false)
+        setDateFrom('')
+        setDateTo('')
+        setTimeFrom('')
+        setTimeTo('')
     }
 
+    const pageStyle = `
+                        @page {
+                            size: landscape;
+                            margin: 10mm 10mm 10mm 10mm
+                        }                        
+                    `;
+
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        pageStyle: pageStyle,
+    });
     return (
         <div>
             <Modal
@@ -393,8 +413,8 @@ function Header(props) {
                                         error={emptyFields.includes('Event Date (from)') ? true : false}
                                         id="date"
                                         type="date"
-                                        InputLabelProps={{
-                                            shrink: true,
+                                        inputProps={{
+                                            min: new Date().toISOString().slice(0, 10)
                                         }}
                                         placeholder="Input start Date"
                                         value={dateFrom}
@@ -412,6 +432,7 @@ function Header(props) {
                                             }
                                         }}
                                     />
+
                                 </div>
                                 <div>
                                     <h4>End Date</h4>
@@ -419,8 +440,8 @@ function Header(props) {
                                         error={emptyFields.includes('Event Date (to)') ? true : false}
                                         id="date"
                                         type="date"
-                                        InputLabelProps={{
-                                            shrink: true,
+                                        inputProps={{
+                                            min: new Date().toISOString().slice(0, 10)
                                         }}
                                         onChange={(e) => {
                                             setDateTo(e.target.value)
@@ -476,7 +497,7 @@ function Header(props) {
                                         onChange={(e) => {
                                             setTimeTo(e.target.value)
                                             setChanged(true)
-                                            }}
+                                        }}
                                         disabled={isLoading}
                                         sx={{
                                             width: 340,
@@ -591,14 +612,18 @@ function Header(props) {
                             onChange={(e) => requestSearch((e.target.value).toString())}
                         />
                     </div>
-                    <div className="flex-row center"
-                        onClick={() => {
-                            toggleAddModal(true)
-                        }}>
-                        <img src={Print} alt="" className="export" style={{ cursor: "pointer" }} />
-                        <button className="solidButton add buttonBlue">
+                    <div className="flex-row center">
+                        <div className="rightAlign actions" style={{ cursor: "pointer" }} onClick={() => handlePrint()} >
+                            <img src={Print} alt="" className="export" />
+                        </div>
+                        <div style={{ display: "none" }}><ComponentToPrint ref={componentRef} list={events} /></div>
+                        <button
+                            className="solidButton add buttonBlue"
+                            onClick={() => {
+                                toggleAddModal(true)
+                            }}>
                             <img src={AddIcon} alt="" />
-                            <p>Add Event</p>
+                            <p>Add Events</p>
                         </button>
                     </div>
                 </div>

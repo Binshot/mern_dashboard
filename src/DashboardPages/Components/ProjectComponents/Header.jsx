@@ -1,9 +1,27 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import Autocomplete from '@mui/material/Autocomplete';
 import Print from "../NewImageFiles/Topbar/Print.svg"
 import TextField from "@mui/material/TextField";
-function Header() {
+
+import { useReactToPrint } from 'react-to-print';
+import { ComponentToPrint } from '../printPDF/ProjectToPrint';
+
+function Header(props) {
     const options = ["Family", "Adults", "Men", "Children", "Teenagers"]
+
+    const pageStyle = `
+                        @page {
+                            size: landscape;
+                            margin: 10mm 10mm 10mm 10mm
+                        }                        
+                    `;
+
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        pageStyle: pageStyle,
+    });
+
     return (
         <div id='headerBlur' className='header'>
             <div className="flex-row borderBottom2 topHeader">
@@ -28,9 +46,10 @@ function Header() {
                         renderInput={(params) => (<TextField {...params} placeholder="Choose Target Beneficiaries" />)}
                     />
                 </div>
-                <div className="rightAlign action">
+                <div className="rightAlign actions" style={{ cursor: "pointer" }} onClick={() => handlePrint()} >
                     <img src={Print} alt="" className="export" />
                 </div>
+                <div style={{ display: "none" }}><ComponentToPrint ref={componentRef} list={props.list}/></div>
             </div>
         </div>
     )

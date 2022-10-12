@@ -9,9 +9,17 @@ import { ComponentToPrint } from '../printPDF/ReportsToPrint';
 function GraphHeader() {
     const tagOption = ['Business', 'Work', 'Legal'];
 
+    const pageStyle = `
+                        @page {
+                            size: landscape;
+                            margin: 10mm 10mm 10mm 10mm
+                        }                        
+                    `;
+
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
+        pageStyle: pageStyle,
     });
 
     return (

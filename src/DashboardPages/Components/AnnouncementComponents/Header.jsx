@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import Modal from "../CommonComponents/Modal"
 import InputAdornment from '@mui/material/InputAdornment';
 
@@ -15,6 +15,10 @@ import CloseIcon from '@mui/icons-material/Close';
 
 //context
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
+
+import { useReactToPrint } from 'react-to-print';
+import { ComponentToPrint } from '../printPDF/AnnouncementToPrint';
+
 function Header(props) {
 
     const [isLoading, setIsLoading] = useState(false)
@@ -119,6 +123,20 @@ function Header(props) {
             </IconButton>
         </React.Fragment>
     )
+
+    const pageStyle = `
+                        @page {
+                            size: landscape;
+                            margin: 10mm 10mm 10mm 10mm
+                        }                        
+                    `;
+
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        pageStyle: pageStyle,
+    });
+
     return (
         <div>
             <Modal
@@ -288,12 +306,17 @@ function Header(props) {
                             onChange={(e) => requestSearch((e.target.value).toString())}
                         />
                     </div>
-                    <div className="flex-row center"
-                        onClick={() => {
-                            toggleAddModal(true)
-                        }}>
-                        <img src={Print} alt="" className="export" style={{ cursor: "pointer" }} />
-                        <button className="solidButton add buttonBlue">
+
+                    <div className="flex-row center">
+                        <div className="rightAlign actions" style={{ cursor: "pointer" }} onClick={() => handlePrint()} >
+                            <img src={Print} alt="" className="export" />
+                        </div>
+                        <div style={{ display: "none" }}><ComponentToPrint ref={componentRef} list={announcements} /></div>
+                        <button
+                            className="solidButton add buttonBlue"
+                            onClick={() => {
+                                toggleAddModal(true)
+                            }}>
                             <img src={AddIcon} alt="" />
                             <p>Add Announcement</p>
                         </button>

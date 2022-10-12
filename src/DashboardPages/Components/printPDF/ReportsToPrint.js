@@ -4,7 +4,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
     return (
         <div ref={ref} className="PDFTemplate">
             <h2>Residents</h2>
-            <table>
+            <table style={{width: "98%", margin: '10px'}}>
                 <thead>
                     <tr>
                         <th>Name</th>
