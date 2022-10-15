@@ -145,7 +145,7 @@ export default function Container() {
         // Update read_by_admin status to true
         const update_read_status = async () => {
             try {
-                const response = await fetch(`http://drims-demo.herokuapp.com/api/messages/update-read`, {
+                const response = await fetch(`https://drims-demo.herokuapp.com/api/messages/update-read`, {
                     method: 'PATCH',
                     body: JSON.stringify({ thread_id: currentConvo._id }),
                     headers: {
