@@ -1,6 +1,5 @@
 import RightHeader from "./RightHeader"
 import Contacts from "./Contacts"
-import InputField from "./InputField"
 import Conversation from "./Conversation"
 import { Autocomplete, TextField } from "@mui/material"
 import { useState, useEffect, useRef } from "react"
