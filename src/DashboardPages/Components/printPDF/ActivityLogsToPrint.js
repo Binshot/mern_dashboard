@@ -2,7 +2,6 @@ import { format } from "date-fns";
 import React from "react";
 
 export const ComponentToPrint = React.forwardRef((props, ref) => {
-    console.log(props.list)
     return (
         <div ref={ref} className="PDFTemplate">
             <h2>Activity Logs</h2>
@@ -10,12 +9,12 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                 <thead>
                     <tr>
                         <th>Date and Time</th>
-                        <th>Activity</th>
+                        <th colSpan="2">Activity</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <td colSpan="2">Total Activities: {props.list.length}</td>
+                        <td colSpan="3">Total Activities: {props.list.length}</td>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -23,7 +22,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                         return (
                             <tr key={activity._id}>
                                 <td>{format(new Date(activity.activityDateTime.substr(0, 23)), 'PPp')}</td>
-                                <td>{activity.activity}</td>
+                                <td colSpan="2">{activity.activity}</td>
                             </tr>
                         );
                     })}
