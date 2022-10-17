@@ -4,9 +4,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import View from "../NewImageFiles/Send.svg"
 import { TextField } from "@mui/material";
 
+import { useAuthContext } from '../../hooks/useAuthContext';
+
 export default function Conversation(props) {
     const { resident, socket } = props;
 
+    const { user } = useAuthContext();
+
+    const [currentUser, setCurrentUser] = useState();
     // Conversation for a specific resident
     const [conversation, setConversation] = useState([]);
     // For displaying time when message bubble is clicked
@@ -19,6 +24,10 @@ export default function Conversation(props) {
     const [arrivalMessage, setArrivalMessage] = useState(null);
     // Automatic scrolling for new messages
     const scrollRef = useRef();
+
+    useEffect(() => {
+        if (user) setCurrentUser(user)
+    }, []);
 
     // Fetch Conversation for specific user
     useEffect(() => {
@@ -40,7 +49,7 @@ export default function Conversation(props) {
     // Receive realtime messages
     useEffect(() => {
         if (socket.current) {
-            socket.current.on("msg-receive", (data) => {
+            socket.current.on(`msg-receive-${user.id}`, (data) => {
                 setArrivalMessage({ new_thread: data.new_thread, message: data.message })
                 // setArrivalMessage({ fromSelf: false, message: msg });
             });
@@ -96,6 +105,7 @@ export default function Conversation(props) {
              // If message_thread is updated in the database
              socket.current.emit("send-msg", {
                 to: resident,
+                from: user.id,
                 message: json,
                 new_thread: false
             })
