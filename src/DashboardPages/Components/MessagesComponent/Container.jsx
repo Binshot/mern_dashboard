@@ -176,9 +176,15 @@ export default function Container() {
             // Replace the item in contacts if it is from the message being received
             const x = contacts.find((c) => c.resident_id === newArrivalMessage.resident_id);
             const y = contacts.filter((c) => c.resident_id !== newArrivalMessage.resident_id);
-            x.message_thread = newArrivalMessage.message_thread;
-            const newContacts = [x, ...y]
-            setContacts(newContacts)
+            if (x) {
+                x.message_thread = newArrivalMessage.message_thread;
+                const newContacts = [x, ...y]
+                setContacts(newContacts)
+            } else {
+                console.log(newArrivalMessage);
+                const newContacts = [newArrivalMessage, ...y];
+                setContacts(newContacts);
+            }
         }
     }, [arrivalMessage]);
 

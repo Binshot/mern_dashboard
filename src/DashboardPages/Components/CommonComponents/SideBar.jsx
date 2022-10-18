@@ -164,9 +164,6 @@ export default function SideBar() {
                         <a style={{ cursor: "pointer" }}
                             onClick={() => {
                                 setlogoutModal(true)
-                                document.getElementById("mainContentBlur").id = "blurContent";
-                                document.getElementById("topBlur").id = "blurTop";
-                                document.getElementById("sideBlur").id = "blurSide";
                             }}>
                             <div className="flex-row navLinks" >
                                 <img src={LogOut} alt="" />
