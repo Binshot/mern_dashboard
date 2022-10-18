@@ -11,8 +11,11 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 export default function Container() {
     const concernTypes = [
         "All Messages",
-        "Community Concern",
-        "Events Concern"
+        "Community Question",
+        "Event Question", 
+        "Complaint",
+        "Damage Report",
+        "Others"
     ]
 
     const messages = [
@@ -85,6 +88,8 @@ export default function Container() {
 
     const [messageIndex, setI] = useState(0)
     const getSelectedMessage = get => setI(get)
+
+    const [filter, setfilter] = useState("All Messages")
 
     const { user } = useAuthContext();
 
@@ -235,6 +240,9 @@ export default function Container() {
                                 }
                             }
                         }}
+                        onChange={(e, newValue) => {
+                            setfilter(newValue)
+                        }}
                     />
                 </div>
                 {
@@ -256,8 +264,8 @@ export default function Container() {
                 currentConvo &&
                 <div className="right">
                     <RightHeader conversation={currentConvo} />
-                    <Conversation resident={currentConvo.resident_id} list={messages[messageIndex]} socket={socket} />
-                    {/* <InputField /> */}
+                    {/* <Conversation resident={currentConvo.resident_id} list={messages[messageIndex]} socket={socket} /> */}
+                    <Conversation resident={currentConvo.resident_id} socket={socket} filterProps={filter}/>
                 </div>
             }
         </div>

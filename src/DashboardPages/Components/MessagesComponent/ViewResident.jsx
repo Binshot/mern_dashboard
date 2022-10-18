@@ -22,8 +22,6 @@ function ViewResident(props) {
         setValue(value);
     }
 
-    console.log(props.familyMembers)
-
     const xButton = (
         <React.Fragment>
             <IconButton

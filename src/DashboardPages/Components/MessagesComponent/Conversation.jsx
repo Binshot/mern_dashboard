@@ -129,13 +129,19 @@ export default function Conversation(props) {
         }
     }
 
+    function filterItems(arr, query) {
+        return query == "All Messages" 
+        ? arr
+        : arr.filter((el) => el.concern_type.toLowerCase().includes(query.toLowerCase()))
+      }
+
     return (
         <>
             <div className="conversation">
                 {/* <div className='dateSnackBar'></div> */}
                 {
-                    conversation &&
-                    conversation.map((msg_thread, index) => {
+                    conversation && props.filterProps &&
+                    filterItems(conversation, props.filterProps).map((msg_thread, index) => {
                         if (index === conversation.length - 1) currentThreadId = msg_thread._id;
                         return (
                             <React.Fragment key={msg_thread._id}>
