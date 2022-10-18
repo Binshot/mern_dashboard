@@ -32,11 +32,11 @@ function Container() {
 
     const getRows = rows => setRows(rows)
 
-    if (rows) {
+    if (organizations) {
         return (
             <div id="mainContentBlur" className="content">
                 <Header get={getRows} />
-                <Officials list={rows ? organizations : rows} />
+                <Officials list={rows} />
             </div>
         );
     }

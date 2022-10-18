@@ -27,7 +27,7 @@ function Container() {
         return (
             <div id="mainContentBlur" className="content">
                 <Header get={getRows} />
-                <ResidentsTable list={rows ? events : rows} />
+                <ResidentsTable list={rows} />
             </div>
         );
     }

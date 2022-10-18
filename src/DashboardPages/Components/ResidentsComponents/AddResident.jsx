@@ -35,7 +35,7 @@ function AddResident(props) {
     const educationAttainmentOptions = ['No Formal Education', 'Elementary', 'High School',
         'General Education Development', 'Vocational Qualificiation', 'Bachelor’s Degree',
         'Master’s Degree', 'Doctorate or Higher'];
-    const familyMember = ["Husband", "Wife", "Daughter", "Son"];
+    const familyMember = ["Husband", "Wife", "Daughter", "Son", "Sibling"];
 
     const [value, setValue] = React.useState(0);
 

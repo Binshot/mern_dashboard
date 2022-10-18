@@ -93,7 +93,7 @@ const Table = (props) => {
         </React.Fragment>
     );
 
-    // Delete Announcement
+    // Delete Events
     const handleDelete = async () => {
 
         const response = await fetch('https://drims-demo.herokuapp.com/api/events/'

@@ -108,7 +108,7 @@ function Header(props) {
         const filteredRows = announcements.filter((row) => {
             return row.announcementTitle.toLowerCase().includes(searchedVal.toLowerCase());
         });
-        searchedVal.length() == 0 ? props.get(null) : props.get(filteredRows)
+        props.get(filteredRows)
     };
 
     const xButton = (

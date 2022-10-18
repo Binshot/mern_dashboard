@@ -29,7 +29,7 @@ function ViewUpdate(props) {
     const educationAttainment = ['No Formal Education', 'Elementary', 'High School',
         'General Education Development', 'Vocational Qualificiation', 'Bachelor’s Degree',
         'Master’s Degree', 'Doctorate or Higher'];
-    const familyMember = ['Father', 'Mother', 'Husband', 'Wife', 'Son', 'Daughter',];
+    const familyMember = ['Father', 'Mother', 'Husband', 'Wife', 'Son', 'Daughter', "Sibling"];
 
     const [value, setValue] = React.useState(0);
 

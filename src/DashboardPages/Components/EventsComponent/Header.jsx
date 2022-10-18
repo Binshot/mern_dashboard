@@ -142,7 +142,7 @@ function Header(props) {
         const filteredRows = events.filter((row) => {
             return row.eventTitle.toLowerCase().includes(searchedVal.toLowerCase());
         });
-        searchedVal.length() == 0 ? props.get(null) : props.get(filteredRows)
+        props.get(filteredRows)
     };
 
     // image upload

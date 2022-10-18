@@ -21,7 +21,6 @@ const Table = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const ActivityPerPage = 5;
     const activity = props.list
-    console.log(activity)
     if (activity) {
 
         // Get current activity

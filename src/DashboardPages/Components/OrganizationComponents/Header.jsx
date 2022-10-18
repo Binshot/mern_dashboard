@@ -136,7 +136,7 @@ function Header(props) {
             let name = row.official.lastName.toLowerCase() + row.official.firstName.toLowerCase()
             return name.includes(searchedVal.toLowerCase());
         });
-        searchedVal.length() == 0 ? props.get(null) : props.get(filteredRows)
+        props.get(filteredRows)
     };
 
     const xButton = (

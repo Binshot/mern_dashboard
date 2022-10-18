@@ -191,7 +191,6 @@ function UpdateResident(props) {
                                         <Tabs value={value} onChange={handleTabChange}>
                                             <Tab label="Personal Information" />
                                             <Tab label="Background Information" />
-                                            <Tab label="Family Information" />
                                         </Tabs>
                                     </Box>
                                     <Box sx={{ height: '250px', overflow: 'auto', padding: "24px 0" }}>
@@ -566,46 +565,14 @@ function UpdateResident(props) {
                                                 </div>
                                             </div>
                                         )}
-                                        {value == 2 && (
-                                            <div className="flex-column tab">
-                                                <div className="flex-row space-between">
-                                                    <div className="flex-column inputs">
-                                                        <h4>Relationship</h4>
-                                                        <input
-                                                            value={"Head of the Family"}
-                                                            disabled
-                                                        />
-                                                    </div>
-                                                    <div className="flex-column inputs">
-                                                        <h4>Assign new Head of  the Family</h4>
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            id="combo-box-demo"
-                                                            options={familyMember}
-                                                            renderInput={(params) => <TextField {...params} placeholder="Select new Head of the Family" />}
-                                                            onChange={(event, e) => {
-                                                                // setRelationship(e)
-                                                                setChanged(true)
-                                                            }}
-                                                            sx={{
-                                                                "& .MuiOutlinedInput-root:hover": {
-                                                                    "& > fieldset": {
-                                                                        borderColor: "#7175F4"
-                                                                    }
-                                                                }
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
+                                        
                                     </Box>
                                 </Box>
                             </div>
                             <div className="rightAlign ModalButtons">
                                 {(value == 1 && props.action !== "view") && (
                                     <button
-                                        disabled={loading}
+                                        disabled={loading || !changed}
                                         type="submit"
                                         className="solidButton buttonBlue">
                                         Update

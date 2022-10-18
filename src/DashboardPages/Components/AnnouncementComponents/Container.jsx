@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import Header from "./Header"
-import ResidentsTable from "./AnnouncementTable"
+import AnnouncementsTable from "./AnnouncementTable"
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
 
 function Container() {
@@ -23,11 +23,11 @@ function Container() {
 
     const getRows = rows => setRows(rows)
 
-    if (announcements) {
+    if (rows) {
         return (
             <div id="mainContentBlur" className="content">
                 <Header get={getRows} />
-                <ResidentsTable list={rows ? announcements : rows} get={getRows} />
+                <AnnouncementsTable list={rows} get={getRows} />
             </div>
         );
     }
