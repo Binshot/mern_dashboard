@@ -11,18 +11,18 @@ import CloseIcon from '@mui/icons-material/Close';
 //Family Head Modals (View and Update)
 import UpdateResident from "./FamilyHeadModals/UpdateHead"
 import ViewResident from "./FamilyHeadModals/ViewHead"
+import ChangeHeadOfTheFamily from './FamilyHeadModals/ChangeHead';
 
 import AddFamilyMember from "./AddResident"
 
 import { useResidentContext } from "../../hooks/userResidentContext"
 
 const Table = (props) => {
-    
+
     //get all resident
     const { dispatch } = useResidentContext()
 
     const residents = props.list
-    // console.log(props.list)
     useEffect(() => {
         const fetchResidents = async () => {
             const response = await fetch('https://drims-demo.herokuapp.com/api/residents/')
@@ -45,8 +45,9 @@ const Table = (props) => {
 
     //FOR SNACKBAR
     const [snackbar, toggleSnackbar] = useState(false);
+    const [greenSnackbar, setgreenSnackbar] = useState(false)
     const [Deletesnackbar, toggleDeletesnackbar] = useState(false);
-    const [updateMemberName, setUpdateMemberName] = useState('')
+    const [memberName, setMemberName] = useState('')
 
     const actionButton = (
         <React.Fragment>
@@ -64,6 +65,7 @@ const Table = (props) => {
                 onClick={() => {
                     toggleSnackbar(false)
                     toggleDeletesnackbar(false)
+                    setgreenSnackbar(false)
                 }}
             >
                 <CloseIcon fontSize="small" />
@@ -107,11 +109,9 @@ const Table = (props) => {
             dispatch({ type: 'DELETE_RESIDENT', payload: json })
 
             //Deleted a head of the family
-            const activity = "Deleted a head of the family and its members: " + selectedResident.lastName + ", " + selectedResident.firstName
-            const content = { activity }
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify(content),
+                body: JSON.stringify({ activity: "Deleted a head of the family and its members: " + selectedResident.lastName + ", " + selectedResident.firstName }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -124,7 +124,7 @@ const Table = (props) => {
     if (residents) {
 
         // filter family head
-        const familyHead = residents.filter(head => head.isHeadOfFamily === true)
+        const familyHead = residents.filter(head => head.isHeadOfFamily == true)
         // Get current residents
         let indexOfLastResident = currentPage * residentsPerPage;
         let indexOfFirstResident = indexOfLastResident - residentsPerPage;
@@ -142,12 +142,12 @@ const Table = (props) => {
         const getDelete = del => setShowDeleteModal(del)
         const getSelectedResident = resident => setSelectedResident(resident)
         const getSnack = snack => toggleSnackbar(snack)
-        const getName = name => setUpdateMemberName(name)
-
+        const getName = name => setMemberName(name)
+        const getGreenSnackbar = snackbar => setgreenSnackbar(snackbar)
         return (
             <div>
                 {/* Update Head of the Family */}
-                {action === "edit" && selectedResident && (
+                {action == "edit" && selectedResident && (
                     <UpdateResident
                         shown={showModal}
                         setShown={getModal}
@@ -157,7 +157,7 @@ const Table = (props) => {
                         headName={getName}
                     />
                 )}
-                {action === "view" && selectedResident && (
+                {action == "view" && selectedResident && (
                     <ViewResident
                         shown={showModal}
                         setShown={getModal}
@@ -166,9 +166,19 @@ const Table = (props) => {
                     />
                 )}
 
+                {/* change head of the family modal */}
+                {action == "changeHead" && selectedResident && (
+                    <ChangeHeadOfTheFamily
+                        shown={showModal}
+                        setShown={getModal}
+                        resident={selectedResident}
+                        snackbar={getGreenSnackbar}
+                        headName={getName}
+                    />
+                )}
                 {/* Add Family Member */}
                 {selectedResident && (
-                    action === "addMember" && (
+                    action == "addMember" && (
                         <AddFamilyMember shown={showModal} setShown={getModal} action={action} headID={selectedResident._id} />
                     )
                 )}
@@ -211,16 +221,38 @@ const Table = (props) => {
                         </div>
                     </Modal>
                 )}
+
+                {/* update head information snackbar */}
                 {snackbar && (
                     <Snackbar
                         open={snackbar}
                         onClose={() => { toggleSnackbar(false) }}
                         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                         autoHideDuration={2000}
-                        message={`${updateMemberName} information has been updated!`}
+                        message={`${memberName} information has been updated!`}
                         ContentProps={{
                             sx: {
                                 background: "#DBB324",
+                                width: 560,
+                                ml: 30,
+                                mt: 10
+                            }
+                        }}
+                        action={actionButton}
+                    />
+                )}
+
+                {/* change new head snackbar */}
+                {greenSnackbar && (
+                    <Snackbar
+                        open={greenSnackbar}
+                        onClose={() => { toggleSnackbar(false) }}
+                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                        autoHideDuration={2000}
+                        message={`${memberName} is now the new Head of the Family!`}
+                        ContentProps={{
+                            sx: {
+                                background: "#35CA3B",
                                 width: 560,
                                 ml: 30,
                                 mt: 10
@@ -255,8 +287,7 @@ const Table = (props) => {
                         <thead>
                             <tr>
                                 <td><h4>HEAD OF THE FAMILY</h4> </td>
-                                <td><h4>STATUS</h4></td>
-                                <td><h4>ACTION</h4></td>
+                                <td style={{ width: "25%" }}><h4>ACTION</h4></td>
                             </tr>
                         </thead>
                         <tbody>
@@ -276,12 +307,12 @@ const Table = (props) => {
                         <tfoot>
                             <tr>
                                 <td>
-                                    <h4>Total Residents: {residents.filter(head => head.isHeadOfFamily === true).length}</h4>
+                                    <h4>Total Residents: {residents.filter(head => head.isHeadOfFamily == true).length}</h4>
                                 </td>
-                                <td colSpan={2}>
+                                <td >
                                     <PageNumber
                                         residentsPerPage={residentsPerPage}
-                                        totalResidents={residents.filter(head => head.isHeadOfFamily === true).length}
+                                        totalResidents={residents.filter(head => head.isHeadOfFamily == true).length}
                                         paginate={paginate}
                                     />
                                 </td>
@@ -291,7 +322,7 @@ const Table = (props) => {
                 </div>
             </div>
         );
-    }
-};
+        }
+    };
 
-export default Table;
+    export default Table;

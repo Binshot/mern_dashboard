@@ -77,11 +77,9 @@ function Header(props) {
             dispatch({ type: 'CREATE_ANNOUNCEMENT', payload: json })
 
             // add activity logs
-            const activity = "Added an announcement: " + announcementTitle
-            const content = { activity }
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify(content),
+                body: JSON.stringify({ activity: "Added an announcement: " + announcementTitle }),
                 headers: {
                     'Content-Type': 'application/json'
                 }

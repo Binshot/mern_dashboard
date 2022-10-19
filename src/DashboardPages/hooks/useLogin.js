@@ -24,6 +24,14 @@ export const useLogin = () => {
       setError(json.error)
       json.error === "Please fill up fields" ? setEmptyFields(json.emptyFields) : setEmptyFields(oldArray => [...oldArray, "newElement"])
       
+      fetch('https://drims-demo.herokuapp.com/api/activity/', {
+        method: 'POST',
+        body: JSON.stringify({ activity: "Admin failed to log in" }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      
     }
     if (response.ok) {
       // save the user to local storage
@@ -34,6 +42,17 @@ export const useLogin = () => {
 
       // update loading state
       setIsLoading(false)
+
+      // add activity logs
+      // const activity = "Admin logged in" 
+      // const content = {activity}
+      fetch('https://drims-demo.herokuapp.com/api/activity/', {
+        method: 'POST',
+        body: JSON.stringify({ activity: "Admin logged in" }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
     }
   }
 

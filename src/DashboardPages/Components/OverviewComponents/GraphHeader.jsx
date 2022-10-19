@@ -47,6 +47,9 @@ function GraphHeader() {
                     <TextField
                         id="date"
                         type="date"
+                        inputProps={{
+                            max: new Date().toISOString().slice(0, 10)
+                        }}
                         sx={{ width: '100%' }}
                         InputLabelProps={{
                             shrink: true,
@@ -61,6 +64,9 @@ function GraphHeader() {
                     <TextField
                         id="date"
                         type="date"
+                        inputProps={{
+                            max: new Date().toISOString().slice(0, 10)
+                        }}
                         sx={{ width: '100%' }}
                         InputLabelProps={{
                             shrink: true,

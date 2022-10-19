@@ -29,7 +29,7 @@ function ViewUpdate(props) {
     const educationAttainment = ['No Formal Education', 'Elementary', 'High School',
         'General Education Development', 'Vocational Qualificiation', 'Bachelor’s Degree',
         'Master’s Degree', 'Doctorate or Higher'];
-    const familyMember = ['Father', 'Mother', 'Husband', 'Wife', 'Son', 'Daughter', "Sibling"];
+    const familyMember = ["Parent", "Spouse", "Child", "Sibling", "Grandparent", "Grandchild", "Other Relative"];
 
     const [value, setValue] = React.useState(0);
 
@@ -109,11 +109,9 @@ function ViewUpdate(props) {
             setValue(0)
 
             // update family member
-            const activity = "Updated a resident: " + props.lastName + ", " + props.firstName
-            const content = { activity }
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify(content),
+                body: JSON.stringify({ activity: "Updated a resident: " + props.lastName + ", " + props.firstName }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -306,6 +304,9 @@ function ViewUpdate(props) {
                                                     <TextField
                                                         id="date"
                                                         type="date"
+                                                        inputProps={{
+                                                            max: new Date().toISOString().slice(0, 10)
+                                                        }}
                                                         value={bday}
                                                         onChange={(e) => {
                                                             setBday(e.target.value)

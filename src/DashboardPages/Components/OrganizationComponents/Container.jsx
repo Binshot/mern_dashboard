@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header"
 import Officials from "./Officials"
 import { useOrganizationContext } from "../../hooks/useOrganizationContext"
+import CircularProgress from '@mui/material/CircularProgress';
+
 function Container() {
 
     const { organizations, dispatch } = useOrganizationContext()
@@ -22,13 +24,16 @@ function Container() {
                         return { official: obj, position: props.position, _id: props._id }
                     })
                     dispatch({ type: 'SET_OFFICIAL', payload: dta })
-                    setRows(dta)
                 }
             }
         }
 
         fetchOfficials()
     }, [])
+    
+    useEffect(() => {
+        setRows(organizations)
+    }, [organizations])
 
     const getRows = rows => setRows(rows)
 
@@ -39,6 +44,12 @@ function Container() {
                 <Officials list={rows} />
             </div>
         );
+    }else {
+        return (
+            <div style={{height: "100%", display: "flex", alignItems: "center", justifyContent: "center"} }>
+                <CircularProgress size={100} />
+            </div>
+        )
     }
 
 }

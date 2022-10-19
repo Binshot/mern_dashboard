@@ -19,8 +19,7 @@ function Login() {
     //For Login Auth
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { login, error, isLoading, emptyFields } = useLogin()
-
+    const { login, error, isLoading, emptyFields  } = useLogin()
     const handleSubmit = async (e) => {
         e.preventDefault()
         await login(email, password)
@@ -50,7 +49,7 @@ function Login() {
                         }}
                     />
                     <h3>Password</h3>
-                    <div className='loginPassword' style={emptyFields.includes('Password') ? {borderColor: "#d32f2f"} : {borderColor: "rgba(0, 0, 0, 0.23)"}}>
+                    <div className='loginPassword' style={emptyFields.includes('Password') ? { borderColor: "#d32f2f" } : { borderColor: "rgba(0, 0, 0, 0.23)" }}>
                         <TextField
                             fullWidth
                             variant="standard"

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import usersIcon from "../NewImageFiles/Overview/TotalUsers.svg"
 import residentsIcon from "../NewImageFiles/Overview/TotalResidents.svg"
 import familiesIcon from "../NewImageFiles/Overview/TotalFamilies.svg"
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Summary() {
 
@@ -57,6 +58,12 @@ function Summary() {
                     </div>
                 </div>
 
+            </div>
+        )
+    } else {
+        return (
+            <div style={{ height: "100%", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CircularProgress size={70} />
             </div>
         )
     }

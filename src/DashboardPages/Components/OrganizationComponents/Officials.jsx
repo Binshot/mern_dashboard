@@ -87,11 +87,9 @@ function Officials(props) {
             toggleSnackbar(true)
 
             //update announcement
-            const activity = "Updated an official: " + nameOfMember
-            const content = { activity }
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify(content),
+                body: JSON.stringify({activity: "Updated an official: " + nameOfMember}),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -114,11 +112,9 @@ function Officials(props) {
             toggleDeleteSnackbar(true)
 
             //delete announcement
-            const activity = "Deleted an official: " + nameOfMember
-            const content = { activity }
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify(content),
+                body: JSON.stringify({ activity: "Deleted an official: " + nameOfMember }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -309,7 +305,7 @@ function Officials(props) {
                             {xButton}
                         </div>
                         <div>
-                            <p>Are you sure you want to remove <span style={{ fontWeight: "bold" }}>{nameOfMember}</span>? All data removed are archived and can be restored.</p>
+                            <p>Are you sure you want to remove <span style={{ fontWeight: "bold" }}>{nameOfMember}</span>? All data removed won’t be restored.</p>
                         </div>
                         <div className="rightAlign ModalButtons">
                             <button

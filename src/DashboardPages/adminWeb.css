@@ -1520,6 +1520,7 @@ input[type="file"] {
     display: inline-flex;
     align-items: center;
     border-radius: 8px;
+    margin-top: 12px;
 }
 
 .message-container .right .conversation .user {

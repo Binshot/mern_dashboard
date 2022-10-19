@@ -123,7 +123,7 @@ function Header(props) {
                 const content = { activity }
                 fetch('https://drims-demo.herokuapp.com/api/activity/', {
                     method: 'POST',
-                    body: JSON.stringify(content),
+                    body: JSON.stringify({activity: "Added an Event: " + eventTitle}),
                     headers: {
                         'Content-Type': 'application/json'
                     }

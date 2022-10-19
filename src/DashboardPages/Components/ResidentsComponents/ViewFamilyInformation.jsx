@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import avatar from "../NewImageFiles/Resident/Avatar.svg"
 import View from "../NewImageFiles/ActionButton/View.svg"
 import Update from "../NewImageFiles/ActionButton/Update.svg"
@@ -19,7 +19,8 @@ import { useResidentContext } from "../../hooks/userResidentContext"
 
 function ViewFamilyInformation(props) {
 
-    const { dispatch } = useResidentContext()
+    const { residents, dispatch } = useResidentContext()
+    const [familyMembers, setfamilyMembers] = useState(null)
     const [loading, setLoading] = useState(false)
 
     const [showFamilyModal, setshowFamilyModal] = useState(false)
@@ -76,11 +77,9 @@ function ViewFamilyInformation(props) {
             dispatch({ type: 'DELETE_RESIDENT_MEMBER', payload: json })
 
             //Deleted a member of the family
-            const activity = "Deleted a member of the family: " + selectedFamMember.lastName + ", " + selectedFamMember.firstName
-            const content = { activity }
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify(content),
+                body: JSON.stringify({ activity: "Deleted a member of the family: " + selectedFamMember.lastName + ", " + selectedFamMember.firstName }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -92,6 +91,21 @@ function ViewFamilyInformation(props) {
 
     const [updatedResident, setUpdatedResident] = useState(null)
     const getName = name => setUpdatedResident(name)
+
+    useEffect(() => {
+        const fetchResidents = async () => {
+            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/members/' +
+                props.familyHead._id)
+            const json = await response.json()
+            if (response.ok) {
+                setfamilyMembers(json)
+            }
+        }
+
+        fetchResidents()
+
+    }, [residents])
+    console.log(familyMembers)
     return (
         <div>
             {/* view or update family member */}
@@ -101,10 +115,10 @@ function ViewFamilyInformation(props) {
                     setShown={getShowFamilyModal}
                     action={FamAction}
                     resident={selectedFamMember}
-                    relation={memberRelationship} 
+                    relation={memberRelationship}
                     snackbar={getShowSnackbar}
                     name={getName}
-                    />
+                />
             )}
 
             {/* Delete Resident */}
@@ -173,20 +187,17 @@ function ViewFamilyInformation(props) {
                 />
             )}
 
-            <div>
-                {props.list.length !== 0 ? (
+            {familyMembers && <>
+                {familyMembers.length !== 0 ? (
                     <div className='flex-column'>
-                        {props.list.map((res) => {
-                            const relation = (props.familyHead.familyMembers.filter(member => member.member_id == res._id).map(a => {
-                                return a.relationship
-                            })).toString()
+                        {familyMembers.map(({ member_data, relationship }) => {
                             return (
-                                <div className='flex-row viewFamilyMemberContainer' key={res._id}>
+                                <div className='flex-row viewFamilyMemberContainer' key={member_data._id}>
                                     <img src={avatar} alt="" style={{ height: "100px", width: "100px", marginRight: "16px" }} />
                                     <div className='flex-column' style={{ justifyContent: "center", flexGrow: "1" }}>
-                                        <h4>{res.lastName + ", " + res.firstName + " " + res.middleName}</h4>
+                                        <h4>{member_data.lastName + ", " + member_data.firstName + " " + member_data.middleName}</h4>
                                         <h5 style={{ fontSize: "14px", color: "#9C9C9C", fontWeight: "normal" }}>
-                                            {relation}
+                                            {relationship}
                                         </h5>
                                     </div>
                                     <div className='flex-row actions' style={{ alignContent: "center", justifyContent: "center" }}>
@@ -195,10 +206,10 @@ function ViewFamilyInformation(props) {
                                             className="solidButton squareButton buttonGreen"
                                             type='button'
                                             onClick={() => {
-                                                setSelectedFamMember(res)
+                                                setSelectedFamMember(member_data)
                                                 setFamAction("view")
                                                 setshowFamilyModal(true)
-                                                setFamilyRelationship(relation)
+                                                setFamilyRelationship(relationship)
                                             }}>
                                             <img src={View} alt="" />
                                         </button>
@@ -207,17 +218,17 @@ function ViewFamilyInformation(props) {
                                             className="solidButton squareButton buttonBlue"
                                             type='button'
                                             onClick={() => {
-                                                setSelectedFamMember(res)
+                                                setSelectedFamMember(member_data)
                                                 setshowFamilyModal(true)
                                                 setFamAction("edit")
-                                                setFamilyRelationship(relation)
+                                                setFamilyRelationship(relationship)
                                             }} >
                                             <img src={Update} alt="" />
                                         </button>
                                         <button className='delete squareButton'
                                             type='button'
                                             onClick={() => {
-                                                setSelectedFamMember(res)
+                                                setSelectedFamMember(member_data)
                                                 setShowDeleteModal(true)
                                             }}>
                                             <img src={Delete} alt="" />
@@ -238,8 +249,7 @@ function ViewFamilyInformation(props) {
                         </p>
                     </div>
                 }
-            </div>
-
+            </>}
         </div>
     )
 }

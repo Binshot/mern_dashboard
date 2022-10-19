@@ -2,6 +2,7 @@ import Header from "./Header"
 import ResidentsTable from "./ActivityLogsTable"
 import React, { useEffect, useState } from "react";
 import { useActivityLogsContext } from "../../hooks/useActivtyLogsContext"
+import CircularProgress from '@mui/material/CircularProgress';
 function ActivityLog() {
     const { activity, activityDispatch } = useActivityLogsContext()
     const [rows, setRows] = useState(null)
@@ -17,15 +18,21 @@ function ActivityLog() {
         }
 
         fetchActivities()
-    }, [activityDispatch])
+    }, [])
 
     if (activity) {
         return (
             <div id="mainContentBlur" className="content">
                 <Header get={getRows} />
-                <ResidentsTable list={rows}/>
+                <ResidentsTable list={rows} />
             </div>
         );
+    } else {
+        return (
+            <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CircularProgress size={100} />
+            </div>
+        )
     }
 }
 

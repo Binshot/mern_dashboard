@@ -106,11 +106,9 @@ function UpdateResident(props) {
             props.headName(lastName + ", " + firstName)
 
             // update family head
-            const activity = "Updated a resident: " + lastName + ", " + firstName
-            const content = { activity }
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify(content),
+                body: JSON.stringify({ activity: "Updated a resident: " + lastName + ", " + firstName }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -276,6 +274,9 @@ function UpdateResident(props) {
                                                         <TextField
                                                             id="date"
                                                             type="date"
+                                                            inputProps={{
+                                                                max: new Date().toISOString().slice(0, 10)
+                                                            }}
                                                             defaultValue={birthday}
                                                             onChange={(e) => {
                                                                 setBday(e.target.value)
@@ -565,7 +566,7 @@ function UpdateResident(props) {
                                                 </div>
                                             </div>
                                         )}
-                                        
+
                                     </Box>
                                 </Box>
                             </div>

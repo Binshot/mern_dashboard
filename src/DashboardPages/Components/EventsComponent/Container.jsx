@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import Header from "./Header"
 import ResidentsTable from "./Table"
 import { useEventContext } from "../../hooks/useEventContext"
-
+import CircularProgress from '@mui/material/CircularProgress';
+    
 function Container() {
     //get all announcement
     const { events ,dispatch } = useEventContext()
@@ -14,12 +15,14 @@ function Container() {
             const json = await response.json()
             if (response.ok) {
                 dispatch({ type: 'SET_EVENT', payload: json })
-                setRows(json)
             }
         }
 
         fetchWorkouts()
-    }, [dispatch])
+    }, [])
+    useEffect(() => {
+        setRows(events)
+    }, [events])
 
     const getRows = rows => setRows(rows)
 
@@ -30,6 +33,12 @@ function Container() {
                 <ResidentsTable list={rows} />
             </div>
         );
+    }else {
+        return (
+            <div style={{height: "100%", display: "flex", alignItems: "center", justifyContent: "center"} }>
+                <CircularProgress size={100} />
+            </div>
+        )
     }
 }
 

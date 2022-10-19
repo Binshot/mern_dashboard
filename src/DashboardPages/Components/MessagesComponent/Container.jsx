@@ -1,7 +1,8 @@
 import RightHeader from "./RightHeader"
 import Contacts from "./Contacts"
 import Conversation from "./Conversation"
-import { Autocomplete, TextField } from "@mui/material"
+import { Autocomplete, TextField, MenuItem } from "@mui/material"
+
 import { useState, useEffect, useRef } from "react"
 
 import { io } from "socket.io-client";
@@ -12,7 +13,7 @@ export default function Container() {
     const concernTypes = [
         "All Messages",
         "Community Question",
-        "Event Question", 
+        "Event Question",
         "Complaint",
         "Damage Report",
         "Others"
@@ -226,13 +227,14 @@ export default function Container() {
                     <h2 style={{ fontSize: "36px" }}>Messages</h2>
                 </div>
                 <div style={{ margin: "0 24px" }}>
-                    <Autocomplete
-                        disablePortal
+                    <TextField
+                        id="outlined-select-currency"
+                        select
                         fullWidth
-                        id="combo-box-demo"
-                        options={concernTypes}
-                        defaultValue="All Messages"
-                        renderInput={(params) => <TextField {...params} />}
+                        defaultValue={"All Messages"}
+                        onChange={(e) => {
+                            setfilter(e.target.value)
+                        }}
                         sx={{
                             "& .MuiOutlinedInput-root:hover": {
                                 "& > fieldset": {
@@ -240,10 +242,13 @@ export default function Container() {
                                 }
                             }
                         }}
-                        onChange={(e, newValue) => {
-                            setfilter(newValue)
-                        }}
-                    />
+                    >
+                        {concernTypes.map((option) => (
+                            <MenuItem key={option} value={option}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </TextField>
                 </div>
                 {
                     contacts.map((contact) => {
@@ -265,7 +270,7 @@ export default function Container() {
                 <div className="right">
                     <RightHeader conversation={currentConvo} />
                     {/* <Conversation resident={currentConvo.resident_id} list={messages[messageIndex]} socket={socket} /> */}
-                    <Conversation resident={currentConvo.resident_id} socket={socket} filterProps={filter}/>
+                    <Conversation resident={currentConvo.resident_id} socket={socket} filterProps={filter} />
                 </div>
             }
         </div>

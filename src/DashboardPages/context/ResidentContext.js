@@ -35,6 +35,10 @@ export const residentsReducer = (state, action) => {
         residents: state.residents.map((res) => (res._id === action.payload.updatedHead._id) ? action.payload.updatedHead : res),
         residents: state.residents.map((res) => (res._id === action.payload.resident._id) ? action.payload.resident : res),
       }
+    case 'NEW_FAMILY_HEAD':
+      return {
+        residents: state.residents.filter(w => w._id != action.payload.oldHead).map((res) => (res._id === action.payload.newHead._id) ? action.payload.newHead : res)
+      }
     default:
       return state
   }

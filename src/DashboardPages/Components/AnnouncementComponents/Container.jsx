@@ -2,11 +2,12 @@ import { useEffect, useState } from "react"
 import Header from "./Header"
 import AnnouncementsTable from "./AnnouncementTable"
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Container() {
     //get all announcement
     const { announcements, dispatch } = useAnnouncementContext()
-    const [rows, setRows] = useState(announcements)
+    const [rows, setRows] = useState(null)
 
     useEffect(() => {
         const fetchWorkouts = async () => {
@@ -14,12 +15,15 @@ function Container() {
             const json = await response.json()
             if (response.ok) {
                 dispatch({ type: 'SET_ANNOUNCEMENT', payload: json })
-                setRows(json)
             }
         }
 
         fetchWorkouts()
-    }, [dispatch])
+    }, [])
+
+    useEffect(() => {
+        setRows(announcements)
+    }, [announcements])
 
     const getRows = rows => setRows(rows)
 
@@ -30,8 +34,13 @@ function Container() {
                 <AnnouncementsTable list={rows} get={getRows} />
             </div>
         );
+    } else {
+        return (
+            <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <CircularProgress size={100} />
+            </div>
+        )
     }
-    
 }
 
 export default Container;

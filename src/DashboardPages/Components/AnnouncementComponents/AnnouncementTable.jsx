@@ -107,11 +107,9 @@ const Table = (props) => {
                 dispatch({ type: 'DELETE_ANNOUNCEMENT', payload: json })
                 props.get(announcements)
                 //delete announcement
-                const activity = "Deleted an announcement: " + title
-                const content = { activity }
                 fetch('https://drims-demo.herokuapp.com/api/activity/', {
                     method: 'POST',
-                    body: JSON.stringify(content),
+                    body: JSON.stringify({activity: "Deleted an announcement: " + title}),
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -141,11 +139,9 @@ const Table = (props) => {
                 dispatch({ type: 'UPDATE_ANNOUNCEMENT', payload: json })
 
                 //update announcement
-                const activity = "Updated an announcement: " + title
-                const content = { activity }
                 fetch('https://drims-demo.herokuapp.com/api/activity/', {
                     method: 'POST',
-                    body: JSON.stringify(content),
+                    body: JSON.stringify({activity: "Updated an announcement: " + title }),
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -264,7 +260,7 @@ const Table = (props) => {
                             {xButton}
                         </div>
                         <div>
-                            <p>Are you sure you want to remove this announcement? All data removed are archived and can be restored.</p>
+                            <p>Are you sure you want to remove this announcement? All data removed won’t be restored.</p>
                         </div>
                         <div className="rightAlign ModalButtons">
                             <button

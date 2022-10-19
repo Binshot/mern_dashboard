@@ -114,11 +114,9 @@ function Header(props) {
             dispatch({ type: 'CREATE_OFFICIAL', payload: json })
 
             // add activity logs
-            const activity = "Added an official: " + selectedResident.lastName + ", " + selectedResident.firstName
-            const content = { activity }
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify(content),
+                body: JSON.stringify({ activity: "Added an official: " + selectedResident.lastName + ", " + selectedResident.firstName }),
                 headers: {
                     'Content-Type': 'application/json'
                 }

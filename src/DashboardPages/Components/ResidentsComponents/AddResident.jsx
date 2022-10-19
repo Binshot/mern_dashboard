@@ -35,7 +35,7 @@ function AddResident(props) {
     const educationAttainmentOptions = ['No Formal Education', 'Elementary', 'High School',
         'General Education Development', 'Vocational Qualificiation', 'Bachelor’s Degree',
         'Master’s Degree', 'Doctorate or Higher'];
-    const familyMember = ["Husband", "Wife", "Daughter", "Son", "Sibling"];
+    const familyMember = ["Parent", "Spouse", "Child", "Sibling", "Grandparent", "Grandchild", "Other Relative"];
 
     const [value, setValue] = React.useState(0);
 
@@ -100,11 +100,10 @@ function AddResident(props) {
             toggleSnackbar(true)
 
             //Added a Head of the family
-            const activity = "Added a member of the family: " + lastName + ", " + firstName
-            const content = { activity }
+            
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify(content),
+                body: JSON.stringify({ activity: "Added a member of the family: " + lastName + ", " + firstName }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -142,11 +141,9 @@ function AddResident(props) {
             toggleSnackbar(true)
 
             //Added a member of the family
-            const activity = "Added a member of the family: " + lastName + ", " + firstName
-            const content = { activity }
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify(content),
+                body: JSON.stringify({ activity: "Added a member of the family: " + lastName + ", " + firstName }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -379,6 +376,9 @@ function AddResident(props) {
                                                             error={emptyFields.includes('Birthday') ? true : false}
                                                             id="date"
                                                             type="date"
+                                                            inputProps={{
+                                                                max: new Date().toISOString().slice(0, 10)
+                                                            }}
                                                             placeholder="Choose Birthday"
                                                             InputLabelProps={{
                                                                 shrink: true,
