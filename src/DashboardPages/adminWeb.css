@@ -1430,7 +1430,12 @@ input[type="file"] {
     margin: 24px 24px 50px;
 }
 
-.message-container .left .contacts,
+.message-container .left .contacts{
+    padding: 6px 6px 6px 24px;
+    margin: 14px 14px 0 0;
+    overflow-y: scroll;
+}
+
 .message-container .right .conversation {
     flex-grow: 1;
     padding: 6px 6px 6px 24px;
@@ -1445,6 +1450,7 @@ input[type="file"] {
     padding: 12px 12px 12px 24px;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
 .message-container .left .contacts .contactTile .dot{

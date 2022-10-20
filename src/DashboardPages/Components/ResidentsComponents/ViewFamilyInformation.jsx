@@ -9,10 +9,8 @@ import FamilyModal from "./FamilyMembersModal/ViewUpdate"
 
 import Modal from "../CommonComponents/Modal"
 //FOR SNACKBAR
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
+import {Snackbar, IconButton, Button, Tooltip } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
 
 //context
 import { useResidentContext } from "../../hooks/userResidentContext"
@@ -201,6 +199,7 @@ function ViewFamilyInformation(props) {
                                         </h5>
                                     </div>
                                     <div className='flex-row actions' style={{ alignContent: "center", justifyContent: "center" }}>
+                                    <Tooltip title="View" arrow>
                                         <button
                                             style={{ marginRight: "16px" }}
                                             className="solidButton squareButton buttonGreen"
@@ -213,6 +212,8 @@ function ViewFamilyInformation(props) {
                                             }}>
                                             <img src={View} alt="" />
                                         </button>
+                                        </Tooltip>
+                                        <Tooltip title="Update" arrow>
                                         <button
                                             style={{ marginRight: "16px" }}
                                             className="solidButton squareButton buttonBlue"
@@ -225,6 +226,8 @@ function ViewFamilyInformation(props) {
                                             }} >
                                             <img src={Update} alt="" />
                                         </button>
+                                        </Tooltip>
+                                        <Tooltip title="Delete" arrow>
                                         <button className='delete squareButton'
                                             type='button'
                                             onClick={() => {
@@ -233,6 +236,7 @@ function ViewFamilyInformation(props) {
                                             }}>
                                             <img src={Delete} alt="" />
                                         </button>
+                                        </Tooltip>
                                     </div>
                                 </div>
                             )

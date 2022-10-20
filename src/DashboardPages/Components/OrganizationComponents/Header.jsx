@@ -25,7 +25,7 @@ function Header(props) {
     const { organizations, dispatch } = useOrganizationContext()
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
-    const [emptyFields, setEmptyFields] = useState([])
+    const [emptyFieldss, setEmptyFields] = useState([])
 
     const [AddmodalShown, toggleAddModal] = useState(false);
     const [cancelModal, setCancelModal] = useState(false)
@@ -34,8 +34,7 @@ function Header(props) {
     const [officialList, setOfficialList] = useState(null)
     const [selectedResident, setSelectedResident] = useState(null)
     const [position, setPosition] = useState(null)
-    const [name, setName] = useState(null)
-
+    // const [name, setName] = useState(null)
     useEffect(() => {
         const fetchResident = async () => {
             const response = await fetch('https://drims-demo.herokuapp.com/api/residents/')
@@ -59,12 +58,12 @@ function Header(props) {
     }
 
     //Options
-    const positionOptions = ['Chairman', 'Chairperson', 'Kagawad', 'SB Member', 'Member'];
+    const positionOptions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'Board Member'];
     const membername = [];
     if (officialList) {
         officialList.map((props) => {
             membername.push(
-                { label: props.lastName + ", " + props.firstName, id: props._id }
+                { label: `${props.lastName}, ${props.firstName}`, id: props._id }
             )
         })
     }
@@ -90,28 +89,52 @@ function Header(props) {
     const handleSubmit = async (e) => {
         setIsLoading(true)
         e.preventDefault()
-        let resident_id
-        selectedResident ? resident_id = selectedResident._id : resident_id = ''
-        const official = { resident_id, position }
 
         const response = await fetch('https://drims-demo.herokuapp.com/api/organization/', {
             method: 'POST',
-            body: JSON.stringify(official),
+            body: JSON.stringify({
+                resident_id: selectedResident ? selectedResident._id : null,
+                position: position
+            }),
             headers: {
                 'Content-Type': 'application/json'
             }
         })
 
         const json = await response.json()
-        console.log(json)
 
         if (response.ok) {
             cancelForm()
             setIsLoading(false)
             toggleSnackbar(true)
             setChanged(false)
-            console.log('new official added:', json)
-            dispatch({ type: 'CREATE_OFFICIAL', payload: json })
+            const resresponse = await fetch('https://drims-demo.herokuapp.com/api/residents/' + json.resident_id)
+            const resjson = await resresponse.json()
+            if (resresponse.ok) {
+                let sortPosition
+                switch (position) {
+                    case "President":
+                        sortPosition = 1;
+                        break;
+                    case "Vice President":
+                        sortPosition = 2;
+                        break;
+                    case "Secretary":
+                        sortPosition = 3;
+                        break;
+                    case "Treasurer":
+                        sortPosition = 4;
+                        break;
+                    case "Auditor":
+                        sortPosition = 5;
+                        break;
+                    default:
+                        sortPosition = 6;
+                        break;
+                }
+                const data = { official: resjson, position: json.position, _id: json._id, positionIndex: sortPosition }
+                dispatch({ type: 'CREATE_OFFICIAL', payload: data })
+            }
 
             // add activity logs
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
@@ -125,7 +148,8 @@ function Header(props) {
             setError(json.error)
             console.log(json.error)
             setIsLoading(false)
-            setEmptyFields(json.emptyFields)
+            setEmptyFields(json.emptyFields || [])
+            console.log(json.emptyFields)
         }
     }
 
@@ -154,7 +178,6 @@ function Header(props) {
         toggleAddModal(false)
         setError(null)
         setEmptyFields([])
-        setName(null)
         setPosition(null)
         setChanged(false)
     }
@@ -190,17 +213,16 @@ function Header(props) {
                                 <h4 style={{ marginBottom: "8px" }}>Resident's Name</h4>
                                 <Autocomplete
                                     disablePortal
-                                    className="roundRadius"
                                     id="combo-box-demo"
                                     options={membername}
-                                    value={name}
+                                    isOptionEqualToValue={(option, value) => option.label == value.label}
                                     renderInput={(params) => <TextField {...params}
                                         placeholder="Choose Resident"
-                                        error={emptyFields.includes('Resident') ? true : false}
+                                        error={emptyFieldss.includes('Resident') ? true : false}
                                     />}
                                     onChange={(event, newValue) => {
                                         newValue && fetchSingleResident(newValue.id)
-                                        setName(newValue.label)
+                                        // setName(newValue.label)
                                         setChanged(true)
                                     }}
                                     sx={{
@@ -216,8 +238,10 @@ function Header(props) {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={positionOptions}
-                                    renderInput={(params) => <TextField {...params} placeholder="Choose Position"
-                                        error={emptyFields.includes('Position') ? true : false} />}
+                                    renderInput={(params) => <TextField {...params}
+                                        placeholder="Choose Position"
+                                        error={emptyFieldss.includes('Position') ? true : false}
+                                    />}
                                     onChange={(event, newValue) => {
                                         setPosition(newValue)
                                         setChanged(true)

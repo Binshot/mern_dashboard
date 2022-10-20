@@ -2,6 +2,7 @@ import Avatar from "../NewImageFiles/Resident/Avatar.svg"
 import View from "../NewImageFiles/ActionButton/View.svg"
 import { useState, useEffect } from "react";
 import ViewResident from "./ViewResident"
+import Tooltip from '@mui/material/Tooltip';
 
 export default function RightHeader(props) {
     const { conversation } = props;
@@ -49,9 +50,11 @@ export default function RightHeader(props) {
                     <h3 style={{ fontSize: "16px", lineHeight: "150%" }}>{conversation.resident_name}</h3>
                     <p style={{ fontSize: "12px", color: "#9C9C9C" }}>{conversation.email}</p>
                 </div>
-                <button className="solidButton squareButton buttonGreen" onClick={() => setshowModal(true)}>
-                    <img src={View} alt="" />
-                </button>
+                <Tooltip title="View" arrow>
+                    <button className="solidButton squareButton buttonGreen" onClick={() => setshowModal(true)}>
+                        <img src={View} alt="" />
+                    </button>
+                </Tooltip>
             </div>
         </>
     )

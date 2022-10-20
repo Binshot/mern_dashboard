@@ -7,7 +7,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 function Container() {
 
     const { organizations, dispatch } = useOrganizationContext()
-
     // get all resident that are officials
     const [rows, setRows] = useState(null)
 
@@ -21,7 +20,28 @@ function Container() {
                 if (resresponse.ok) {
                     const dta = await json.map(props => {
                         let obj = resjson.find(r => r._id === props.resident_id)
-                        return { official: obj, position: props.position, _id: props._id }
+                        let sortPosition
+                        switch (props.position) {
+                            case "President":
+                                sortPosition = 1;
+                                break;
+                            case "Vice President":
+                                sortPosition = 2;
+                                break;
+                            case "Secretary":
+                                sortPosition = 3;
+                                break;
+                            case "Treasurer":
+                                sortPosition = 4;
+                                break;
+                            case "Auditor":
+                                sortPosition = 5;
+                                break;
+                            default:
+                                sortPosition = 6;
+                                break;
+                        }
+                        return { official: obj, position: props.position, _id: props._id, positionIndex: sortPosition }
                     })
                     dispatch({ type: 'SET_OFFICIAL', payload: dta })
                 }
@@ -30,7 +50,7 @@ function Container() {
 
         fetchOfficials()
     }, [])
-    
+
     useEffect(() => {
         setRows(organizations)
     }, [organizations])
@@ -44,9 +64,9 @@ function Container() {
                 <Officials list={rows} />
             </div>
         );
-    }else {
+    } else {
         return (
-            <div style={{height: "100%", display: "flex", alignItems: "center", justifyContent: "center"} }>
+            <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <CircularProgress size={100} />
             </div>
         )

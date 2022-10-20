@@ -137,7 +137,7 @@ export default function Conversation(props) {
 
     return (
         <>
-            <div className="conversation">
+            <div className="conversation" style={{flexGrow: "1"}}>
                 {/* <div className='dateSnackBar'></div> */}
                 {
                     conversation && props.filterProps &&

@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from "react"
 import { io } from "socket.io-client";
 
 import { useAuthContext } from '../../hooks/useAuthContext';
+import Avatar from "../NewImageFiles/Resident/Avatar.svg"
 
 export default function Container() {
     const concernTypes = [
@@ -250,20 +251,22 @@ export default function Container() {
                         ))}
                     </TextField>
                 </div>
-                {
-                    contacts.map((contact) => {
-                        const resident = getResidentName(contact);
-                        return (
-                            <Contacts
-                                key={contact._id}
-                                contact={contact}
-                                contactList={contacts}
-                                resident={resident}
-                                changeConvo={handleChangeCurrentConvo}
-                            />
-                        )
-                    })
-                }
+                <div className="contacts" >
+                    {
+                        contacts.map((contact) => {
+                            const resident = getResidentName(contact);
+                            return (
+                                <Contacts
+                                    key={contact._id}
+                                    contact={contact}
+                                    contactList={contacts}
+                                    resident={resident}
+                                    changeConvo={handleChangeCurrentConvo}
+                                />
+                            )
+                        })
+                    }
+                </div>
             </div>
             {
                 currentConvo &&

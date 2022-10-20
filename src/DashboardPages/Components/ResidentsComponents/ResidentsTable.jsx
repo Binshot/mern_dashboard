@@ -287,7 +287,7 @@ const Table = (props) => {
                         <thead>
                             <tr>
                                 <td><h4>HEAD OF THE FAMILY</h4> </td>
-                                <td style={{ width: "25%" }}><h4>ACTION</h4></td>
+                                <td style={{ width: "305px" }}><h4>ACTION</h4></td>
                             </tr>
                         </thead>
                         <tbody>
@@ -306,8 +306,9 @@ const Table = (props) => {
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td>
-                                    <h4>Total Residents: {residents.filter(head => head.isHeadOfFamily == true).length}</h4>
+                                <td >
+                                    <h4>Total Families: <span style={{fontWeight: "normal"}} > {residents.filter(head => head.isHeadOfFamily == true).length} </span></h4>
+                                    <h4>Total Residents: <span style={{fontWeight: "normal"}} > {residents.length} </span></h4>
                                 </td>
                                 <td >
                                     <PageNumber

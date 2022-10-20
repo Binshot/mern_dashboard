@@ -6,6 +6,7 @@ import Update from "../NewImageFiles/ActionButton/Update.svg"
 import Delete from "../NewImageFiles/ActionButton/Delete.svg"
 import TextField from "@mui/material/TextField";
 import Autocomplete from '@mui/material/Autocomplete';
+import Tooltip from '@mui/material/Tooltip';
 
 import Modal from "../CommonComponents/Modal"
 // import useFetch from "../usFetch"
@@ -29,7 +30,7 @@ function Officials(props) {
     const [updateModalShown, toggleUpdateModal] = useState(false);
     const [deleteModal, toggleDeleteModal] = useState(false)
 
-    const positionOptions = ['Chairman', 'Chairperson', 'Kagawad', 'SB Member', 'Member'];
+    const positionOptions = ['President', 'Vice President', 'Secretary', 'Treasurer', 'Auditor', 'Board Member'];
     const [snackbar, toggleSnackbar] = useState(false);
     const [deleteSnackbar, toggleDeleteSnackbar] = useState(false);
 
@@ -65,7 +66,6 @@ function Officials(props) {
 
     // handle update official
     const handleUpdate = async () => {
-
         const response = await fetch('https://drims-demo.herokuapp.com/api/organization/'
             + id, {
             method: 'PATCH',
@@ -80,16 +80,36 @@ function Officials(props) {
         })
 
         const json = await response.json()
-
         if (response.ok) {
-            dispatch({ type: 'UPDATE_OFFICIAL', payload: json })
+            let sortPosition
+            switch (json.position) {
+                case "President":
+                    sortPosition = 1;
+                    break;
+                case "Vice President":
+                    sortPosition = 2;
+                    break;
+                case "Secretary":
+                    sortPosition = 3;
+                    break;
+                case "Treasurer":
+                    sortPosition = 4;
+                    break;
+                case "Auditor":
+                    sortPosition = 5;
+                    break;
+                default:
+                    sortPosition = 6;
+                    break;
+            }
+            dispatch({ type: 'UPDATE_OFFICIAL', payload: {json, sortPosition} })
             toggleUpdateModal(false)
             toggleSnackbar(true)
 
             //update announcement
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify({activity: "Updated an official: " + nameOfMember}),
+                body: JSON.stringify({ activity: "Updated an official: " + nameOfMember }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -227,7 +247,7 @@ function Officials(props) {
                                         onChange={(e, newValue) => {
                                             setPosition(newValue)
                                             setChanged(true)
-                                            }}
+                                        }}
                                         sx={{
                                             "& .MuiOutlinedInput-root:hover": {
                                                 "& > fieldset": {
@@ -407,40 +427,46 @@ function Officials(props) {
                                 </div>
                                 <p className="marginTop8">{props.position}</p>
                                 <div className="flex-row actions">
-                                    <button className="solidButton squareButton buttonGreen" style={{ marginRight: "16px" }}
-                                        onClick={() => {
-                                            setPosition(props.position)
-                                            setAddress(props.official.address)
-                                            setEmail(props.official.email)
-                                            setPhone(props.official.contactNumber)
-                                            setNameOfMember(props.official.firstName + " " + props.official.lastName)
-                                            setBday(props.official.birthday)
-                                            toggleModal(true)
-                                        }}>
-                                        <img src={View} alt="" />
-                                    </button>
-                                    <button className="solidButton squareButton buttonBlue" style={{ marginRight: "16px" }}
-                                        onClick={() => {
-                                            setPosition(props.position)
-                                            setAddress(props.official.address)
-                                            setEmail(props.official.email)
-                                            setPhone(props.official.contactNumber)
-                                            setNameOfMember(props.official.firstName + " " + props.official.lastName)
-                                            setBday(props.official.birthday)
-                                            setId(props._id)
-                                            setResidentID(props.resident_id)
-                                            toggleUpdateModal(true)
-                                        }}>
-                                        <img src={Update} alt="" />
-                                    </button>
-                                    <button className='delete squareButton'
-                                        onClick={() => {
-                                            setNameOfMember(props.official.firstName + " " + props.official.lastName)
-                                            setId(props._id)
-                                            toggleDeleteModal(true)
-                                        }}>
-                                        <img src={Delete} alt="" />
-                                    </button>
+                                    <Tooltip title="View" arrow>
+                                        <button className="solidButton squareButton buttonGreen" style={{ marginRight: "16px" }}
+                                            onClick={() => {
+                                                setPosition(props.position)
+                                                setAddress(props.official.address)
+                                                setEmail(props.official.email)
+                                                setPhone(props.official.contactNumber)
+                                                setNameOfMember(props.official.firstName + " " + props.official.lastName)
+                                                setBday(props.official.birthday)
+                                                toggleModal(true)
+                                            }}>
+                                            <img src={View} alt="" />
+                                        </button>
+                                    </Tooltip>
+                                    <Tooltip title="Update" arrow>
+                                        <button className="solidButton squareButton buttonBlue" style={{ marginRight: "16px" }}
+                                            onClick={() => {
+                                                setPosition(props.position)
+                                                setAddress(props.official.address)
+                                                setEmail(props.official.email)
+                                                setPhone(props.official.contactNumber)
+                                                setNameOfMember(props.official.firstName + " " + props.official.lastName)
+                                                setBday(props.official.birthday)
+                                                setId(props._id)
+                                                setResidentID(props.official._id)
+                                                toggleUpdateModal(true)
+                                            }}>
+                                            <img src={Update} alt="" />
+                                        </button>
+                                    </Tooltip>
+                                    <Tooltip title="Delete" arrow>
+                                        <button className='delete squareButton'
+                                            onClick={() => {
+                                                setNameOfMember(props.official.firstName + " " + props.official.lastName)
+                                                setId(props._id)
+                                                toggleDeleteModal(true)
+                                            }}>
+                                            <img src={Delete} alt="" />
+                                        </button>
+                                    </Tooltip>
                                 </div>
                             </div>
                         )

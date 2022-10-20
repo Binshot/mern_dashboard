@@ -10,7 +10,7 @@ export const organizationReducer = (state, action) => {
       }
     case 'CREATE_OFFICIAL':
       return {
-        organizations: [action.payload, ...state.organizations]
+        organizations: [action.payload, ...state.organizations].sort((a, b) => a.positionIndex - b.positionIndex)
       }
     case 'DELETE_OFFICIAL':
       return {
@@ -18,7 +18,10 @@ export const organizationReducer = (state, action) => {
       }
     case 'UPDATE_OFFICIAL':
       return {
-        organizations: state.organizations.map((member) => (member._id === action.payload._id) ? action.payload : member)
+        organizations: state.organizations.map((member) => (member._id === action.payload.json._id)
+          ? { ...member, position: action.payload.json.position, positionIndex: action.payload.sortPosition }
+          : member
+        ).sort((a, b) => a.positionIndex - b.positionIndex)
       }
     default:
       return state
