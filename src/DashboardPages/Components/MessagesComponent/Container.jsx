@@ -9,8 +9,10 @@ import { io } from "socket.io-client";
 
 import { useAuthContext } from '../../hooks/useAuthContext';
 import Avatar from "../NewImageFiles/Resident/Avatar.svg"
-
+import { messageCount } from "../CommonComponents/messageCount"
+import { useMessageContext } from "../../hooks/useMessageContext"
 export default function Container() {
+    const { messages, dispatch } = useMessageContext()
     const concernTypes = [
         "All Messages",
         "Community Question",
@@ -18,74 +20,6 @@ export default function Container() {
         "Complaint",
         "Damage Report",
         "Others"
-    ]
-
-    const messages = [
-        {
-            "_id": "633e371987de554f263cc3e7",
-            "email": "w@s.com",
-            "concernType": "Event",
-            "message_thread": [
-                {
-                    "message_body": "Hello Admin",
-                    "sent_by_resident": true,
-                    "read_by_admin": true,
-                    "_id": "633e371987de554f263cc3e9",
-                    "message_date": "2022-10-06T02:02:01.703Z"
-                },
-                {
-                    "message_body": "Hi resident",
-                    "sent_by_resident": false,
-                    "read_by_admin": true,
-                    "_id": "633e37f44bacfcf38bf2606f",
-                    "message_date": "2022-10-06T02:05:40.354Z"
-                },
-                {
-                    "message_body": "Hi again",
-                    "sent_by_resident": true,
-                    "read_by_admin": true,
-                    "_id": "633e38564bacfcf38bf26074",
-                    "message_date": "2022-10-06T02:07:18.768Z"
-                }
-            ],
-            "createdAt": "2022-10-06T02:02:01.631Z",
-            "updatedAt": "2022-10-06T02:07:18.765Z",
-            "__v": 0
-        },
-        {
-            "_id": "633e38754bacfcf38bf26076",
-            "email": "q@s.com",
-            "concernType": "Community",
-            "message_thread": [
-                {
-                    "message_body": "Hi again",
-                    "sent_by_resident": true,
-                    "read_by_admin": true,
-                    "_id": "633e38754bacfcf38bf26078",
-                    "message_date": "2022-10-06T02:07:49.753Z"
-                }
-            ],
-            "createdAt": "2022-10-06T02:07:49.699Z",
-            "updatedAt": "2022-10-07T03:03:52.494Z",
-            "__v": 0
-        },
-        {
-            "_id": "633e38a74bacfcf38bf2607a",
-            "email": "w@s.com",
-            "concernType": "Community",
-            "message_thread": [
-                {
-                    "message_body": "Hi there admin",
-                    "sent_by_resident": true,
-                    "read_by_admin": true,
-                    "_id": "633e38a74bacfcf38bf2607c",
-                    "message_date": "2022-10-06T02:08:39.037Z"
-                }
-            ],
-            "createdAt": "2022-10-06T02:08:39.001Z",
-            "updatedAt": "2022-10-07T03:03:41.232Z",
-            "__v": 0
-        }
     ]
 
     const [messageIndex, setI] = useState(0)
@@ -119,7 +53,7 @@ export default function Container() {
 
             if (response.ok) {
                 if (json.length > 0) {
-                    console.log(json);
+                    // console.log(json);
                     setContacts(json)
                     handleChangeCurrentConvo(json[0], json);
                 }
@@ -175,7 +109,8 @@ export default function Container() {
                 // Checks if the message being received is from the current conversation
                 if (arrivalMessage.resident_id === currentConvo.resident_id) {
                     update_read_status();
-
+                    // count && setCount(count - 1)
+                    dispatch({ type: 'SUBTRACT_MESSAGE_COUNT' })
                     newArrivalMessage.message_thread.read_by_admin = true
                 }
             }
@@ -186,10 +121,12 @@ export default function Container() {
             if (x) {
                 x.message_thread = newArrivalMessage.message_thread;
                 const newContacts = [x, ...y]
+                // dispatch({ type: 'SUBTRACT_MESSAGE_COUNT' })
                 setContacts(newContacts)
             } else {
                 console.log(newArrivalMessage);
                 const newContacts = [newArrivalMessage, ...y];
+                // dispatch({ type: 'SUBTRACT_MESSAGE_COUNT' })
                 setContacts(newContacts);
             }
         }
@@ -208,6 +145,7 @@ export default function Container() {
         if (!read_status) {
             const newContacts = contacts.map((c) => {
                 if (c._id === currentContact._id) {
+                    dispatch({ type: 'SUBTRACT_MESSAGE_COUNT' })
                     return { ...c, message_thread: { ...c.message_thread, read_by_admin: true } };
                 }
                 return c;
@@ -272,7 +210,6 @@ export default function Container() {
                 currentConvo &&
                 <div className="right">
                     <RightHeader conversation={currentConvo} />
-                    {/* <Conversation resident={currentConvo.resident_id} list={messages[messageIndex]} socket={socket} /> */}
                     <Conversation resident={currentConvo.resident_id} socket={socket} filterProps={filter} />
                 </div>
             }

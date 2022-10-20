@@ -44,8 +44,6 @@ export const useLogin = () => {
       setIsLoading(false)
 
       // add activity logs
-      // const activity = "Admin logged in" 
-      // const content = {activity}
       fetch('https://drims-demo.herokuapp.com/api/activity/', {
         method: 'POST',
         body: JSON.stringify({ activity: "Admin logged in" }),

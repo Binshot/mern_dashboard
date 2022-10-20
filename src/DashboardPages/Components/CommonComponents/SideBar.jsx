@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { NavLink, useLocation, Navigate } from "react-router-dom";
 import Logo from "../NewImageFiles/Sidebar/Logo.svg";
 import { useLogout } from '../../hooks/useLogout'
@@ -28,14 +28,16 @@ import Help from "../NewImageFiles/Sidebar/Help.svg";
 import Activity from "../NewImageFiles/Sidebar/Activity.svg";
 import LogOut from "../NewImageFiles/Sidebar/Logout.svg";
 
+import { io } from "socket.io-client";
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { messageCount } from "./messageCount"
+import { useMessageContext } from "../../hooks/useMessageContext"
 export default function SideBar() {
+    const { messages, dispatch } = useMessageContext()
     const path = useLocation().pathname
 
+    const { setCount, count } = messageCount()
     const { logout } = useLogout()
-
-    const handleLogout = () => {
-        logout()
-    }
 
     const [logoutModal, setlogoutModal] = useState(false)
 
@@ -47,15 +49,98 @@ export default function SideBar() {
                 color="inherit"
                 onClick={() => {
                     setlogoutModal(false)
-                    document.getElementById("blurContent").id = "mainContentBlur";
-                    document.getElementById("blurTop").id = "topBlur";
-                    document.getElementById("blurSide").id = "sideBlur";
                 }}
             >
                 <CloseIcon fontSize="small" />
             </IconButton>
         </React.Fragment>
     )
+
+    const { user } = useAuthContext();
+
+    const [currentUser, setCurrentUser] = useState();
+
+    const [contacts, setContacts] = useState([]);
+
+    // Message received
+    const [arrivalMessage, setArrivalMessage] = useState(null);
+
+    // Socket for realtime updates
+    const socket = useRef();
+
+    useEffect(() => {
+        if (user) setCurrentUser(user)
+    }, []);
+
+    useEffect(() => {
+        const fetchContacts = async () => {
+            const response = await fetch('https://drims-demo.herokuapp.com/api/messages/get-contacts');
+
+            const json = await response.json();
+
+            if (response.ok) {
+                if (json.length > 0) {
+                    // console.log(json);
+                    setContacts(json)
+                }
+            }
+
+            if (!response.ok) {
+                // console.log(json.error);
+            }
+        }
+
+        fetchContacts()
+    }, [currentUser])
+
+    // Connect to socket
+    useEffect(() => {
+        if (currentUser) {
+            socket.current = io('https://drims-demo.herokuapp.com/');
+            socket.current.emit("add-user", currentUser.id);
+
+            // If user is ADMIN, update the contacts side if there are new messges
+            if (socket.current) {
+                socket.current.on("update-contacts", (data) => {
+                    setArrivalMessage(data);
+                });
+            }
+        }
+    }, [currentUser]);
+
+    useEffect(() => {
+        // Checks if there is a conversation selected
+        if (arrivalMessage) {
+            const newArrivalMessage = arrivalMessage;
+            // Replace the item in contacts if it is from the message being received
+            const x = contacts.find((c) => c.resident_id === newArrivalMessage.resident_id);
+            const y = contacts.filter((c) => c.resident_id !== newArrivalMessage.resident_id);
+            if (x) {
+                x.message_thread = newArrivalMessage.message_thread;
+                const newContacts = [x, ...y]
+                setContacts(newContacts)
+            } else {
+                const newContacts = [newArrivalMessage, ...y];
+                setContacts(newContacts);
+            }
+        }
+    }, [arrivalMessage]);
+
+    useEffect(() => {
+        if (contacts) {
+            const counts = contacts.filter(contact => {
+                return contact.message_thread.read_by_admin == false
+            }).length
+
+            dispatch({ type: 'ADD_MESSAGE_COUNT', payload: counts })
+        }
+    }, [arrivalMessage || contacts])
+
+    // useEffect(() => {
+    //     setMessageCount(count)
+    // }, [contacts])
+
+    // console.log(MessageCount)
     return (
         <>
             <Modal
@@ -86,9 +171,6 @@ export default function SideBar() {
                             className="borderedButton"
                             onClick={() => {
                                 setlogoutModal(false)
-                                document.getElementById("blurContent").id = "mainContentBlur";
-                                document.getElementById("blurTop").id = "topBlur";
-                                document.getElementById("blurSide").id = "sideBlur";
                             }}>
                             Cancel
                         </button>
@@ -143,9 +225,11 @@ export default function SideBar() {
                         <div className="flex-row navLinks">
                             <img src={(path === "/admin/messages") ? ActiveMessage : Messages} alt="" />
                             Messages
-                            <div className="messageNotif">
-                                1
-                            </div>
+                            {messages != 0 && (
+                                <div className="messageNotif">
+                                    {messages}
+                                </div>
+                            )}
                         </div>
                     </NavLink>
                     <div className="lowerNav">

@@ -3,7 +3,7 @@ import Container from '../MessagesComponent/Container';
 
 function App() {
   return (
-    <Container />
+      <Container />
   );
 }
 
