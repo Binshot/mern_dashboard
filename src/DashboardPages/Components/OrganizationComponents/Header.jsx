@@ -180,6 +180,7 @@ function Header(props) {
         setEmptyFields([])
         setPosition(null)
         setChanged(false)
+        setSelectedResident(null)
     }
 
     const pageStyle = `
@@ -255,15 +256,19 @@ function Header(props) {
                                     }}
                                 />
                             </div>
-
                             <div className="addOfficialDetails">
                                 <div className="modalheader">
                                     <label className='label'>Detailed Information</label><br />
                                 </div>
                                 <div className="details">
                                     <div className="addOfficialDetailsHeader">
-                                        <img src={Avatar} alt="" className="modalAvatar" />
-                                        <h3>{selectedResident ? selectedResident.firstName + " " + selectedResident.lastName : "No resident have been displayed. Please select or type a resident"}</h3>
+                                        <img className="modalAvatar"
+                                            src={selectedResident && selectedResident.accountImage
+                                                ? `https://drims-demo.herokuapp.com/api/uploads/${selectedResident.accountImage}`
+                                                // ? ImageURL
+                                                : Avatar}
+                                        />
+                                        <h3>{selectedResident ? selectedResident.firstName + " " + selectedResident.lastName : "No resident have been displayed. Please select a resident"}</h3>
                                     </div>
                                     <div className=" topAlign">
                                         <div className="flex-row marginBottom marginTop">

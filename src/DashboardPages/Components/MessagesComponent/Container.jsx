@@ -158,6 +158,8 @@ export default function Container() {
         return `${c.firstName} ${c.lastName}`;
     }
 
+    const [currentConvoIndex, setcurrentConvoIndex] = useState(0)
+    const setCurrentConvos = set => setcurrentConvoIndex(set)
     return (
         <>
             {contacts ?
@@ -192,7 +194,7 @@ export default function Container() {
                         </div>
                         <div className="contacts" >
                             {
-                                contacts.map((contact) => {
+                                contacts.map((contact, index) => {
                                     const resident = getResidentName(contact);
                                     return (
                                         <Contacts
@@ -201,6 +203,9 @@ export default function Container() {
                                             contactList={contacts}
                                             resident={resident}
                                             changeConvo={handleChangeCurrentConvo}
+                                            convoIndex={index}
+                                            currentIndex={currentConvoIndex}
+                                            returnIndex={setCurrentConvos}
                                         />
                                     )
                                 })

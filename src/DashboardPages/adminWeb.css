@@ -938,10 +938,6 @@ button:disabled {
     margin-top: 24px;
 }
 
-.avatar {
-    margin-bottom: 16px;
-}
-
 .addOfficial .selects {
     width: 48%;
 }
@@ -971,12 +967,15 @@ button:disabled {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     text-align: center;
     padding: 0 30px;
 }
 
 .addOfficialDetailsHeader img {
     height: 100px;
+    width: 100px;
+    border-radius: 50%;
 }
 
 .officalModal {
@@ -1457,6 +1456,18 @@ input[type="file"] {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    border: 1px solid white;
+}
+
+.message-container .left .contacts .contactTile:hover:not(.active) {
+    border: 1px solid #7175F4;
+    border-radius: 8px;
+}
+
+.message-container .left .contacts .active {
+    border: 1px solid #070A57;
+    border-radius: 8px;
+    background: linear-gradient(0deg, rgba(7, 10, 87, 0.1), rgba(7, 10, 87, 0.1)), #FFFFFF;
 }
 
 .message-container .left .contacts .contactTile .dot {

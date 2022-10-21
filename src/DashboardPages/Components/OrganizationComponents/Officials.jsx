@@ -53,6 +53,7 @@ function Officials(props) {
         </React.Fragment>
     );
 
+    const [officialAvatar, setAvatar] = useState(null)
     const [position, setPosition] = useState('')
     const [address, setAddress] = useState('')
     const [email, setEmail] = useState('')
@@ -102,7 +103,7 @@ function Officials(props) {
                     sortPosition = 6;
                     break;
             }
-            dispatch({ type: 'UPDATE_OFFICIAL', payload: {json, sortPosition} })
+            dispatch({ type: 'UPDATE_OFFICIAL', payload: { json, sortPosition } })
             toggleUpdateModal(false)
             toggleSnackbar(true)
 
@@ -177,7 +178,12 @@ function Officials(props) {
                                 <label className='label'>Detailed Information</label><br />
                             </div>
                             <div>
-                                <img src={Avatar} alt="" className="modalAvatar" />
+                                <img className="modalAvatar" style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+                                    src={officialAvatar
+                                        ? `https://drims-demo.herokuapp.com/api/uploads/${officialAvatar}`
+                                        // ? ImageURL
+                                        : Avatar}
+                                />
                                 <h3 style={{ fontSize: "20px" }}>{nameOfMember}</h3>
                                 <div className="marginTop8">
                                     <h6 style={{ fontSize: "14px" }} >{position}</h6>
@@ -264,7 +270,12 @@ function Officials(props) {
                                     </div>
                                     <div className="details">
                                         <div className="addOfficialDetailsHeader">
-                                            <img src={Avatar} alt="" className="modalAvatar" />
+                                            <img className="modalAvatar"
+                                                src={officialAvatar
+                                                    ? `https://drims-demo.herokuapp.com/api/uploads/${officialAvatar}`
+                                                    // ? ImageURL
+                                                    : Avatar}
+                                            />
                                             <h3 style={{ fontSize: "20px" }}>{nameOfMember}</h3>
                                             <div className="marginTop8">
                                                 <h6 style={{ fontSize: "14px" }} >{position}</h6>
@@ -420,7 +431,12 @@ function Officials(props) {
                         return (
                             <div className="flex-column officialCard " key={props._id}>
                                 <div className="avatar">
-                                    <img src={Avatar} alt="" style={{ width: "100px" }} />
+                                    <img className="modalAvatar"  style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+                                        src={props.official.account_image
+                                            ? `https://drims-demo.herokuapp.com/api/uploads/${props.official.account_image}`
+                                            // ? ImageURL
+                                            : Avatar}
+                                    />
                                 </div>
                                 <div style={{ textOverflow: "ellipsis", overflow: "hidden", width: "180px", whiteSpace: "nowrap", fontWeight: "bold", fontSize: "20px" }}>
                                     {props.official.firstName} {props.official.lastName}
@@ -430,6 +446,7 @@ function Officials(props) {
                                     <Tooltip title="View" arrow>
                                         <button className="solidButton squareButton buttonGreen" style={{ marginRight: "16px" }}
                                             onClick={() => {
+                                                setAvatar(props.official.account_image)
                                                 setPosition(props.position)
                                                 setAddress(props.official.address)
                                                 setEmail(props.official.email)

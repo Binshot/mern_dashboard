@@ -1,11 +1,17 @@
 import Avatar from "../NewImageFiles/Resident/Avatar.svg"
 import format from "date-fns/format";
+import { useState } from "react";
 
 export default function Contacts(props) {
-    const { contact, contactList, changeConvo, resident } = props;
+    const { contact, contactList, changeConvo, resident, convoIndex, currentIndex, returnIndex } = props;
 
     return (
-        <div className="contactTile" onClick={() => changeConvo(contact, contactList)} style={{ cursor: "pointer" }}>
+        <div className={currentIndex == convoIndex ? "contactTile active" : "contactTile"} id={`convo${convoIndex}`} style={{ cursor: "pointer" }}
+            onClick={() => {
+                changeConvo(contact, contactList)
+                returnIndex(convoIndex)
+            }}
+        >
             {!contact.message_thread.read_by_admin && <div className="dot"></div>}
             <div className="contactHeader">
                 <img src={contact.accountImage ? `https://drims-demo.herokuapp.com/api/uploads/${contact.accountImage}` : Avatar} />
