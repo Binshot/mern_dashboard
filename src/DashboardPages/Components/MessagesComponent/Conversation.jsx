@@ -2,8 +2,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { format } from 'date-fns';
 import React, { useState, useEffect, useRef } from 'react';
 import View from "../NewImageFiles/Send.svg"
-import { TextField } from "@mui/material";
-
+import { TextField, CircularProgress } from "@mui/material";
 import { useAuthContext } from '../../hooks/useAuthContext';
 
 export default function Conversation(props) {
@@ -102,8 +101,8 @@ export default function Conversation(props) {
         const json = await response.json();
 
         if (response.ok) {
-             // If message_thread is updated in the database
-             socket.current.emit("send-msg", {
+            // If message_thread is updated in the database
+            socket.current.emit("send-msg", {
                 to: resident,
                 from: user.id,
                 message: json,
@@ -130,85 +129,85 @@ export default function Conversation(props) {
     }
 
     function filterItems(arr, query) {
-        return query == "All Messages" 
-        ? arr
-        : arr.filter((el) => el.concern_type.toLowerCase().includes(query.toLowerCase()))
-      }
-
+        return query == "All Messages"
+            ? arr
+            : arr.filter((el) => el.concern_type.toLowerCase().includes(query.toLowerCase()))
+    }
     return (
         <>
-            <div className="conversation" style={{flexGrow: "1"}}>
-                {/* <div className='dateSnackBar'></div> */}
-                {
-                    conversation && props.filterProps &&
-                    filterItems(conversation, props.filterProps).map((msg_thread, index) => {
-                        if (index === conversation.length - 1) currentThreadId = msg_thread._id;
-                        return (
-                            <React.Fragment key={msg_thread._id}>
-                                <div className='concernSnackBar'>
-                                    <ErrorOutlineIcon sx={{ color: "#0C1096" }} />
-                                    <p style={{ marginLeft: "10px" }}>
-                                        The concern is {msg_thread.concern_type}
-                                    </p>
-                                </div>
-                                {
-                                    msg_thread.message_thread.map((message) => {
-                                        return message.sent_by_resident === false
-                                            ?
-                                            <div style={{ alignSelf: "flex-end" }} className='admin' key={message._id}>
-                                                <div
-                                                    ref={scrollRef}
-                                                    className='message'
-                                                    style={{ cursor: "pointer" }}
-                                                    onClick={() => {
-                                                        displayTime.includes(message._id)
-                                                            ? setDisplayTime(displayTime.filter((d) => d !== message._id))
-                                                            : setDisplayTime([...displayTime, message._id])
-                                                    }}
-                                                >
-                                                    {message.message_body}
+            <div className='conversationWrapper'>
+                <div className="conversation">
+                    {
+                        conversation && props.filterProps &&
+                        filterItems(conversation, props.filterProps).map((msg_thread, index) => {
+                            if (index === conversation.length - 1) currentThreadId = msg_thread._id;
+                            return (
+                                <React.Fragment key={msg_thread._id}>
+                                    <div className='concernSnackBar'>
+                                        <ErrorOutlineIcon sx={{ color: "#0C1096" }} />
+                                        <p style={{ marginLeft: "10px" }}>
+                                            The concern is {msg_thread.concern_type}
+                                        </p>
+                                    </div>
+                                    {
+                                        msg_thread.message_thread.map((message) => {
+                                            return message.sent_by_resident === false
+                                                ?
+                                                <div style={{ alignSelf: "flex-end" }} className='admin' key={message._id}>
+                                                    <div
+                                                        ref={scrollRef}
+                                                        className='message'
+                                                        style={{ cursor: "pointer" }}
+                                                        onClick={() => {
+                                                            displayTime.includes(message._id)
+                                                                ? setDisplayTime(displayTime.filter((d) => d !== message._id))
+                                                                : setDisplayTime([...displayTime, message._id])
+                                                        }}
+                                                    >
+                                                        {message.message_body}
+                                                    </div>
+                                                    <div
+                                                        className='time'
+                                                        style={
+                                                            !displayTime.includes(message._id)
+                                                                ? { display: "none" }
+                                                                : { textAlign: "right" }
+                                                        }>
+                                                        {format(new Date(message.message_date), 'hh:mm aa')}
+                                                    </div>
                                                 </div>
-                                                <div
-                                                    className='time'
-                                                    style={
-                                                        !displayTime.includes(message._id)
-                                                            ? { display: "none" }
-                                                            : { textAlign: "right" }
-                                                    }>
-                                                    {format(new Date(message.message_date), 'hh:mm aa')}
+                                                :
+                                                <div className='user' key={message._id} >
+                                                    <div
+                                                        ref={scrollRef}
+                                                        className='message'
+                                                        style={{ cursor: "pointer" }}
+                                                        onClick={() => {
+                                                            displayTime.includes(message._id)
+                                                                ? setDisplayTime(displayTime.filter((d) => d !== message._id))
+                                                                : setDisplayTime([...displayTime, message._id])
+                                                        }}>
+                                                        {message.message_body}
+                                                    </div>
+                                                    <div
+                                                        className='time'
+                                                        style={
+                                                            !displayTime.includes(message._id)
+                                                                ? { display: "none" }
+                                                                : { display: "block" }
+                                                        }>
+                                                        {format(new Date(message.message_date), 'hh:mm aa')}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            :
-                                            <div className='user' key={message._id} >
-                                                <div
-                                                    ref={scrollRef}
-                                                    className='message'
-                                                    style={{ cursor: "pointer" }}
-                                                    onClick={() => {
-                                                        displayTime.includes(message._id)
-                                                            ? setDisplayTime(displayTime.filter((d) => d !== message._id))
-                                                            : setDisplayTime([...displayTime, message._id])
-                                                    }}>
-                                                    {message.message_body}
-                                                </div>
-                                                <div
-                                                    className='time'
-                                                    style={
-                                                        !displayTime.includes(message._id)
-                                                            ? { display: "none" }
-                                                            : { display: "block" }
-                                                    }>
-                                                    {format(new Date(message.message_date), 'hh:mm aa')}
-                                                </div>
-                                            </div>
+                                        }
+                                        )
                                     }
-                                    )
-                                }
-                            </React.Fragment>
-                        );
-                    })
-                }
-            </div >
+                                </React.Fragment>
+                            );
+                        })
+                    }
+                </div>
+            </div>
             <form onSubmit={handleSendMessage}>
                 <div className="inputfield">
                     <TextField

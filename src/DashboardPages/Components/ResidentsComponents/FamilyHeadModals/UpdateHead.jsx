@@ -179,7 +179,10 @@ function UpdateResident(props) {
                             <div>
                                 <div className="flex-column center">
                                     <div className='profileAvatar' style={{ marginBottom: "24px" }}>
-                                        <img src={Avatar} alt="" />
+                                        <img src={props.resident.account_image
+                                            ? `https://drims-demo.herokuapp.com/api/uploads/${props.resident.account_image}`
+                                            // ? ImageURL
+                                            : Avatar} />
                                     </div>
                                     <h4>{props.resident.lastName}, {props.resident.firstName} {props.resident.middleName}</h4>
                                     <p>head of the Family</p>

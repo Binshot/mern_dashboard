@@ -1,7 +1,7 @@
 import RightHeader from "./RightHeader"
 import Contacts from "./Contacts"
 import Conversation from "./Conversation"
-import { Autocomplete, TextField, MenuItem } from "@mui/material"
+import { TextField, MenuItem, CircularProgress } from "@mui/material"
 
 import { useState, useEffect, useRef } from "react"
 
@@ -31,7 +31,7 @@ export default function Container() {
 
     const [currentUser, setCurrentUser] = useState();
 
-    const [contacts, setContacts] = useState([]);
+    const [contacts, setContacts] = useState(null);
 
     const [currentConvo, setCurrentConvo] = useState();
 
@@ -109,7 +109,6 @@ export default function Container() {
                 // Checks if the message being received is from the current conversation
                 if (arrivalMessage.resident_id === currentConvo.resident_id) {
                     update_read_status();
-                    // count && setCount(count - 1)
                     dispatch({ type: 'SUBTRACT_MESSAGE_COUNT' })
                     newArrivalMessage.message_thread.read_by_admin = true
                 }
@@ -126,7 +125,7 @@ export default function Container() {
             } else {
                 console.log(newArrivalMessage);
                 const newContacts = [newArrivalMessage, ...y];
-                // dispatch({ type: 'SUBTRACT_MESSAGE_COUNT' })
+                dispatch({ type: 'SUBTRACT_MESSAGE_COUNT' })
                 setContacts(newContacts);
             }
         }
@@ -160,59 +159,66 @@ export default function Container() {
     }
 
     return (
-        <div className="message-container">
-            <div className="left">
-                <div className="header">
-                    <h2 style={{ fontSize: "36px" }}>Messages</h2>
-                </div>
-                <div style={{ margin: "0 24px" }}>
-                    <TextField
-                        id="outlined-select-currency"
-                        select
-                        fullWidth
-                        defaultValue={"All Messages"}
-                        onChange={(e) => {
-                            setfilter(e.target.value)
-                        }}
-                        sx={{
-                            "& .MuiOutlinedInput-root:hover": {
-                                "& > fieldset": {
-                                    borderColor: "#7175F4"
-                                }
+        <>
+            {contacts ?
+                <div className="message-container">
+                    <div className="left">
+                        <div className="header">
+                            <h2 style={{ fontSize: "36px" }}>Messages</h2>
+                        </div>
+                        <div style={{ margin: "0 24px" }}>
+                            <TextField
+                                id="outlined-select-currency"
+                                select
+                                fullWidth
+                                defaultValue={"All Messages"}
+                                onChange={(e) => {
+                                    setfilter(e.target.value)
+                                }}
+                                sx={{
+                                    "& .MuiOutlinedInput-root:hover": {
+                                        "& > fieldset": {
+                                            borderColor: "#7175F4"
+                                        }
+                                    }
+                                }}
+                            >
+                                {concernTypes.map((option) => (
+                                    <MenuItem key={option} value={option}>
+                                        {option}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </div>
+                        <div className="contacts" >
+                            {
+                                contacts.map((contact) => {
+                                    const resident = getResidentName(contact);
+                                    return (
+                                        <Contacts
+                                            key={contact._id}
+                                            contact={contact}
+                                            contactList={contacts}
+                                            resident={resident}
+                                            changeConvo={handleChangeCurrentConvo}
+                                        />
+                                    )
+                                })
                             }
-                        }}
-                    >
-                        {concernTypes.map((option) => (
-                            <MenuItem key={option} value={option}>
-                                {option}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                </div>
-                <div className="contacts" >
+                        </div>
+                    </div>
                     {
-                        contacts.map((contact) => {
-                            const resident = getResidentName(contact);
-                            return (
-                                <Contacts
-                                    key={contact._id}
-                                    contact={contact}
-                                    contactList={contacts}
-                                    resident={resident}
-                                    changeConvo={handleChangeCurrentConvo}
-                                />
-                            )
-                        })
+                        currentConvo &&
+                        <div className="right">
+                            <RightHeader conversation={currentConvo} />
+                            <Conversation resident={currentConvo.resident_id} socket={socket} filterProps={filter} />
+                        </div>
                     }
-                </div>
-            </div>
-            {
-                currentConvo &&
-                <div className="right">
-                    <RightHeader conversation={currentConvo} />
-                    <Conversation resident={currentConvo.resident_id} socket={socket} filterProps={filter} />
+                </div> :
+                <div style={{ height: "100%", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <CircularProgress size={100} />
                 </div>
             }
-        </div>
+        </>
     )
 }

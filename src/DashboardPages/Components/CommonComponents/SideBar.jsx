@@ -225,7 +225,7 @@ export default function SideBar() {
                         <div className="flex-row navLinks">
                             <img src={(path === "/admin/messages") ? ActiveMessage : Messages} alt="" />
                             Messages
-                            {messages != 0 && (
+                            {messages > 0 && (
                                 <div className="messageNotif">
                                     {messages}
                                 </div>
