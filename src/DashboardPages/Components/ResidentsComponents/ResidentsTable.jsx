@@ -20,13 +20,14 @@ import { useResidentContext } from "../../hooks/userResidentContext"
 const Table = (props) => {
 
     //get all resident
-    const { dispatch } = useResidentContext()
+    const { residents, dispatch } = useResidentContext()
 
-    const residents = props.list
+    const residentsList = props.list
     useEffect(() => {
         const fetchResidents = async () => {
             const response = await fetch('https://drims-demo.herokuapp.com/api/residents/')
             const json = await response.json()
+            // console.log(json)
             if (response.ok) {
                 dispatch({ type: 'SET_RESIDENT', payload: json })
             }
@@ -41,6 +42,7 @@ const Table = (props) => {
     //Set action flag
     const [action, setAction] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [ShowAddMember, setShowAddMember] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(null);
 
     //FOR SNACKBAR
@@ -121,11 +123,11 @@ const Table = (props) => {
         }
     }
 
-    if (residents) {
+    if (residentsList) {
 
         // filter family head
-        const familyHead = residents.filter(head => head.isHeadOfFamily == true)
-        // Get current residents
+        const familyHead = residentsList.filter(head => head.isHeadOfFamily == true)
+        // Get current residentsList
         let indexOfLastResident = currentPage * residentsPerPage;
         let indexOfFirstResident = indexOfLastResident - residentsPerPage;
         let currentResidents;
@@ -134,10 +136,16 @@ const Table = (props) => {
         // Change page
         const paginate = pageNumber => setCurrentPage(pageNumber);
 
-        const getAction = action => setAction(action);
+        const getAction = action => {
+            action == "addMember" && setShowAddMember(true)
+            setAction(action)
+        };
         const getModal = modal => {
             setShowModal(modal)
             setSelectedResident(null)
+        }
+        const getFamilyMemberModal = modal => {
+            setShowAddMember(modal)
         }
         const getDelete = del => setShowDeleteModal(del)
         const getSelectedResident = resident => setSelectedResident(resident)
@@ -153,7 +161,7 @@ const Table = (props) => {
                         setShown={getModal}
                         resident={selectedResident}
                         snackbar={getSnack}
-                        allResidents={residents}
+                        allResidents={residentsList}
                         headName={getName}
                     />
                 )}
@@ -162,7 +170,7 @@ const Table = (props) => {
                         shown={showModal}
                         setShown={getModal}
                         resident={selectedResident}
-                        allResidents={residents}
+                        allResidents={residentsList}
                     />
                 )}
 
@@ -178,9 +186,7 @@ const Table = (props) => {
                 )}
                 {/* Add Family Member */}
                 {selectedResident && (
-                    action == "addMember" && (
-                        <AddFamilyMember shown={showModal} setShown={getModal} action={action} headID={selectedResident._id} />
-                    )
+                    <AddFamilyMember shown={ShowAddMember} setShown={getFamilyMemberModal} action={action} headID={selectedResident._id} />
                 )}
 
                 {/* Delete Resident */}
@@ -307,13 +313,13 @@ const Table = (props) => {
                         <tfoot>
                             <tr>
                                 <td >
-                                    <h4>Total Families: <span style={{fontWeight: "normal"}} > {residents.filter(head => head.isHeadOfFamily == true).length} </span></h4>
-                                    <h4>Total Residents: <span style={{fontWeight: "normal"}} > {residents.length} </span></h4>
+                                    <h4>Total Families: <span style={{ fontWeight: "normal" }} > {residents.filter(head => head.isHeadOfFamily == true).length} </span></h4>
+                                    <h4>Total Residents: <span style={{ fontWeight: "normal" }} > {residents.length} </span></h4>
                                 </td>
                                 <td >
                                     <PageNumber
                                         residentsPerPage={residentsPerPage}
-                                        totalResidents={residents.filter(head => head.isHeadOfFamily == true).length}
+                                        totalResidents={residentsList.filter(head => head.isHeadOfFamily == true).length}
                                         paginate={paginate}
                                     />
                                 </td>
@@ -323,7 +329,7 @@ const Table = (props) => {
                 </div>
             </div>
         );
-        }
-    };
+    }
+};
 
-    export default Table;
+export default Table;

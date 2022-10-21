@@ -181,7 +181,6 @@ function Officials(props) {
                                 <img className="modalAvatar" style={{ width: "150px", height: "150px", borderRadius: "50%" }}
                                     src={officialAvatar
                                         ? `https://drims-demo.herokuapp.com/api/uploads/${officialAvatar}`
-                                        // ? ImageURL
                                         : Avatar}
                                 />
                                 <h3 style={{ fontSize: "20px" }}>{nameOfMember}</h3>
@@ -273,7 +272,6 @@ function Officials(props) {
                                             <img className="modalAvatar"
                                                 src={officialAvatar
                                                     ? `https://drims-demo.herokuapp.com/api/uploads/${officialAvatar}`
-                                                    // ? ImageURL
                                                     : Avatar}
                                             />
                                             <h3 style={{ fontSize: "20px" }}>{nameOfMember}</h3>
@@ -434,7 +432,6 @@ function Officials(props) {
                                     <img className="modalAvatar"  style={{ width: "100px", height: "100px", borderRadius: "50%" }}
                                         src={props.official.account_image
                                             ? `https://drims-demo.herokuapp.com/api/uploads/${props.official.account_image}`
-                                            // ? ImageURL
                                             : Avatar}
                                     />
                                 </div>

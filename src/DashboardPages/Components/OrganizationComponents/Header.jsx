@@ -265,7 +265,6 @@ function Header(props) {
                                         <img className="modalAvatar"
                                             src={selectedResident && selectedResident.accountImage
                                                 ? `https://drims-demo.herokuapp.com/api/uploads/${selectedResident.accountImage}`
-                                                // ? ImageURL
                                                 : Avatar}
                                         />
                                         <h3>{selectedResident ? selectedResident.firstName + " " + selectedResident.lastName : "No resident have been displayed. Please select a resident"}</h3>

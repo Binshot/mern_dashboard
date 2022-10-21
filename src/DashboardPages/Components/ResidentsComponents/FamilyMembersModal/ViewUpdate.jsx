@@ -1,17 +1,8 @@
-import React, { useState } from 'react'
-import TextField from "@mui/material/TextField";
+import React, { useState, useEffect, useRef } from 'react'
 import Autocomplete from '@mui/material/Autocomplete';
-import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import { Tabs } from '@mui/material';
-import Upload from "../../NewImageFiles/Resident/UploadAvatar.svg"
+import { Tabs, TextField, Box, Tab, Radio, RadioGroup, FormControl, FormControlLabel, IconButton } from '@mui/material';
 import Avatar from "../../NewImageFiles/Resident/Avatar.svg"
 import Modal from '../../CommonComponents/Modal';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 import format from 'date-fns/format';
@@ -29,6 +20,7 @@ function ViewUpdate(props) {
     const educationAttainment = ['No Formal Education', 'Elementary', 'High School',
         'General Education Development', 'Vocational Qualificiation', 'Bachelor’s Degree',
         'Master’s Degree', 'Doctorate or Higher'];
+    const residentOccupation = ["Student", "Unemployed", "Employed", "Self-Employed"]
     const familyMember = ["Parent", "Spouse", "Child", "Sibling", "Grandparent", "Grandchild", "Other Relative"];
 
     const [value, setValue] = React.useState(0);
@@ -133,6 +125,16 @@ function ViewUpdate(props) {
             </IconButton>
         </React.Fragment>
     )
+
+    const re = new RegExp('^[0-9]*$')
+    const ref = useRef();
+    useEffect(() => {
+        ref.current.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+    }, [value])
+
     return props.shown ? (
         <div className="FamModal">
             {/* cancel modal */}
@@ -180,7 +182,6 @@ function ViewUpdate(props) {
                             <div className='profileAvatar' style={{ marginBottom: "24px" }}>
                                 <img src={props.resident.account_image
                                     ? `https://drims-demo.herokuapp.com/api/uploads/${props.resident.account_image}`
-                                    // ? ImageURL
                                     : Avatar} />
                             </div>
                             <h4>{lastName}, {firstName} </h4>
@@ -195,7 +196,7 @@ function ViewUpdate(props) {
                                     <Tab label="Family Information" />
                                 </Tabs>
                             </Box>
-                            <Box sx={{ height: '240px', overflow: 'auto', padding: "24px 0" }}>
+                            <Box sx={{ height: '240px', overflow: 'auto', padding: "24px 0" }} ref={ref}>
                                 {value === 0 && (
                                     <div className="flex-column tab">
                                         <div className="flex-row space-between">
@@ -441,8 +442,10 @@ function ViewUpdate(props) {
                                                     <TextField
                                                         value={phone}
                                                         onChange={(e) => {
-                                                            setPhone(e.target.value)
-                                                            setChanged(true)
+                                                            if (re.test(e.target.value)) {
+                                                                setPhone(e.target.value)
+                                                                setChanged(true)
+                                                            }
                                                         }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
@@ -573,8 +576,10 @@ function ViewUpdate(props) {
                                                         placeholder="Input monthly income"
                                                         value={monthlyIncome}
                                                         onChange={(e) => {
-                                                            setMonthlyIncome(e.target.value)
-                                                            setChanged(true)
+                                                            if (re.test(e.target.value)) {
+                                                                setMonthlyIncome(e.target.value)
+                                                                setChanged(true)
+                                                            }
                                                         }}
                                                         sx={{
                                                             "& .MuiOutlinedInput-root:hover": {
@@ -700,7 +705,7 @@ function ViewUpdate(props) {
                     <div className="rightAlign ModalButtons">
                         {props.action !== "view" && (
                             <button
-                                disabled={loading}
+                                disabled={loading || !changed}
                                 type='submit'
                                 className="solidButton buttonBlue">
                                 Update

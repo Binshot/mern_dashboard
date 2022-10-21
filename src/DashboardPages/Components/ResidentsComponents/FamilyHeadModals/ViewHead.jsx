@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Radio from '@mui/material/Radio';
@@ -37,7 +37,13 @@ function UpdateResident(props) {
             </IconButton>
         </React.Fragment>
     )
-
+    const ref = useRef();
+    useEffect(() => {
+        ref.current.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+    }, [value])
     return (
         <div>
             {props.shown ? (
@@ -52,7 +58,6 @@ function UpdateResident(props) {
                                 <div className='profileAvatar' style={{ marginBottom: "24px" }}>
                                     <img src={props.resident.account_image
                                         ? `https://drims-demo.herokuapp.com/api/uploads/${props.resident.account_image}`
-                                        // ? ImageURL
                                         : Avatar} />
                                 </div>
                                 <h4>{props.resident.lastName}, {props.resident.firstName} {props.resident.middleName}</h4>
@@ -66,7 +71,7 @@ function UpdateResident(props) {
                                         <Tab label="Family Information" />
                                     </Tabs>
                                 </Box>
-                                <Box sx={{ height: '250px', overflow: 'auto', padding: "24px 0" }}>
+                                <Box sx={{ height: '250px', overflow: 'auto', padding: "24px 0" }} ref={ref}>
                                     {value === 0 && (
                                         <div className="flex-column tab">
                                             <div className="flex-row space-between">

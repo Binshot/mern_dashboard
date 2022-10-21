@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import avatar from "../NewImageFiles/Resident/Avatar.svg"
+import Avatar from "../NewImageFiles/Resident/Avatar.svg"
 import View from "../NewImageFiles/ActionButton/View.svg"
 import Update from "../NewImageFiles/ActionButton/Update.svg"
 import Delete from "../NewImageFiles/ActionButton/Delete.svg"
@@ -9,7 +9,7 @@ import FamilyModal from "./FamilyMembersModal/ViewUpdate"
 
 import Modal from "../CommonComponents/Modal"
 //FOR SNACKBAR
-import {Snackbar, IconButton, Button, Tooltip } from '@mui/material';
+import { Snackbar, IconButton, Button, Tooltip } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 //context
@@ -103,7 +103,6 @@ function ViewFamilyInformation(props) {
         fetchResidents()
 
     }, [residents])
-    console.log(familyMembers)
     return (
         <div>
             {/* view or update family member */}
@@ -191,7 +190,11 @@ function ViewFamilyInformation(props) {
                         {familyMembers.map(({ member_data, relationship }) => {
                             return (
                                 <div className='flex-row viewFamilyMemberContainer' key={member_data._id}>
-                                    <img src={avatar} alt="" style={{ height: "100px", width: "100px", marginRight: "16px" }} />
+                                    <img style={{ height: "100px", width: "100px", marginRight: "16px", borderRadius: "50%" }}
+                                        src={member_data.accountImage
+                                            ? `https://drims-demo.herokuapp.com/api/uploads/${member_data.accountImage}`
+                                            : Avatar}
+                                    />
                                     <div className='flex-column' style={{ justifyContent: "center", flexGrow: "1" }}>
                                         <h4>{member_data.lastName + ", " + member_data.firstName + " " + member_data.middleName}</h4>
                                         <h5 style={{ fontSize: "14px", color: "#9C9C9C", fontWeight: "normal" }}>
@@ -199,43 +202,43 @@ function ViewFamilyInformation(props) {
                                         </h5>
                                     </div>
                                     <div className='flex-row actions' style={{ alignContent: "center", justifyContent: "center" }}>
-                                    <Tooltip title="View" arrow>
-                                        <button
-                                            style={{ marginRight: "16px" }}
-                                            className="solidButton squareButton buttonGreen"
-                                            type='button'
-                                            onClick={() => {
-                                                setSelectedFamMember(member_data)
-                                                setFamAction("view")
-                                                setshowFamilyModal(true)
-                                                setFamilyRelationship(relationship)
-                                            }}>
-                                            <img src={View} alt="" />
-                                        </button>
+                                        <Tooltip title="View" arrow>
+                                            <button
+                                                style={{ marginRight: "16px" }}
+                                                className="solidButton squareButton buttonGreen"
+                                                type='button'
+                                                onClick={() => {
+                                                    setSelectedFamMember(member_data)
+                                                    setFamAction("view")
+                                                    setshowFamilyModal(true)
+                                                    setFamilyRelationship(relationship)
+                                                }}>
+                                                <img src={View} alt="" />
+                                            </button>
                                         </Tooltip>
                                         <Tooltip title="Update" arrow>
-                                        <button
-                                            style={{ marginRight: "16px" }}
-                                            className="solidButton squareButton buttonBlue"
-                                            type='button'
-                                            onClick={() => {
-                                                setSelectedFamMember(member_data)
-                                                setshowFamilyModal(true)
-                                                setFamAction("edit")
-                                                setFamilyRelationship(relationship)
-                                            }} >
-                                            <img src={Update} alt="" />
-                                        </button>
+                                            <button
+                                                style={{ marginRight: "16px" }}
+                                                className="solidButton squareButton buttonBlue"
+                                                type='button'
+                                                onClick={() => {
+                                                    setSelectedFamMember(member_data)
+                                                    setshowFamilyModal(true)
+                                                    setFamAction("edit")
+                                                    setFamilyRelationship(relationship)
+                                                }} >
+                                                <img src={Update} alt="" />
+                                            </button>
                                         </Tooltip>
                                         <Tooltip title="Delete" arrow>
-                                        <button className='delete squareButton'
-                                            type='button'
-                                            onClick={() => {
-                                                setSelectedFamMember(member_data)
-                                                setShowDeleteModal(true)
-                                            }}>
-                                            <img src={Delete} alt="" />
-                                        </button>
+                                            <button className='delete squareButton'
+                                                type='button'
+                                                onClick={() => {
+                                                    setSelectedFamMember(member_data)
+                                                    setShowDeleteModal(true)
+                                                }}>
+                                                <img src={Delete} alt="" />
+                                            </button>
                                         </Tooltip>
                                     </div>
                                 </div>

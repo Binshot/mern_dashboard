@@ -22,22 +22,32 @@ export const residentsReducer = (state, action) => {
       }
     case 'CREATE_RESIDENT_MEMBER':
       return {
-        residents: state.residents.map((res) => (res._id === action.payload.updateHead._id) ? action.payload.updateHead : res),
-        residents: [action.payload.resident, ...state.residents]
+        residents: [action.payload.resident, ...state.residents].map((res) => (res._id === action.payload.updateHead._id) ? action.payload.updateHead : res)
       }
     case 'DELETE_RESIDENT_MEMBER':
       return {
-        residents: state.residents.map((res) => (res._id === action.payload.updatedHead._id) ? action.payload.updatedHead : res),
-        residents: state.residents.filter(w => w._id !== action.payload.resident._id)
+        // residents: state.residents.map((res) => (res._id === action.payload.updatedHead._id) ? action.payload.updatedHead : res),
+        residents: state.residents.filter(w => w._id !== action.payload.resident._id).map((res) => (res._id === action.payload.updatedHead._id)
+          ? action.payload.updatedHead
+          : res)
       }
     case 'UPDATE_RESIDENT_MEMBER':
       return {
-        residents: state.residents.map((res) => (res._id === action.payload.updatedHead._id) ? action.payload.updatedHead : res),
-        residents: state.residents.map((res) => (res._id === action.payload.resident._id) ? action.payload.resident : res),
+        residents: state.residents.map((res) => (res._id === action.payload.updatedHead._id)
+          ? action.payload.updatedHead
+          : (res._id === action.payload.resident._id)
+            ? action.payload.resident
+            : res)
+        // residents: state.residents.map((res) => (res._id === action.payload.resident._id) ? action.payload.resident : res),
       }
     case 'NEW_FAMILY_HEAD':
       return {
-        residents: state.residents.filter(w => w._id != action.payload.oldHead).map((res) => (res._id === action.payload.newHead._id) ? action.payload.newHead : res)
+        residents: state.residents.map((res) => (res._id === action.payload.oldHead)
+          ? { ...res, isHeadOfFamily: false }
+          : (res._id === action.payload.newHead._id
+            ? action.payload.newHead
+            : res)
+        )
       }
     default:
       return state

@@ -1,18 +1,9 @@
-import React, { useState } from 'react'
-import TextField from "@mui/material/TextField";
-import Autocomplete from '@mui/material/Autocomplete';
-import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import { Tabs } from '@mui/material';
+import React, { useState, useRef, useEffect } from 'react'
+import { TextField, Autocomplete, Box, Tab, Radio, RadioGroup, FormControlLabel, FormControl, Tabs, IconButton } from "@mui/material";
 import Avatar from "../../NewImageFiles/Resident/Avatar.svg"
 import ViewFamily from "../ViewFamilyInformation"
 import Modal from '../../CommonComponents/Modal';
 //FOR SNACKBAR
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 
@@ -20,15 +11,15 @@ import { useResidentContext } from "../../../hooks/userResidentContext"
 
 function UpdateResident(props) {
     const { dispatch } = useResidentContext()
+    const ref = useRef();
 
     const [loading, setLoading] = useState(false)
-    const genderOptions = ['Male', 'Female', 'Other'];
+    const genderOptions = ['Male', 'Female'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed'];
     const educationAttainment = ['No Formal Education', 'Elementary', 'High School',
-        'General Education Development', 'Vocational Qualificiation', 'Bachelor’s Degree',
-        'Master’s Degree', 'Doctorate or Higher'];
-    const familyMember = ['Father', 'Mother'];
+        'Bachelor’s Degree', 'Master’s Degree', 'Doctorate or Higher'];
+    const residentOccupation = ["Student", "Unemployed", "Employed", "Self-Employed"]
 
     // for tabs
     const [value, setValue] = useState(0);
@@ -132,6 +123,15 @@ function UpdateResident(props) {
         </React.Fragment>
     )
 
+    const re = new RegExp('^[0-9]*$')
+
+    useEffect(() => {
+        ref.current.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+    }, [value])
+
     return (
         <div>
             {props.shown ? (
@@ -181,7 +181,6 @@ function UpdateResident(props) {
                                     <div className='profileAvatar' style={{ marginBottom: "24px" }}>
                                         <img src={props.resident.account_image
                                             ? `https://drims-demo.herokuapp.com/api/uploads/${props.resident.account_image}`
-                                            // ? ImageURL
                                             : Avatar} />
                                     </div>
                                     <h4>{props.resident.lastName}, {props.resident.firstName} {props.resident.middleName}</h4>
@@ -194,7 +193,7 @@ function UpdateResident(props) {
                                             <Tab label="Background Information" />
                                         </Tabs>
                                     </Box>
-                                    <Box sx={{ height: '250px', overflow: 'auto', padding: "24px 0" }}>
+                                    <Box sx={{ height: '250px', overflow: 'auto', padding: "24px 0" }} ref={ref}>
                                         {value == 0 && (
                                             <div className="flex-column tab">
                                                 <div className="flex-row space-between">
@@ -381,8 +380,10 @@ function UpdateResident(props) {
                                                         <TextField
                                                             defaultValue={phone}
                                                             onChange={(e) => {
-                                                                setPhone(e.target.value)
-                                                                setChanged(true)
+                                                                if (re.test(e.target.value)) {
+                                                                    setPhone(e.target.value)
+                                                                    setChanged(true)
+                                                                }
                                                             }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
@@ -460,11 +461,14 @@ function UpdateResident(props) {
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
                                                         <h4>Occupation</h4>
-                                                        <TextField
-                                                            placeholder="Input Occupation"
-                                                            defaultValue={occupation}
-                                                            onChange={(e) => {
-                                                                setOccupation(e.target.value)
+                                                        <Autocomplete
+                                                            disablePortal
+                                                            id="combo-box-demo"
+                                                            value={occupation}
+                                                            options={residentOccupation}
+                                                            renderInput={(params) => <TextField {...params} />}
+                                                            onChange={(e, newValue) => {
+                                                                setOccupation(newValue)
                                                                 setChanged(true)
                                                             }}
                                                             sx={{
@@ -482,8 +486,10 @@ function UpdateResident(props) {
                                                             placeholder="Input monthly income"
                                                             defaultValue={monthlyIncome}
                                                             onChange={(e) => {
-                                                                setMonthlyIncome(e.target.value)
-                                                                setChanged(true)
+                                                                if (re.test(e.target.value)) {
+                                                                    setMonthlyIncome(e.target.value)
+                                                                    setChanged(true)
+                                                                }
                                                             }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {

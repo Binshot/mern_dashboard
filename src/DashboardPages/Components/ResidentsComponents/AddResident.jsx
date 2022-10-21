@@ -1,19 +1,10 @@
-import React, { useState } from 'react'
-import TextField from "@mui/material/TextField";
-import Autocomplete from '@mui/material/Autocomplete';
-import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import { Tabs } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react'
+import { Tabs, Autocomplete, TextField, Box, Tab, Radio, RadioGroup, FormControl, FormControlLabel, IconButton } from '@mui/material';
 import Upload from "../NewImageFiles/Resident/UploadAvatar.svg"
 import Avatar from "../NewImageFiles/Resident/Avatar.svg"
 import Modal from "../CommonComponents/Modal"
 //FOR SNACKBAR
 import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 //context
@@ -36,7 +27,7 @@ function AddResident(props) {
         'General Education Development', 'Vocational Qualificiation', 'Bachelor’s Degree',
         'Master’s Degree', 'Doctorate or Higher'];
     const familyMember = ["Parent", "Spouse", "Child", "Sibling", "Grandparent", "Grandchild", "Other Relative"];
-
+    const residentOccupation = ["Student", "Unemployed", "Employed", "Self-Employed"]
     const [value, setValue] = React.useState(0);
 
     function handleTabChange(event, value) {
@@ -50,14 +41,14 @@ function AddResident(props) {
     const [suffix, setSuffix] = useState("")
     const [birthday, setBday] = useState('')
     const [birthplace, setBirthplace] = useState('')
-    const [gender, setGender] = useState('')
-    const [religion, setReligion] = useState('')
+    const [gender, setGender] = useState(null)
+    const [religion, setReligion] = useState(null)
     const [email, setEmail] = useState('')
     const [contactNumber, setPhone] = useState('')
     const [address, setAddress] = useState('')
-    const [civilStatus, setCivilStatus] = useState('')
-    const [educationalAttainment, setEducationalAttainment] = useState('')
-    const [occupation, setOccupation] = useState('')
+    const [civilStatus, setCivilStatus] = useState(null)
+    const [educationalAttainment, setEducationalAttainment] = useState(null)
+    const [occupation, setOccupation] = useState(null)
     const [monthlyIncome, setMonthlyIncome] = useState('')
     const [sss, setSSS] = useState(false)
     const [gsis, setGSIS] = useState(false)
@@ -98,12 +89,12 @@ function AddResident(props) {
             dispatch({ type: 'CREATE_RESIDENT', payload: json })
             props.setShown(false)
             toggleSnackbar(true)
+            setEmptyFields([])
 
-            //Added a Head of the family
-            
+            //Added a Member of the family
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
                 method: 'POST',
-                body: JSON.stringify({ activity: "Added a member of the family: " + lastName + ", " + firstName }),
+                body: JSON.stringify({ activity: "Added a head of the family: " + lastName + ", " + firstName }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -114,7 +105,7 @@ function AddResident(props) {
 
     const handleFamilyMemberSubmit = async (e) => {
         e.preventDefault()
-
+        setLoading(true)
         const resident = {
             firstName, lastName, middleName, suffix, birthday, birthplace, gender, religion, email, contactNumber, address,
             civilStatus, educationalAttainment, occupation, monthlyIncome, membership: { pagibig, sss, gsis, philhealth }, relationship
@@ -129,16 +120,14 @@ function AddResident(props) {
         })
 
         const json = await response.json()
-
-        console.log(json)
         if (response.ok) {
+            toggleSnackbar(true)
             setError(null)
             setChanged(false)
-            console.log('new Resident added:', json)
-            dispatch({ type: 'CREATE_RESIDENT_MEMBER', payload: json })
-
+            setLoading(false)
             props.setShown(false)
-            toggleSnackbar(true)
+            console.log("resident added")
+            dispatch({ type: 'CREATE_RESIDENT_MEMBER', payload: json })
 
             //Added a member of the family
             fetch('https://drims-demo.herokuapp.com/api/activity/', {
@@ -151,6 +140,7 @@ function AddResident(props) {
         } else {
             setEmptyFields(json.emptyFields)
             setError(json.error)
+            setLoading(false)
         }
     }
     const xButton = (
@@ -207,13 +197,25 @@ function AddResident(props) {
         setError(null)
     }
 
+    const re = new RegExp('^[0-9]*$')
+    const ref = useRef();
+    useEffect(() => {
+        const scrollToTop = () => {
+            ref.current.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
+        }
+        props.shown && scrollToTop()
+    }, [value])
+
     return (
         <div>
             <Snackbar
                 open={snackbar}
                 onClose={() => { toggleSnackbar(false) }}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                autoHideDuration={5000}
+                autoHideDuration={2000}
                 message={`${lastName}, ${firstName} has been added!`}
                 ContentProps={{
                     sx: {
@@ -283,7 +285,7 @@ function AddResident(props) {
                                             {props.action == "addMember" && <Tab label="Family Information" />}
                                         </Tabs>
                                     </Box>
-                                    <Box sx={{ height: '250px', overflow: 'auto', padding: "24px 0" }}>
+                                    <Box sx={{ height: '250px', overflow: 'auto', padding: "24px 0" }} ref={ref}>
                                         {value == 0 && (
                                             <div className="flex-column tab">
                                                 <div className="flex-row space-between">
@@ -490,8 +492,10 @@ function AddResident(props) {
                                                             placeholder="Input Contact Number"
                                                             value={contactNumber}
                                                             onChange={(e) => {
-                                                                setPhone(e.target.value)
-                                                                setChanged(true)
+                                                                if (re.test(e.target.value)) {
+                                                                    setPhone(e.target.value)
+                                                                    setChanged(true)
+                                                                }
                                                             }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
@@ -529,7 +533,6 @@ function AddResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Civil Status</h4>
                                                         <Autocomplete
-                                                            style={{ width: "99%" }}
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={civilStatusOptions}
@@ -551,7 +554,6 @@ function AddResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Educational Attainment</h4>
                                                         <Autocomplete
-                                                            style={{ width: "99%" }}
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={educationAttainmentOptions}
@@ -574,11 +576,14 @@ function AddResident(props) {
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
                                                         <h4>Occupation</h4>
-                                                        <TextField
-                                                            placeholder="Input occupation"
+                                                        <Autocomplete
+                                                            disablePortal
+                                                            id="combo-box-demo"
+                                                            options={residentOccupation}
                                                             value={occupation}
-                                                            onChange={(e) => {
-                                                                setOccupation(e.target.value)
+                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Occupation" />}
+                                                            onChange={(event, e) => {
+                                                                setOccupation(e)
                                                                 setChanged(true)
                                                             }}
                                                             sx={{
@@ -596,8 +601,10 @@ function AddResident(props) {
                                                             placeholder="Input monthly income"
                                                             value={monthlyIncome}
                                                             onChange={(e) => {
-                                                                setMonthlyIncome(e.target.value)
-                                                                setChanged(true)
+                                                                if (re.test(e.target.value)) {
+                                                                    setMonthlyIncome(e.target.value)
+                                                                    setChanged(true)
+                                                                }
                                                             }}
                                                             sx={{
                                                                 "& .MuiOutlinedInput-root:hover": {
@@ -693,11 +700,12 @@ function AddResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Relationship</h4>
                                                         <Autocomplete
-                                                            style={{ width: "99%" }}
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={familyMember}
-                                                            renderInput={(params) => <TextField {...params} placeholder="Choose relationship to the head of the family" />}
+                                                            renderInput={(params) => <TextField {...params}
+                                                                error={emptyFields.includes('Family Relationship') ? true : false}
+                                                                placeholder="Choose relationship to the head of the family" />}
                                                             onChange={(event, e) => {
                                                                 setRelationship(e)
                                                                 setChanged(true)
