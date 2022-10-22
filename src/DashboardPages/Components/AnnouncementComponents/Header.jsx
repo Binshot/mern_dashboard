@@ -156,12 +156,16 @@ function Header(props) {
                                     error={emptyFields.includes('Announcement Title') ? true : false}
                                     placeholder="Input Title"
                                     fullWidth
-                                    inputProps={{
-                                        maxLength: 80
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                {`${announcementTitle.length}/80`}
+                                            </InputAdornment>
+                                        ),
                                     }}
                                     value={announcementTitle}
                                     onChange={(e) => {
-                                        setTitle(e.target.value)
+                                        announcementTitle != 80 && setTitle(e.target.value)
                                         setChanged(true)
                                     }}
                                     sx={{
@@ -175,29 +179,31 @@ function Header(props) {
                             </div>
                             <div>
                                 <h4>Description (Optional)</h4>
-                                <TextField
-                                    id="outlined-multiline-static"
-                                    error={emptyFields.includes('Announcement Detail') ? true : false}
-                                    placeholder="Input Description"
-                                    multiline
-                                    rows={7}
-                                    fullWidth
-                                    inputProps={{
-                                        maxLength: 400
-                                    }}
-                                    value={announcementDetail}
-                                    onChange={(e) => {
-                                        setDescription(e.target.value)
-                                        setChanged(true)
-                                    }}
-                                    sx={{
-                                        "& .MuiOutlinedInput-root:hover": {
-                                            "& > fieldset": {
-                                                borderColor: "#7175F4"
+                                <div style={{ position: "relative" }}>
+                                    <TextField
+                                        id="outlined-multiline-static"
+                                        error={emptyFields.includes('Announcement Detail') ? true : false}
+                                        placeholder="Input Description"
+                                        multiline
+                                        rows={7}
+                                        fullWidth
+                                        value={announcementDetail}
+                                        onChange={(e) => {
+                                            announcementDetail.length != 400 && setDescription(e.target.value)
+                                            setChanged(true)
+                                        }}
+                                        sx={{
+                                            "& .MuiOutlinedInput-root:hover": {
+                                                "& > fieldset": {
+                                                    borderColor: "#7175F4"
+                                                }
                                             }
-                                        }
-                                    }}
-                                />
+                                        }}
+                                    />
+                                    <div style={{ position: "absolute", right: "14px", bottom: "14px", color: '#636363' }}>
+                                        {`${announcementDetail.length}/400`}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         {/*Button*/}

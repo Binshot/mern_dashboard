@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Residents from './TableContents';
 import PageNumber from './PageNumber';
 
 import Modal from "../CommonComponents/Modal"
-import Autocomplete from '@mui/material/Autocomplete';
+import { Autocomplete, InputAdornment } from '@mui/material';
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 
@@ -16,7 +16,7 @@ import Box from '@mui/material/Box';
 import uploadEventBanner from "../NewImageFiles/Event/uploadEventBanner.svg"
 import { useEventContext } from "../../hooks/useEventContext"
 
-import { format } from 'date-fns'
+import { format, set } from 'date-fns'
 
 import imageIcon from "../NewImageFiles/Event/imageIcon.svg"
 
@@ -29,10 +29,21 @@ const Table = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const eventsPerPage = 5;
 
+    //get Selected Event
+    const [selectedEvent, setSelectedEvent] = useState('')
+
     //Get Id of selected Resident
-    // const [eventTitle, setEventTitle] = useState("");
-    const eventTitle = useRef()
-    const eventDescription = useRef()
+    const [eventTitle, setEventTitle] = useState(null);
+    const [eventDescription, setEventDescription] = useState(null);
+
+    useEffect(() => {
+        setEventTitle(selectedEvent.eventTitle)
+        setEventDescription(selectedEvent.eventDescription)
+    }, [selectedEvent])
+
+
+    // const eventTitle = useRef()
+    // const eventDescription = useRef()
     const eventTag = useRef()
     const eventLocation = useRef()
     const dateFrom = useRef()
@@ -41,8 +52,7 @@ const Table = (props) => {
     const timeTo = useRef()
     const [file, setFile] = useState(null);
 
-    //get Selected Event
-    const [selectedEvent, setSelectedEvent] = useState('')
+
 
     //set loading state of update button
     const [isLoading, setIsLoading] = useState(false)
@@ -174,13 +184,13 @@ const Table = (props) => {
         if (eventTitle && file) {
             const fileExtension = file.name.substring(file.name.lastIndexOf('.'));
             const regex = /[!*'();:@&=+$,/?%#\\[\]\s]/gm;
-            const fileName = eventTitle.current.value.replaceAll(regex, "+").toLowerCase();
+            const fileName = eventTitle.replaceAll(regex, "+").toLowerCase();
             eventImage = fileName + fileExtension;
         }
 
         const eventObj = {
-            eventTitle: eventTitle.current.value,
-            eventDescription: eventDescription.current.value,
+            eventTitle: eventTitle,
+            eventDescription: eventDescription,
             eventTag: eventTag.current.value,
             eventLocation: eventLocation.current.value,
             dateFrom: dateFrom.current.value,
@@ -276,7 +286,7 @@ const Table = (props) => {
             <div>
 
                 {/* View/Update Events */}
-                {showModal && (
+                {showModal && eventTitle && eventDescription && (
                     <Modal
                         shown={showModal}
                         close={() => {
@@ -292,14 +302,20 @@ const Table = (props) => {
                                     <div className="flex-column">
                                         <h4>Tittle</h4>
                                         {action == 'view' ?
-                                            <TextField
-                                                defaultValue={selectedEvent.eventTitle}
-                                                disabled
-                                            /> :
+                                            <div style={{ position: "relative" }}>
+                                                <TextField
+                                                    defaultValue={selectedEvent.eventTitle}
+                                                    disabled
+                                                    fullWidth
+                                                />
+                                                <div style={{ position: "absolute", right: "14px", top: "18px", color: '#636363' }}>
+                                                    {`${eventTitle.length}/80`}
+                                                </div>
+                                            </div> :
                                             <TextField
                                                 id="outlined-multiline-static"
-                                                defaultValue={selectedEvent.eventTitle}
-                                                inputRef={eventTitle}
+                                                value={eventTitle}
+                                                // inputRef={eventTitle}
                                                 disabled={action == 'view' ? true : false}
                                                 sx={{
                                                     "& .MuiOutlinedInput-root:hover": {
@@ -309,7 +325,15 @@ const Table = (props) => {
                                                     }
                                                 }}
                                                 onChange={(e) => {
+                                                    eventTitle.length != 80 && setEventTitle(e.target.value)
                                                     setChanged(true)
+                                                }}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            {`${eventTitle.length}/80`}
+                                                        </InputAdornment>
+                                                    ),
                                                 }}
                                             />
                                         }
@@ -376,35 +400,43 @@ const Table = (props) => {
                                     <div style={{ marginBottom: "16px" }}>
                                         <h4>Description</h4>
                                         {action == 'view' ?
-                                            <TextField
-                                                defaultValue={selectedEvent.eventTitle}
-                                                disabled
-                                                rows={6}
-                                                fullWidth
-                                                multiline
-                                            /> :
-                                            <TextField
-                                                id="outlined-multiline-static"
-                                                placeholder="Input Description"
-                                                multiline
-                                                rows={6}
-                                                fullWidth
-                                                defaultValue={selectedEvent.eventDescription}
-                                                inputRef={eventDescription}
-                                                inputProps={{
-                                                    maxLength: 400
-                                                }}
-                                                sx={{
-                                                    "& .MuiOutlinedInput-root:hover": {
-                                                        "& > fieldset": {
-                                                            borderColor: "#7175F4"
+                                            <div style={{ position: "relative" }}>
+                                                <TextField
+                                                    defaultValue={eventDescription}
+                                                    disabled
+                                                    rows={6}
+                                                    fullWidth
+                                                    multiline
+                                                />
+                                                <div style={{ position: "absolute", right: "14px", bottom: "14px", color: '#636363' }}>
+                                                    {`${eventDescription.length}/400`}
+                                                </div>
+                                            </div> :
+                                            <div style={{ position: "relative" }}>
+                                                <TextField
+                                                    id="outlined-multiline-static"
+                                                    placeholder="Input Description"
+                                                    multiline
+                                                    rows={6}
+                                                    fullWidth
+                                                    value={eventDescription}
+                                                    onChange={(e) => {
+                                                        eventDescription.length != 400 && setEventDescription(e.target.value)
+                                                        setChanged(true)
+                                                    }}
+                                                    disabled={isLoading}
+                                                    sx={{
+                                                        "& .MuiOutlinedInput-root:hover": {
+                                                            "& > fieldset": {
+                                                                borderColor: "#7175F4"
+                                                            }
                                                         }
-                                                    }
-                                                }}
-                                                onChange={(e) => {
-                                                    setChanged(true)
-                                                }}
-                                            />
+                                                    }}
+                                                />
+                                                <div style={{ position: "absolute", right: "14px", bottom: "14px", color: '#636363' }}>
+                                                    {`${eventDescription.length}/400`}
+                                                </div>
+                                            </div>
                                         }
                                     </div>
                                     <h4>Events Banner</h4>
@@ -743,6 +775,8 @@ const Table = (props) => {
                                     setShowModal()
                                     setFile(null)
                                     setImageURL(null)
+                                    setEventTitle(selectedEvent.eventTitle)
+                                    setEventDescription(selectedEvent.eventDescription)
                                 }}>
                                 Yes
                             </button>

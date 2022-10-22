@@ -69,8 +69,8 @@ function Header(props) {
     const [eventDescription, setEventDescription] = useState("");
     const [eventTag, setEventTag] = useState("");
     const [eventLocation, setEventLocation] = useState("");
-    const [dateFrom, setDateFrom] = useState(new Date().toISOString().slice(0,10));
-    const [dateTo, setDateTo] = useState("");
+    const [dateFrom, setDateFrom] = useState(new Date().toISOString().slice(0, 10));
+    const [dateTo, setDateTo] = useState();
     const [timeFrom, setTimeFrom] = useState('');
     const [timeTo, setTimeTo] = useState("");
     const [file, setFile] = useState(null);
@@ -123,7 +123,7 @@ function Header(props) {
                 const content = { activity }
                 fetch('https://drims-demo.herokuapp.com/api/activity/', {
                     method: 'POST',
-                    body: JSON.stringify({activity: "Added an Event: " + eventTitle}),
+                    body: JSON.stringify({ activity: "Added an Event: " + eventTitle }),
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -221,10 +221,12 @@ function Header(props) {
         setUploadedFlag(true)
         setChanged(false)
         setCancelModal(false)
-        setDateFrom('')
+        setDateFrom(new Date().toISOString().slice(0, 10))
         setDateTo('')
         setTimeFrom('')
         setTimeTo('')
+        setEventTitle('')
+        setEventDescription('')
     }
 
     const pageStyle = `
@@ -239,6 +241,7 @@ function Header(props) {
         content: () => componentRef.current,
         pageStyle: pageStyle,
     });
+
     return (
         <div>
             <Modal
@@ -260,10 +263,18 @@ function Header(props) {
                                     error={emptyFields.includes('Event Title') ? true : false}
                                     disabled={isLoading}
                                     placeholder="Input Title"
+                                    maxLength={10}
                                     style={{ width: "100%", marginBottom: "16px" }}
                                     onChange={(e) => {
-                                        setEventTitle(e.target.value)
+                                        eventTitle.length != 80 && setEventTitle(e.target.value)
                                         setChanged(true)
+                                    }}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                {`${eventTitle.length}/80`}
+                                            </InputAdornment>
+                                        ),
                                     }}
                                     sx={{
                                         "& .MuiOutlinedInput-root:hover": {
@@ -321,29 +332,31 @@ function Header(props) {
                             </div>
                             <div style={{ marginBottom: "16px" }}>
                                 <h4>Description</h4>
-                                <TextField
-                                    error={emptyFields.includes('Event Description') ? true : false}
-                                    id="outlined-multiline-static"
-                                    placeholder="Input Description"
-                                    multiline
-                                    rows={6}
-                                    fullWidth
-                                    inputProps={{
-                                        maxLength: 400
-                                    }}
-                                    onChange={(e) => {
-                                        setEventDescription(e.target.value)
-                                        setChanged(true)
-                                    }}
-                                    disabled={isLoading}
-                                    sx={{
-                                        "& .MuiOutlinedInput-root:hover": {
-                                            "& > fieldset": {
-                                                borderColor: "#7175F4"
+                                <div style={{position: "relative"}}>
+                                    <TextField
+                                        error={emptyFields.includes('Event Description') ? true : false}
+                                        id="outlined-multiline-static"
+                                        placeholder="Input Description"
+                                        multiline
+                                        rows={6}
+                                        fullWidth
+                                        onChange={(e) => {
+                                            eventDescription.length != 400 && setEventDescription(e.target.value)
+                                            setChanged(true)
+                                        }}
+                                        disabled={isLoading}
+                                        sx={{
+                                            "& .MuiOutlinedInput-root:hover": {
+                                                "& > fieldset": {
+                                                    borderColor: "#7175F4"
+                                                }
                                             }
-                                        }
-                                    }}
-                                />
+                                        }}
+                                    />
+                                    <div style={{position: "absolute", right: "14px", bottom:"14px", color: '#636363'}}>
+                                        {`${eventDescription.length}/400`}
+                                    </div>
+                                </div>
                             </div>
                             <h4>Events Banner</h4>
                             <Modal
@@ -441,7 +454,7 @@ function Header(props) {
                                         id="date"
                                         type="date"
                                         inputProps={{
-                                            min: new Date().toISOString().slice(0, 10)
+                                            min: new Date(dateFrom).toISOString().slice(0, 10)
                                         }}
                                         onChange={(e) => {
                                             setDateTo(e.target.value)
@@ -469,7 +482,8 @@ function Header(props) {
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
-                                        value={timeFrom}
+                                        defaultValue={"00:00:00"}
+                                        // value={timeFrom}
                                         onChange={(e) => {
                                             setTimeFrom(e.target.value)
                                             setChanged(true)
@@ -491,6 +505,7 @@ function Header(props) {
                                         error={emptyFields.includes('Event Time (to)') ? true : false}
                                         id="time"
                                         type="time"
+                                        defaultValue={"00:01:00"}
                                         InputLabelProps={{
                                             shrink: true,
                                         }}

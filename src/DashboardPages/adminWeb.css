@@ -49,8 +49,11 @@ body {
 }
 
 .contents {
-    padding: 24px 20px;
-    height: 85%;
+    padding:0 20px 24px;
+    height: calc(100vh - 160px);
+    margin-top: 120px;
+    overflow-y: scroll;
+    /* border: 1px solid black; */
 }
 
 .bgWhite {
@@ -634,13 +637,15 @@ button:disabled {
 @import "//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css";
 
 .topbar {
-    height: 12%;
+    height: 105px;
+    width: calc(100vw - 315px);
     padding: 0 32px;
     justify-content: space-between;
     align-items: center;
     background-color: white;
     box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
     flex-wrap: nowrap;
+    position: absolute;
 }
 
 .topbar h1,
@@ -1591,6 +1596,52 @@ input[type="file"] {
 
 
 /* ================== HELP =========================== */
+
+
+.helpContents{
+    display: flex;
+}
+.helpContainer .sections {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 160px;
+    position: sticky;
+    z-index: 1;
+    top: 32px;
+    right: 32px;
+}
+.helpContainer .backToTop{
+    position: fixed;
+    z-index: 1;
+    bottom: 32px;
+    right: 32px;
+    background-color: white;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    cursor: pointer;
+    filter: drop-shadow(0px 2px 7px rgba(0, 0, 0, 0.24));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.helpContainer .sections p{
+    color: #0C1096;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+.helpContainer .sections div{
+    text-align: left;
+    padding: 6px 0;
+    color: #0C1096;
+    cursor: pointer;
+    font-size: 16px;
+}
+/* .helpContainer .sections div:hover{
+    color: black;
+} */
+
 .help {
     width: 700px;
 }
@@ -1600,7 +1651,7 @@ input[type="file"] {
 }
 
 .help p {
-    margin: 24px 0;
+    margin: 16px 0
 }
 
 .help img:last-child {

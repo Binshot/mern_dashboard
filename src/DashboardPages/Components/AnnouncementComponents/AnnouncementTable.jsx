@@ -3,7 +3,7 @@ import AnnouncementTableContents from './AnnouncementTableContents';
 import PageNumber from './AnnouncementPageNumber';
 
 import Modal from "../CommonComponents/Modal"
-import TextField from "@mui/material/TextField";
+import { TextField, InputAdornment } from "@mui/material";
 
 //FOR SNACKBAR
 import Snackbar from '@mui/material/Snackbar';
@@ -109,7 +109,7 @@ const Table = (props) => {
                 //delete announcement
                 fetch('https://drims-demo.herokuapp.com/api/activity/', {
                     method: 'POST',
-                    body: JSON.stringify({activity: "Deleted an announcement: " + title}),
+                    body: JSON.stringify({ activity: "Deleted an announcement: " + title }),
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -141,7 +141,7 @@ const Table = (props) => {
                 //update announcement
                 fetch('https://drims-demo.herokuapp.com/api/activity/', {
                     method: 'POST',
-                    body: JSON.stringify({activity: "Updated an announcement: " + title }),
+                    body: JSON.stringify({ activity: "Updated an announcement: " + title }),
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -166,20 +166,29 @@ const Table = (props) => {
                             <div>
                                 <h4>Tittle</h4>
                                 {action === "view" ?
-                                    <TextField
-                                        defaultValue={title}
-                                        fullWidth
-                                        disabled
-                                    /> :
+                                    <div style={{ position: "relative" }}>
+                                        <TextField
+                                            defaultValue={title}
+                                            disabled
+                                            fullWidth
+                                        />
+                                        <div style={{ position: "absolute", right: "14px", top: "18px", color: '#636363' }}>
+                                            {`${title.length}/80`}
+                                        </div>
+                                    </div> :
                                     <TextField
                                         id="outlined-multiline-static"
                                         defaultValue={title}
                                         fullWidth
-                                        inputProps={{
-                                            maxLength: 80
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    {`${title.length}/80`}
+                                                </InputAdornment>
+                                            ),
                                         }}
                                         onChange={(e) => {
-                                            setTitle(e.target.value)
+                                            title.length != 80 && setTitle(e.target.value)
                                             setChanged(true)
                                         }}
                                         sx={{
@@ -195,34 +204,42 @@ const Table = (props) => {
                             <div>
                                 <h4>Description (Optional)</h4>
                                 {action === "view" ?
-                                    <TextField
-                                        defaultValue={description}
-                                        rows={7}
-                                        fullWidth
-                                        disabled
-                                        multiline
-                                    /> :
-                                    <TextField
-                                        id="outlined-multiline-static"
-                                        multiline
-                                        defaultValue={description}
-                                        rows={7}
-                                        fullWidth
-                                        inputProps={{
-                                            maxLength: 400
-                                        }}
-                                        onChange={(e) => {
-                                            setDescription(e.target.value)
-                                            setChanged(true)
-                                        }}
-                                        sx={{
-                                            "& .MuiOutlinedInput-root:hover": {
-                                                "& > fieldset": {
-                                                    borderColor: "#7175F4"
+                                    <div style={{ position: "relative" }}>
+                                        <TextField
+                                            defaultValue={description}
+                                            rows={7}
+                                            fullWidth
+                                            disabled
+                                            multiline
+                                        />
+                                        <div style={{ position: "absolute", right: "14px", bottom: "14px", color: '#636363' }}>
+                                            {`${description.length}/400`}
+                                        </div>
+                                    </div>
+                                    :
+                                    <div style={{ position: "relative" }}>
+                                        <TextField
+                                            id="outlined-multiline-static"
+                                            multiline
+                                            defaultValue={description}
+                                            rows={7}
+                                            fullWidth
+                                            onChange={(e) => {
+                                                description.length != 400 && setDescription(e.target.value)
+                                                setChanged(true)
+                                            }}
+                                            sx={{
+                                                "& .MuiOutlinedInput-root:hover": {
+                                                    "& > fieldset": {
+                                                        borderColor: "#7175F4"
+                                                    }
                                                 }
-                                            }
-                                        }}
-                                    />
+                                            }}
+                                        />
+                                        <div style={{ position: "absolute", right: "14px", bottom: "14px", color: '#636363' }}>
+                                            {`${description.length}/400`}
+                                        </div>
+                                    </div>
                                 }
                             </div>
                         </div>
