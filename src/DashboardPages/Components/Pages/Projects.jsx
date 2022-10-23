@@ -5,7 +5,6 @@ import React from "react";
 function Projects() {
     return (
         <div id="mainContentBlur" className="content">
-            <Header list={ProjectList} />
             <Table list={ProjectList} />
         </div>
     );

@@ -49,7 +49,7 @@ body {
 }
 
 .contents {
-    padding:0 20px 24px;
+    padding: 0 20px 24px;
     height: calc(100vh - 160px);
     margin-top: 120px;
     overflow-y: scroll;
@@ -888,6 +888,11 @@ button:disabled {
     padding: 24px;
     box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.2);
     border-radius: 8px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
 }
 
 .graphHeader {
@@ -1017,13 +1022,13 @@ td:nth-child(1) {
 }
 
 thead td {
-    padding: 12px 24px;
+    padding: 12px 12px;
     border-bottom: 1px solid #9C9C9C;
     font-weight: 500;
 }
 
 tbody td {
-    padding: 8px 24px;
+    padding: 8px 12px;
     border-bottom: 1px solid #9C9C9C;
     font-size: 16px;
 }
@@ -1598,9 +1603,10 @@ input[type="file"] {
 /* ================== HELP =========================== */
 
 
-.helpContents{
+.helpContents {
     display: flex;
 }
+
 .helpContainer .sections {
     display: flex;
     flex-direction: column;
@@ -1611,7 +1617,8 @@ input[type="file"] {
     top: 32px;
     right: 32px;
 }
-.helpContainer .backToTop{
+
+.helpContainer .backToTop {
     position: fixed;
     z-index: 1;
     bottom: 32px;
@@ -1626,18 +1633,21 @@ input[type="file"] {
     align-items: center;
     justify-content: center;
 }
-.helpContainer .sections p{
+
+.helpContainer .sections p {
     color: #0C1096;
     font-weight: 700;
     margin-bottom: 16px;
 }
-.helpContainer .sections div{
+
+.helpContainer .sections div {
     text-align: left;
     padding: 6px 0;
     color: #0C1096;
     cursor: pointer;
     font-size: 16px;
 }
+
 /* .helpContainer .sections div:hover{
     color: black;
 } */
@@ -1664,9 +1674,8 @@ input[type="file"] {
     width: 80%;
 }
 
-.ActivityLogs_table tbody td,
-.Projects_table tbody td {
-    padding: 24px;
+.ActivityLogs_table tbody td {
+    padding: 16px;
 }
 
 .ActivityLogs_table td:first-child {
@@ -1681,4 +1690,143 @@ input[type="file"] {
     border-bottom: 1px solid #9C9C9C;
     font-size: 16px;
     text-align: left;
+}
+
+/* ================== PROJECTS =========================== */
+.header_actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header_actions .dropdown .filter {
+    padding: 0 24px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 16px;
+    height: 48px;
+    border: none;
+    cursor: pointer;
+}
+
+.header_actions .dropdown .filter:hover {
+    color: #7175F4
+}
+
+.header_actions .dropdown .notActive {
+    background: #FFFFFF;
+    color: #070A57;
+}
+
+.header_actions .dropdown .active {
+    background: #070A57;
+    color: #FFFFFF;
+}
+
+.header_actions .dropdown .filterIcon {
+    -webkit-mask: url(Components/NewImageFiles/Filter.svg) no-repeat center;
+    mask: url(Components/NewImageFiles/Filter.svg) no-repeat center;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.header_actions .dropdown .filter:hover .filterIcon {
+    background-color: #7175F4;
+}
+
+.header_actions .dropdown .notActiveIcon {
+    background-color: #070A57;
+}
+
+.header_actions .dropdown .activeIcon {
+    background-color: #FFFFFF;
+}
+
+.header_actions .dropdown .filter .filterCount {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    border-radius: 50%;
+    height: 24px;
+    width: 24px;
+    background-color: white;
+    color: #070A57;
+}
+
+/* for filter options */
+
+.dropdown .show {
+    display: block;
+}
+
+.dropdown .hide {
+    display: none;
+}
+
+.dropdown-content {
+    position: absolute;
+    background-color: white;
+    background: #FFFFFF;
+    box-shadow: 0px 7px 29px rgba(100, 100, 111, 0.2);
+    border-radius: 8px;
+    z-index: 1;
+    margin-top: 16px;
+    /* max-height: 60vh;
+    overflow-y: auto; */
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* projects table */
+
+.Projects_table td:nth-child(2) {
+    width: 200px;
+}
+
+.Projects_table td:nth-child(3) {
+    text-align: center;
+    width: 180px;
+}
+
+.Projects_table td:nth-child(4) {
+    text-align: center;
+    width: 125px;
+}
+
+.Projects_table td:last-child {
+    width: 90px;
+    text-align: center;
+}
+
+.Projects_table td:last-child button {
+    margin: auto;
+}
+
+.dropdown-content-header {
+    padding: 28px 24px;
+    border-bottom: 1px solid #9C9C9C;
+    font-weight: 500;
+    font-size: 20px;
+    position: sticky;
+}
+
+.chartName {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+.recharts-pie-label-text tspan {
+    font-size: 32px;
 }
