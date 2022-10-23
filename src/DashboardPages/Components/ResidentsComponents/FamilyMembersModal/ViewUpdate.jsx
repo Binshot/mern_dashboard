@@ -180,8 +180,8 @@ function ViewUpdate(props) {
                     <div>
                         <div className="flex-column center">
                             <div className='profileAvatar' style={{ marginBottom: "24px" }}>
-                                <img src={props.resident.account_image
-                                    ? `https://drims-demo.herokuapp.com/api/uploads/${props.resident.account_image}`
+                                <img src={props.resident.accountImage
+                                    ? `https://drims-demo.herokuapp.com/api/uploads/${props.resident.accountImage}`
                                     : Avatar} />
                             </div>
                             <h4>{lastName}, {firstName} </h4>

@@ -190,8 +190,8 @@ function ViewFamilyInformation(props) {
                         {familyMembers.map(({ member_data, relationship }) => {
                             return (
                                 <div className='flex-row viewFamilyMemberContainer' key={member_data._id}>
-                                    <img style={{ height: "100px", width: "100px", marginRight: "16px", borderRadius: "50%" }}
-                                        src={member_data.accountImage
+                                    <img style={{ height: "100px", width: "100px", marginRight: "16px", borderRadius: "50%", objectFit: "cover" }}
+                                        src={member_data.accountImage 
                                             ? `https://drims-demo.herokuapp.com/api/uploads/${member_data.accountImage}`
                                             : Avatar}
                                     />

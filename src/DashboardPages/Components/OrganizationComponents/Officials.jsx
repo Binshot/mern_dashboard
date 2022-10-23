@@ -178,7 +178,7 @@ function Officials(props) {
                                 <label className='label'>Detailed Information</label><br />
                             </div>
                             <div>
-                                <img className="modalAvatar" style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+                                <img className="modalAvatar" style={{ width: "150px", height: "150px", borderRadius: "50%", objectFit: "cover" }}
                                     src={officialAvatar
                                         ? `https://drims-demo.herokuapp.com/api/uploads/${officialAvatar}`
                                         : Avatar}
@@ -269,7 +269,7 @@ function Officials(props) {
                                     </div>
                                     <div className="details">
                                         <div className="addOfficialDetailsHeader">
-                                            <img className="modalAvatar"
+                                            <img className="modalAvatar" style={{objectFit: "cover"}}
                                                 src={officialAvatar
                                                     ? `https://drims-demo.herokuapp.com/api/uploads/${officialAvatar}`
                                                     : Avatar}
@@ -429,7 +429,7 @@ function Officials(props) {
                         return (
                             <div className="flex-column officialCard " key={props._id}>
                                 <div className="avatar">
-                                    <img className="modalAvatar"  style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+                                    <img className="modalAvatar"  style={{ width: "100px", height: "100px", borderRadius: "50%", objectFit: "cover" }}
                                         src={props.official.account_image
                                             ? `https://drims-demo.herokuapp.com/api/uploads/${props.official.account_image}`
                                             : Avatar}

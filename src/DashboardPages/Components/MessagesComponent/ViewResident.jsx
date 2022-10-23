@@ -35,6 +35,7 @@ function ViewResident(props) {
             </IconButton>
         </React.Fragment>
     )
+    console.log(props.resident)
     return (
         <div>
             {props.shown ? (
@@ -47,8 +48,8 @@ function ViewResident(props) {
                         <div>
                             <div className="flex-column center">
                                 <div className='profileAvatar' style={{ marginBottom: "24px" }}>
-                                    <img src={props.resident.account_image
-                                        ? `https://drims-demo.herokuapp.com/api/uploads/${props.resident.account_image}`
+                                    <img src={props.resident.accountImage
+                                        ? `https://drims-demo.herokuapp.com/api/uploads/${props.resident.accountImage}`
                                         : Avatar} />
                                 </div>
                                 <h4>{props.resident.lastName}, {props.resident.firstName} {props.resident.middleName}</h4>

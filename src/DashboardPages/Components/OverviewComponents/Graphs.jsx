@@ -24,6 +24,7 @@ export default function App() {
     const [age, setage] = useState(null)
     const [occupation, setoccupation] = useState(null)
     const [income, setincome] = useState(null)
+    const [selectCategory, setselectCategory] = useState(null)
     useEffect(() => {
         const getGenderResults = async () => {
             const response = await fetch('https://drims-demo.herokuapp.com/api/residents/overview/gender')
@@ -67,7 +68,7 @@ export default function App() {
         getEducationResults()
     }, [])
 
-    const tagOption = ['Business', 'Work', 'Legal'];
+    const tagOption = ['Age', 'Occupation', 'Education Attainment', 'Monthly Income', "Gender"];
 
     const pageStyle = `
                         @page {
@@ -102,9 +103,12 @@ export default function App() {
                                 options={tagOption}
                                 sx={{ width: '100%' }}
                                 renderInput={(params) => <TextField {...params} placeholder="Choose Category" />}
+                                onChange={(e, value) => {
+                                    setselectCategory(value)
+                                }}
                             />
                         </div>
-                        <div>
+                        {/* <div>
                             <h4 style={{ marginBottom: "8px" }}>From</h4>
                             <TextField
                                 id="date"
@@ -134,107 +138,126 @@ export default function App() {
                                     shrink: true,
                                 }}
                             />
-                        </div>
+                        </div> */}
                     </div>
-                    
-                    <div className="chartName">Residents Age Brackets</div>
-                    <ResponsiveContainer width='100%' height={500}>
-                        <BarChart
-                            data={age}
-                            margin={{
-                                top: 5,
-                                right: 100,
-                                left: 100,
-                                bottom: 40
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="5" />
-                            <XAxis dataKey="name" />
-                            <YAxis width={10} allowDecimals={false} />
-                            <Tooltip />
-                            {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
-                            <Bar dataKey="value" fill="#288DD7" barSize={40} />
-                        </BarChart>
-                    </ResponsiveContainer>
 
-                    <div className="chartName">Residents Occupation Brackets</div>
-                    <ResponsiveContainer width='100%' height={500}>
-                        <BarChart
-                            data={occupation}
-                            margin={{
-                                top: 5,
-                                right: 100,
-                                left: 100,
-                                bottom: 40
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="5" />
-                            <XAxis dataKey="name" />
-                            <YAxis width={10} allowDecimals={false} />
-                            <Tooltip />
-                            {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
-                            <Bar dataKey="value" fill="#288DD7" barSize={40} />
-                        </BarChart>
-                    </ResponsiveContainer>
-                    <div className="chartName">Resident's Educational Attainment Chart</div>
-                    <ResponsiveContainer width='100%' height={500}>
-                        <BarChart
-                            data={education}
-                            margin={{
-                                top: 5,
-                                right: 100,
-                                left: 100,
-                                bottom: 40
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="5" />
-                            <XAxis dataKey="name" />
-                            <YAxis width={10} allowDecimals={false} />
-                            <Tooltip />
-                            {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
-                            <Bar dataKey="value" fill="#288DD7" barSize={40} />
-                        </BarChart>
-                    </ResponsiveContainer>
 
-                    <div className="chartName">Resident's Monthly Income Chart</div>
-                    <ResponsiveContainer width='100%' height={500}>
-                        <BarChart
-                            data={income}
-                            margin={{
-                                top: 5,
-                                right: 100,
-                                left: 100,
-                                bottom: 40
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="5" />
-                            <XAxis dataKey="name" />
-                            <YAxis width={10} allowDecimals={false} />
-                            <Tooltip />
-                            {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
-                            <Bar dataKey="value" fill="#288DD7" barSize={40} />
-                        </BarChart>
-                    </ResponsiveContainer>
-                    <div className="chartName">Resident's Gender Piechart</div>
-                    <ResponsiveContainer width="100%" height={500} >
-                        <PieChart>
-                            <Pie
-                                dataKey="value"
-                                isAnimationActive={false}
-                                data={gender}
-                                cx="50%"
-                                cy="50%"
-                                outerRadius={180}
-                                fill="#8884d8"
-                                label
-                            >
-                                <Cell key={'cell-1'} fill={"#288DD7"} />
-                                <Cell key={'cell-2'} fill={"#FC46AA"} />
-                            </Pie>
-                            <Legend align="right" verticalAlign="bottom" iconSize={40} />
-                            <Tooltip />
-                        </PieChart>
-                    </ResponsiveContainer>
+                    {(selectCategory == null || selectCategory == "Age") && (
+                        <>
+                            <div className="chartName">Residents Age Chart</div>
+                            <ResponsiveContainer width='100%' height={500}>
+                                <BarChart
+                                    data={age}
+                                    margin={{
+                                        top: 5,
+                                        right: 100,
+                                        left: 100,
+                                        bottom: 40
+                                    }}
+                                >
+                                    <CartesianGrid strokeDasharray="5" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis width={10} allowDecimals={false} />
+                                    <Tooltip />
+                                    {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
+                                    <Bar dataKey="value" fill="#288DD7" barSize={40} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </>
+                    )}
+                    {(selectCategory == null || selectCategory == "Occupation") && (
+                        <>
+                            <div className="chartName">Residents Occupation Chart</div>
+                            <ResponsiveContainer width='100%' height={500}>
+                                <BarChart
+                                    data={occupation}
+                                    margin={{
+                                        top: 5,
+                                        right: 100,
+                                        left: 100,
+                                        bottom: 40
+                                    }}
+                                >
+                                    <CartesianGrid strokeDasharray="5" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis width={10} allowDecimals={false} />
+                                    <Tooltip />
+                                    {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
+                                    <Bar dataKey="value" fill="#288DD7" barSize={40} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </>
+                    )}
+                    {(selectCategory == null || selectCategory == "Education Attainment") && (
+                        <>
+                            <div className="chartName">Resident's Educational Attainment Chart</div>
+                            <ResponsiveContainer width='100%' height={500}>
+                                <BarChart
+                                    data={education}
+                                    margin={{
+                                        top: 5,
+                                        right: 100,
+                                        left: 100,
+                                        bottom: 40
+                                    }}
+                                >
+                                    <CartesianGrid strokeDasharray="5" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis width={10} allowDecimals={false} />
+                                    <Tooltip />
+                                    {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
+                                    <Bar dataKey="value" fill="#288DD7" barSize={40} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </>
+                    )}
+                    {(selectCategory == null || selectCategory == "Monthly Income") && (
+                        <>
+                            <div className="chartName">Resident's Monthly Income Chart</div>
+                            <ResponsiveContainer width='100%' height={500}>
+                                <BarChart
+                                    data={income}
+                                    margin={{
+                                        top: 5,
+                                        right: 100,
+                                        left: 100,
+                                        bottom: 40
+                                    }}
+                                >
+                                    <CartesianGrid strokeDasharray="5" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis width={10} allowDecimals={false} />
+                                    <Tooltip />
+                                    {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
+                                    <Bar dataKey="value" fill="#288DD7" barSize={40} />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </>
+                    )}
+                    {(selectCategory == null || selectCategory == "Gender") && (
+                        <>
+                            <div className="chartName">Resident's Gender Piechart</div>
+                            <ResponsiveContainer width="100%" height={500} >
+                                <PieChart>
+                                    <Pie
+                                        dataKey="value"
+                                        isAnimationActive={false}
+                                        data={gender}
+                                        cx="50%"
+                                        cy="50%"
+                                        outerRadius={180}
+                                        fill="#8884d8"
+                                        label
+                                    >
+                                        <Cell key={'cell-1'} fill={"#288DD7"} />
+                                        <Cell key={'cell-2'} fill={"#FC46AA"} />
+                                    </Pie>
+                                    <Legend align="right" verticalAlign="bottom" iconSize={40} />
+                                    <Tooltip />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </>
+                    )}
                 </div> :
                 <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <CircularProgress size={100} />

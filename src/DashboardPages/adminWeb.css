@@ -737,6 +737,7 @@ button:disabled {
     width: 152px;
     height: 152px;
     border-radius: 50%;
+    object-fit: cover
 }
 
 .updateProfileButtons {
@@ -957,6 +958,8 @@ button:disabled {
     background-color: #0C1096;
     padding: 10px;
     border-radius: 8px 8px 0 0;
+    font-weight: 500;
+    font-size: 20px;
 }
 
 .addOfficialDetails .details {
@@ -986,6 +989,7 @@ button:disabled {
     height: 100px;
     width: 100px;
     border-radius: 50%;
+    object-fit: cover
 }
 
 .officalModal {
@@ -1501,6 +1505,7 @@ input[type="file"] {
     width: 50px;
     border-radius: 50px;
     margin-right: 16px;
+    object-fit: cover
 }
 
 .message-container .left .contacts .contactTile .contactHeader .centerTop {
@@ -1710,7 +1715,7 @@ input[type="file"] {
     cursor: pointer;
 }
 
-.header_actions .dropdown .filter:hover {
+.header_actions .dropdown .notActive:hover {
     color: #7175F4
 }
 
@@ -1723,6 +1728,9 @@ input[type="file"] {
     background: #070A57;
     color: #FFFFFF;
 }
+.header_actions .dropdown .active:hover{
+    background: #2428a0;
+}
 
 .header_actions .dropdown .filterIcon {
     -webkit-mask: url(Components/NewImageFiles/Filter.svg) no-repeat center;
@@ -1732,7 +1740,7 @@ input[type="file"] {
     margin-right: 10px;
 }
 
-.header_actions .dropdown .filter:hover .filterIcon {
+.header_actions .dropdown .notActive:hover .filterIcon {
     background-color: #7175F4;
 }
 
@@ -1819,7 +1827,21 @@ input[type="file"] {
     border-bottom: 1px solid #9C9C9C;
     font-weight: 500;
     font-size: 20px;
-    position: sticky;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown-content-header button {
+    border: none;
+    background-color: white;
+    color: #0C1096;
+    font-weight: 500;
+    font-size: 14px;
+
+}
+
+.dropdown-content-header button:hover {
+    color: #7175F4;
 }
 
 .chartName {
@@ -1827,6 +1849,7 @@ input[type="file"] {
     font-weight: 500;
     margin-bottom: 16px;
 }
+
 .recharts-pie-label-text tspan {
     font-size: 32px;
 }

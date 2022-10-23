@@ -44,7 +44,7 @@ export default function RightHeader(props) {
             )}
 
             <div className="header">
-                <img className="msgAvatar"
+                <img className="msgAvatar" style={{objectFit: "cover"}}
                     src={conversation.accountImage ? `https://drims-demo.herokuapp.com/api/uploads/${conversation.accountImage}` : Avatar} />
                 <div className="center">
                     <h3 style={{ fontSize: "16px", lineHeight: "150%" }}>{conversation.resident_name}</h3>

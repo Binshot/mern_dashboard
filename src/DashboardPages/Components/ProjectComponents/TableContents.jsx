@@ -1,7 +1,7 @@
 import React from 'react';
 import View from "../NewImageFiles/ActionButton/View.svg"
 import { Tooltip } from '@mui/material';
-const Projects = ({ projects }) => {
+const Projects = ({ projects, actionButton }) => {
     return (
         projects.map((project, index) => {
             return (
@@ -12,7 +12,8 @@ const Projects = ({ projects }) => {
                     <td>January</td>
                     <td className='project_actions'>
                         <Tooltip title="View" arrow>
-                            <button className="solidButton squareButton buttonGreen">
+                            <button className="solidButton squareButton buttonGreen"
+                                onClick={() => actionButton(true)}>
                                 <img src={View} alt="" />
                             </button>
                         </Tooltip>
