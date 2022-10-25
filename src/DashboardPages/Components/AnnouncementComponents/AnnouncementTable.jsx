@@ -206,11 +206,13 @@ const Table = (props) => {
                                 {action === "view" ?
                                     <div style={{ position: "relative" }}>
                                         <TextField
+                                            id="outlined-multiline-static"
                                             defaultValue={description}
                                             rows={7}
                                             fullWidth
                                             disabled
                                             multiline
+                                            sx={{backgroundColor: "#d4d4d4"}}
                                         />
                                         <div style={{ position: "absolute", right: "14px", bottom: "14px", color: '#636363' }}>
                                             {`${description.length}/400`}

@@ -403,10 +403,12 @@ const Table = (props) => {
                                             <div style={{ position: "relative" }}>
                                                 <TextField
                                                     defaultValue={eventDescription}
+                                                    id="outlined-multiline-static"
                                                     disabled
                                                     rows={6}
                                                     fullWidth
                                                     multiline
+                                                    sx={{backgroundColor: "#d4d4d4"}}
                                                 />
                                                 <div style={{ position: "absolute", right: "14px", bottom: "14px", color: '#636363' }}>
                                                     {`${eventDescription.length}/400`}
