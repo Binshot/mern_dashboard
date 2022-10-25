@@ -37,7 +37,7 @@ const Table = (props) => {
     }, [dispatch])
 
     const [currentPage, setCurrentPage] = useState(1);
-    const residentsPerPage = 5;
+    const residentsPerPage = 10;
 
     //Set action flag
     const [action, setAction] = useState(null);

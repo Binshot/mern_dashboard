@@ -15,6 +15,7 @@ import {
     PieChart,
     Pie,
     Cell,
+    Label,
     LabelList
 } from "recharts";
 
@@ -92,7 +93,7 @@ export default function App() {
                         <div className="rightAlign actions" style={{ cursor: "pointer" }} onClick={() => handlePrint()} >
                             <img src={Print} alt="" className="export" />
                         </div>
-                        <div style={{ display: "none" }}><ComponentToPrint ref={componentRef} /></div>
+                        <div style={{ display: "none" }}><ComponentToPrint ref={componentRef} list={[age,occupation,education, income,gender]}/></div>
                     </div>
                     <div className='flex-row' style={{ marginBottom: " 24px" }}>
                         <div style={{ width: "30%", marginRight: "24px" }}>
@@ -160,7 +161,8 @@ export default function App() {
                                     <YAxis width={10} allowDecimals={false} />
                                     <Tooltip />
                                     {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
-                                    <Bar dataKey="value" fill="#288DD7" barSize={40} />
+                                    <Bar dataKey="value" fill="#288DD7" barSize={40} isAnimationActive={false}/>
+                                        
                                 </BarChart>
                             </ResponsiveContainer>
                         </>
@@ -183,7 +185,7 @@ export default function App() {
                                     <YAxis width={10} allowDecimals={false} />
                                     <Tooltip />
                                     {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
-                                    <Bar dataKey="value" fill="#288DD7" barSize={40} />
+                                    <Bar dataKey="value" fill="#288DD7" barSize={40} isAnimationActive={false} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </>
@@ -206,7 +208,7 @@ export default function App() {
                                     <YAxis width={10} allowDecimals={false} />
                                     <Tooltip />
                                     {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
-                                    <Bar dataKey="value" fill="#288DD7" barSize={40} />
+                                    <Bar dataKey="value" fill="#288DD7" barSize={40} isAnimationActive={false} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </>
@@ -229,7 +231,7 @@ export default function App() {
                                     <YAxis width={10} allowDecimals={false} />
                                     <Tooltip />
                                     {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
-                                    <Bar dataKey="value" fill="#288DD7" barSize={40} />
+                                    <Bar dataKey="value" fill="#288DD7" barSize={40} isAnimationActive={false} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </>

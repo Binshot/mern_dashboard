@@ -1688,13 +1688,48 @@ input[type="file"] {
 }
 
 /* ================== PDF Template =========================== */
+@media print {
+    .pageBreak {
+        page-break-after: always;
+    }
+}
 
-.PDFTemplate table tbody td,
+.PDFTemplate .pdfCharts {
+    margin: 32px 13px;
+    display: block;
+}
+
+.PDFTemplate p {
+    margin-bottom: 32px;
+}
+
+.PDFTemplate table,
+.PDFTemplate th,
+.PDFTemplate td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.PDFTemplate table td,
 .PDFTemplate table th {
     padding: 8px 12px;
-    border-bottom: 1px solid #9C9C9C;
     font-size: 16px;
     text-align: left;
+}
+
+table#printTable {
+    width: 98% !important;
+    margin: 10px !important;
+    border-radius: 0 !important;
+    border-style: none !important;
+    box-shadow: none !important;
+}
+
+.PDFTemplate .headerTemplate {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 13px 32px;
+    align-items: center;
 }
 
 /* ================== PROJECTS =========================== */
@@ -1728,7 +1763,8 @@ input[type="file"] {
     background: #070A57;
     color: #FFFFFF;
 }
-.header_actions .dropdown .active:hover{
+
+.header_actions .dropdown .active:hover {
     background: #2428a0;
 }
 
@@ -1800,12 +1836,11 @@ input[type="file"] {
 /* projects table */
 
 .Projects_table td:nth-child(2) {
-    width: 200px;
+    width: 350px;
 }
 
 .Projects_table td:nth-child(3) {
-    text-align: center;
-    width: 180px;
+    width: 250px;
 }
 
 .Projects_table td:nth-child(4) {

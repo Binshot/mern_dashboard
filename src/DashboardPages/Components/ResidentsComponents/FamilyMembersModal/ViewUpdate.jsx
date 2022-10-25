@@ -18,8 +18,7 @@ function ViewUpdate(props) {
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed'];
     const educationAttainment = ['No Formal Education', 'Elementary', 'High School',
-        'General Education Development', 'Vocational Qualificiation', 'Bachelor’s Degree',
-        'Master’s Degree', 'Doctorate or Higher'];
+    'Bachelor’s Degree', 'Master’s Degree', 'Doctorate or Higher'];
     const residentOccupation = ["Student", "Unemployed", "Employed", "Self-Employed"]
     const familyMember = ["Parent", "Spouse", "Child", "Sibling", "Grandparent", "Grandchild", "Other Relative"];
 

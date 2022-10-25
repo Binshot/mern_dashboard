@@ -24,8 +24,7 @@ function AddResident(props) {
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed'];
     const educationAttainmentOptions = ['No Formal Education', 'Elementary', 'High School',
-        'General Education Development', 'Vocational Qualificiation', 'Bachelor’s Degree',
-        'Master’s Degree', 'Doctorate or Higher'];
+    'Bachelor’s Degree', 'Master’s Degree', 'Doctorate or Higher'];
     const familyMember = ["Parent", "Spouse", "Child", "Sibling", "Grandparent", "Grandchild", "Other Relative"];
     const residentOccupation = ["Student", "Unemployed", "Employed", "Self-Employed"]
     const [value, setValue] = React.useState(0);

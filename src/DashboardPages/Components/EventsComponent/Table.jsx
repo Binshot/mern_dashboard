@@ -27,7 +27,7 @@ const Table = (props) => {
 
     const events = props.list
     const [currentPage, setCurrentPage] = useState(1);
-    const eventsPerPage = 5;
+    const eventsPerPage = 10;
 
     //get Selected Event
     const [selectedEvent, setSelectedEvent] = useState('')

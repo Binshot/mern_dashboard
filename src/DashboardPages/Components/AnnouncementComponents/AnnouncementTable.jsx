@@ -18,7 +18,7 @@ const Table = (props) => {
 
     const announcement = props.list
     const [currentPage, setCurrentPage] = useState(1);
-    const announcementsPerPage = 5;
+    const announcementsPerPage = 10;
     //Get Id of selected Resident
     const [announcementID, setAnnouncementID] = useState(null);
     //Set action flag

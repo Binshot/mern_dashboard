@@ -19,7 +19,7 @@ const Table = (props) => {
     // }, [activityDispatch])
 
     const [currentPage, setCurrentPage] = useState(1);
-    const ActivityPerPage = 5;
+    const ActivityPerPage = 10;
     const activity = props.list
     if (activity) {
 
