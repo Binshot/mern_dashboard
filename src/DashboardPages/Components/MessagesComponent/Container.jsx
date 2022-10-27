@@ -47,7 +47,7 @@ export default function Container() {
 
     useEffect(() => {
         const fetchContacts = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/messages/get-contacts');
+            const response = await fetch(process.env.REACT_APP_API_URL + '/messages/get-contacts');
 
             const json = await response.json();
 
@@ -70,7 +70,7 @@ export default function Container() {
     // Connect to socket
     useEffect(() => {
         if (currentUser) {
-            socket.current = io('https://drims-demo.herokuapp.com/');
+            socket.current = io(process.env.REACT_APP_SOCKET_URL);
             socket.current.emit("add-user", currentUser.id);
 
             // If user is ADMIN, update the contacts side if there are new messges

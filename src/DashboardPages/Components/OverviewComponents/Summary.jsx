@@ -12,14 +12,14 @@ function Summary() {
 
     useEffect(() => {
         const fetchResidents = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/residents/')
             const json = await response.json()
             if (response.ok) {
                 setResidents(json)
             }
         }
         const fetchUsers = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/account/users')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/account/users')
             const json = await response.json()
             if (response.ok) {
                 setnumberOfUser(json.length)

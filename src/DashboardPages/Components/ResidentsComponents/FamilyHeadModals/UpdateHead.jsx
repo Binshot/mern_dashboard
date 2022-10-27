@@ -54,7 +54,7 @@ function UpdateResident(props) {
         setLoading(true)
         e.preventDefault()
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/'
+        const response = await fetch(process.env.REACT_APP_API_URL + '/residents/'
             + props.resident._id, {
             method: 'PATCH',
             body: JSON.stringify({
@@ -97,7 +97,7 @@ function UpdateResident(props) {
             props.headName(lastName + ", " + firstName)
 
             // update family head
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity: "Updated a resident: " + lastName + ", " + firstName }),
                 headers: {

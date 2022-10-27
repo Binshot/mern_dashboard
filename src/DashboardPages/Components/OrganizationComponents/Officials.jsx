@@ -67,7 +67,7 @@ function Officials(props) {
 
     // handle update official
     const handleUpdate = async () => {
-        const response = await fetch('https://drims-demo.herokuapp.com/api/organization/'
+        const response = await fetch(process.env.REACT_APP_API_URL + '/organization/'
             + id, {
             method: 'PATCH',
             body: JSON.stringify({
@@ -108,7 +108,7 @@ function Officials(props) {
             toggleSnackbar(true)
 
             //update announcement
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity: "Updated an official: " + nameOfMember }),
                 headers: {
@@ -121,7 +121,7 @@ function Officials(props) {
     // handle delete official
     const handleDelete = async () => {
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/organization/'
+        const response = await fetch(process.env.REACT_APP_API_URL + '/organization/'
             + id, {
             method: 'DELETE'
         })
@@ -133,7 +133,7 @@ function Officials(props) {
             toggleDeleteSnackbar(true)
 
             //delete announcement
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity: "Deleted an official: " + nameOfMember }),
                 headers: {

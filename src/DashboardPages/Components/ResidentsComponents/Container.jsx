@@ -10,7 +10,7 @@ function Container() {
 
     useEffect(() => {
         const fetchResidents = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/residents/')
             const json = await response.json()
             if (response.ok) {
                 dispatch({ type: 'SET_RESIDENT', payload: json })

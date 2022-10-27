@@ -65,7 +65,7 @@ function AddResident(props) {
             civilStatus, educationalAttainment, occupation, monthlyIncome, membership: { pagibig, sss, gsis, philhealth }
         }
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/', {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/residents/', {
             method: 'POST',
             body: JSON.stringify(resident),
             headers: {
@@ -91,7 +91,7 @@ function AddResident(props) {
             setEmptyFields([])
 
             //Added a Member of the family
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity: "Added a head of the family: " + lastName + ", " + firstName }),
                 headers: {
@@ -110,7 +110,7 @@ function AddResident(props) {
             civilStatus, educationalAttainment, occupation, monthlyIncome, membership: { pagibig, sss, gsis, philhealth }, relationship
         }
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/add-member/' + props.headID, {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/residents/add-member/' + props.headID, {
             method: 'POST',
             body: JSON.stringify(resident),
             headers: {
@@ -129,7 +129,7 @@ function AddResident(props) {
             dispatch({ type: 'CREATE_RESIDENT_MEMBER', payload: json })
 
             //Added a member of the family
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity: "Added a member of the family: " + lastName + ", " + firstName }),
                 headers: {

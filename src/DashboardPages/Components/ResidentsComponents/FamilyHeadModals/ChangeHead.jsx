@@ -14,7 +14,7 @@ function ChangeHeadOfTheFamily(props) {
     const { dispatch } = useResidentContext()
     useEffect(() => {
         const fetchResidents = async () => {
-            const secondresponse = await fetch('https://drims-demo.herokuapp.com/api/residents/members/' +
+            const secondresponse = await fetch(process.env.REACT_APP_API_URL + '/residents/members/' +
                 props.resident._id)
             const secondjson = await secondresponse.json()
             if (secondresponse.ok) {
@@ -34,7 +34,7 @@ function ChangeHeadOfTheFamily(props) {
         setLoading(true)
         e.preventDefault()
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/change-head', {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/residents/change-head', {
             method: 'PATCH',
             body: JSON.stringify({
                 headOfFamily_id: props.resident._id,
@@ -58,7 +58,7 @@ function ChangeHeadOfTheFamily(props) {
             props.headName(json.newHead.lastName + ", " + json.newHead.firstName)
 
             // update family head
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity:"Changed a new head of the family: " + json.newHead.lastName + ", " + json.newHead.firstName }),
                 headers: {

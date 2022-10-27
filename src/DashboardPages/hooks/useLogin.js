@@ -11,7 +11,7 @@ export const useLogin = () => {
     setIsLoading(true)
     setError(null)
 
-    const response = await fetch('https://drims-demo.herokuapp.com/api/user/login', {
+    const response = await fetch(process.env.REACT_APP_API_URL + '/user/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, accountType: "ADMIN" })
@@ -24,7 +24,7 @@ export const useLogin = () => {
       setError(json.error)
       json.error === "Please fill up fields" ? setEmptyFields(json.emptyFields) : setEmptyFields(oldArray => [...oldArray, "newElement"])
       
-      fetch('https://drims-demo.herokuapp.com/api/activity/', {
+      fetch(process.env.REACT_APP_API_URL + '/activity/', {
         method: 'POST',
         body: JSON.stringify({ activity: "Admin failed to log in" }),
         headers: {
@@ -44,7 +44,7 @@ export const useLogin = () => {
       setIsLoading(false)
 
       // add activity logs
-      fetch('https://drims-demo.herokuapp.com/api/activity/', {
+      fetch(process.env.REACT_APP_API_URL + '/activity/', {
         method: 'POST',
         body: JSON.stringify({ activity: "Admin logged in" }),
         headers: {

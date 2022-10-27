@@ -90,7 +90,7 @@ export default function Conversation(props) {
             read_by_admin: true,
         }
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/messages/send-message', {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/messages/send-message', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {

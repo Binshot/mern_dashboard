@@ -25,7 +25,7 @@ const Table = (props) => {
     const residentsList = props.list
     useEffect(() => {
         const fetchResidents = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/residents/')
             const json = await response.json()
             // console.log(json)
             if (response.ok) {
@@ -97,7 +97,7 @@ const Table = (props) => {
     //Handle Delete Head of The Family
     const handleDelete = async () => {
         setLoading(true)
-        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/'
+        const response = await fetch(process.env.REACT_APP_API_URL + '/residents/'
             + selectedResident._id, {
             method: 'DELETE'
         })
@@ -111,7 +111,7 @@ const Table = (props) => {
             dispatch({ type: 'DELETE_RESIDENT', payload: json })
 
             //Deleted a head of the family
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity: "Deleted a head of the family and its members: " + selectedResident.lastName + ", " + selectedResident.firstName }),
                 headers: {

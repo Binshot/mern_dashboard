@@ -10,7 +10,7 @@ export const useLogout = () => {
     // dispatch logout action
     dispatch({ type: 'LOGOUT' })
     
-    fetch('https://drims-demo.herokuapp.com/api/activity/', {
+    fetch(process.env.REACT_APP_API_URL + '/activity/', {
       method: 'POST',
       body: JSON.stringify({activity: "Admin logged out"}),
       headers: {

@@ -55,7 +55,7 @@ function ViewUpdate(props) {
         setLoading(true)
         e.preventDefault()
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/'
+        const response = await fetch(process.env.REACT_APP_API_URL + '/residents/'
             + props.resident._id, {
             method: 'PATCH',
             body: JSON.stringify({
@@ -100,7 +100,7 @@ function ViewUpdate(props) {
             setValue(0)
 
             // update family member
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity: "Updated a resident: " + props.lastName + ", " + props.firstName }),
                 headers: {

@@ -8,8 +8,9 @@ import { TextField } from "@mui/material";
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import VisibilityOn from '@mui/icons-material/Visibility';
 import CheckIcon from '@mui/icons-material/Check';
-
+import useTitle from "../../hooks/useTitle"
 function ResetPassword() {
+    useTitle("DRIMS | Reset Password")
     const params = useParams();
     let navigate = useNavigate();
     const [isVerified, setIsVerified] = useState(false);

@@ -12,10 +12,10 @@ function Container() {
 
     useEffect(() => {
         const fetchOfficials = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/organization/')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/organization/')
             const json = await response.json()
             if (response.ok) {
-                const resresponse = await fetch('https://drims-demo.herokuapp.com/api/residents/')
+                const resresponse = await fetch(process.env.REACT_APP_API_URL + '/residents/')
                 const resjson = await resresponse.json()
                 if (resresponse.ok) {
                     const dta = await json.map(props => {

@@ -6,5 +6,3 @@ npx json-server --watch src/Events.json --port 8003
 npx json-server --watch src/ActivityLogs.json --port 8004
 
 cd dashboard_admin/frontend
-
-https://drims-demo.herokuapp.com/api/announcements

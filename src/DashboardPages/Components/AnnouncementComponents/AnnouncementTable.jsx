@@ -97,7 +97,7 @@ const Table = (props) => {
         // Delete Announcement
         const handleDelete = async () => {
 
-            const response = await fetch('https://drims-demo.herokuapp.com/api/announcements/'
+            const response = await fetch(process.env.REACT_APP_API_URL + '/announcements/'
                 + announcementID, {
                 method: 'DELETE'
             })
@@ -107,7 +107,7 @@ const Table = (props) => {
                 dispatch({ type: 'DELETE_ANNOUNCEMENT', payload: json })
                 props.get(announcements)
                 //delete announcement
-                fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                fetch(process.env.REACT_APP_API_URL + '/activity/', {
                     method: 'POST',
                     body: JSON.stringify({ activity: "Deleted an announcement: " + title }),
                     headers: {
@@ -120,7 +120,7 @@ const Table = (props) => {
         // Update Announcement
         const handleUpdate = async () => {
 
-            const response = await fetch('https://drims-demo.herokuapp.com/api/announcements/'
+            const response = await fetch(process.env.REACT_APP_API_URL + '/announcements/'
                 + announcementID, {
                 method: 'PATCH',
                 body: JSON.stringify({
@@ -139,7 +139,7 @@ const Table = (props) => {
                 dispatch({ type: 'UPDATE_ANNOUNCEMENT', payload: json })
 
                 //update announcement
-                fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                fetch(process.env.REACT_APP_API_URL + '/activity/', {
                     method: 'POST',
                     body: JSON.stringify({ activity: "Updated an announcement: " + title }),
                     headers: {

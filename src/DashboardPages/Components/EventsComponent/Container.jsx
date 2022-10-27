@@ -11,7 +11,7 @@ function Container() {
 
     useEffect(() => {
         const fetchWorkouts = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/events/')
+            const response = await fetch(process.env.REACT_APP_API_URL +'/events/')
             const json = await response.json()
             if (response.ok) {
                 dispatch({ type: 'SET_EVENT', payload: json })

@@ -99,7 +99,7 @@ function Header(props) {
         formData.append('file', file);
 
         try {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/events/', {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/events/', {
                 method: 'POST',
                 body: formData
             })
@@ -121,7 +121,7 @@ function Header(props) {
                 //Add an Event
                 const activity = "Added an Event: " + eventTitle
                 const content = { activity }
-                fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                fetch(process.env.REACT_APP_API_URL + '/activity/', {
                     method: 'POST',
                     body: JSON.stringify({ activity: "Added an Event: " + eventTitle }),
                     headers: {

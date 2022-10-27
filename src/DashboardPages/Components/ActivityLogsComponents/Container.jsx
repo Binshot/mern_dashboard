@@ -9,7 +9,7 @@ function ActivityLog() {
     const getRows = rows => setRows(rows)
     useEffect(() => {
         const fetchActivities = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/activity/')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/activity/')
             const json = await response.json()
             if (response.ok) {
                 activityDispatch({ type: 'SET_ACTIVITY', payload: json })

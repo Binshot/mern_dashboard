@@ -61,7 +61,7 @@ function ViewFamilyInformation(props) {
     // handle family member delete
     const handleDelete = async () => {
         setLoading(true)
-        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/'
+        const response = await fetch(process.env.REACT_APP_API_URL + '/residents/'
             + selectedFamMember._id, {
             method: 'DELETE'
         })
@@ -75,7 +75,7 @@ function ViewFamilyInformation(props) {
             dispatch({ type: 'DELETE_RESIDENT_MEMBER', payload: json })
 
             //Deleted a member of the family
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity: "Deleted a member of the family: " + selectedFamMember.lastName + ", " + selectedFamMember.firstName }),
                 headers: {
@@ -92,7 +92,7 @@ function ViewFamilyInformation(props) {
 
     useEffect(() => {
         const fetchResidents = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/members/' +
+            const response = await fetch(process.env.REACT_APP_API_URL + '/residents/members/' +
                 props.familyHead._id)
             const json = await response.json()
             if (response.ok) {

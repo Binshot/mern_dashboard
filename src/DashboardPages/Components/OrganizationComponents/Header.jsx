@@ -37,7 +37,7 @@ function Header(props) {
     // const [name, setName] = useState(null)
     useEffect(() => {
         const fetchResident = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/residents/')
             const json = await response.json()
 
             if (response.ok) {
@@ -49,7 +49,7 @@ function Header(props) {
     }, [])
 
     const fetchSingleResident = async (id) => {
-        const response = await fetch('https://drims-demo.herokuapp.com/api/residents/' + id)
+        const response = await fetch(process.env.REACT_APP_API_URL + '/residents/' + id)
         const json = await response.json()
 
         if (response.ok) {
@@ -90,7 +90,7 @@ function Header(props) {
         setIsLoading(true)
         e.preventDefault()
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/organization/', {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/organization/', {
             method: 'POST',
             body: JSON.stringify({
                 resident_id: selectedResident ? selectedResident._id : null,
@@ -108,7 +108,7 @@ function Header(props) {
             setIsLoading(false)
             toggleSnackbar(true)
             setChanged(false)
-            const resresponse = await fetch('https://drims-demo.herokuapp.com/api/residents/' + json.resident_id)
+            const resresponse = await fetch(process.env.REACT_APP_API_URL + '/residents/' + json.resident_id)
             const resjson = await resresponse.json()
             if (resresponse.ok) {
                 let sortPosition
@@ -137,7 +137,7 @@ function Header(props) {
             }
 
             // add activity logs
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity: "Added an official: " + selectedResident.lastName + ", " + selectedResident.firstName }),
                 headers: {

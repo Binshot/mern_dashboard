@@ -28,35 +28,35 @@ export default function App() {
     const [selectCategory, setselectCategory] = useState(null)
     useEffect(() => {
         const getGenderResults = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/overview/gender')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/residents/overview/gender')
             const json = await response.json()
             if (response.ok) {
                 setGender(json)
             }
         }
         const getEducationResults = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/overview/education')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/residents/overview/education')
             const json = await response.json()
             if (response.ok) {
                 seteducation(json)
             }
         }
         const getAgeResults = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/overview/age')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/residents/overview/age')
             const json = await response.json()
             if (response.ok) {
                 setage(json)
             }
         }
         const getOccupationResults = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/overview/occupation')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/residents/overview/occupation')
             const json = await response.json()
             if (response.ok) {
                 setoccupation(json)
             }
         }
         const getIncomeResults = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/overview/income')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/residents/overview/income')
             const json = await response.json()
             if (response.ok) {
                 setincome(json)

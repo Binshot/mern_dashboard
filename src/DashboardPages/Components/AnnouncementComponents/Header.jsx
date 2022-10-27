@@ -58,7 +58,7 @@ function Header(props) {
 
         const announcement = { announcementTitle, announcementDetail }
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/announcements/', {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/announcements/', {
             method: 'POST',
             body: JSON.stringify(announcement),
             headers: {
@@ -77,7 +77,7 @@ function Header(props) {
             dispatch({ type: 'CREATE_ANNOUNCEMENT', payload: json })
 
             // add activity logs
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity: "Added an announcement: " + announcementTitle }),
                 headers: {

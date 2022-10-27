@@ -7,7 +7,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Print from "../NewImageFiles/Topbar/Print.svg"
 import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from '../printPDF/ProjectToPrint';
+import useTitle from "../../hooks/useTitle"
 function Projects() {
+
+    useTitle("DRIMS | Projects")
+
     const [allProjects, setAllProjects] = useState(null)
     const [prescriptiveProjects, setPrescriptiveProjects] = useState(null)
     const [filteredRow, setfilteredRow] = useState(null)
@@ -15,14 +19,14 @@ function Projects() {
 
     useEffect(() => {
         const getAllPorjects = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/projects/')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/projects/')
             const json = await response.json()
             if (response.ok) {
                 setAllProjects(json)
             }
         }
         const getPresciptivePorjects = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/projects/prescriptive')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/projects/prescriptive')
             const json = await response.json()
             if (response.ok) {
                 setPrescriptiveProjects(json)
@@ -30,7 +34,7 @@ function Projects() {
             }
         }
         const getCounts = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/projects/count-data')
+            const response = await fetch(process.env.REACT_APP_API_URL + '/projects/count-data')
             const json = await response.json()
             if (response.ok) {
                 setCounts(json)

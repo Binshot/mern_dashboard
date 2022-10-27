@@ -106,7 +106,7 @@ const Table = (props) => {
     // Delete Events
     const handleDelete = async () => {
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/events/'
+        const response = await fetch(process.env.REACT_APP_API_URL + '/events/'
             + selectedEvent._id, {
             method: 'DELETE'
         })
@@ -116,7 +116,7 @@ const Table = (props) => {
             dispatch({ type: 'DELETE_EVENT', payload: json })
             console.log(json)
             //Delete an Event
-            fetch('https://drims-demo.herokuapp.com/api/activity/', {
+            fetch(process.env.REACT_APP_API_URL + '/activity/', {
                 method: 'POST',
                 body: JSON.stringify({ activity: "Deleted an Event: " + selectedEvent.eventTitle }),
                 headers: {
@@ -205,7 +205,7 @@ const Table = (props) => {
         formData.append('file', file);
 
         try {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/events/' +
+            const response = await fetch(process.env.REACT_APP_API_URL + '/events/' +
                 selectedEvent._id, {
                 method: 'PATCH',
                 body: formData
@@ -228,7 +228,7 @@ const Table = (props) => {
                 dispatch({ type: 'UPDATE_EVENT', payload: json })
 
                 //Add an Event
-                fetch('https://drims-demo.herokuapp.com/api/activity/', {
+                fetch(process.env.REACT_APP_API_URL + '/activity/', {
                     method: 'POST',
                     body: JSON.stringify({ activity: "Updated an Event: " + eventTitle }),
                     headers: {

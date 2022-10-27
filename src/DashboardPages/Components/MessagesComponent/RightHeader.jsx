@@ -11,13 +11,13 @@ export default function RightHeader(props) {
 
     useEffect(() => {
         const fetchResidents = async () => {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/residents/' +
+            const response = await fetch(process.env.REACT_APP_API_URL + '/residents/' +
                 conversation.resident_id)
             const json = await response.json()
             if (response.ok) {
                 setresident(json)
 
-                const secondresponse = await fetch('https://drims-demo.herokuapp.com/api/residents/members/' +
+                const secondresponse = await fetch(process.env.REACT_APP_API_URL + '/residents/members/' +
                     conversation.resident_id)
                 const secondjson = await secondresponse.json()
                 if (secondresponse.ok) {

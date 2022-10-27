@@ -15,7 +15,7 @@ function ForgotPassword() {
         setIsLoading(true);
 
         try {
-            const response = await fetch('https://drims-demo.herokuapp.com/api/account/forgot-password/', {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/account/forgot-password/', {
                 method: 'POST',
                 body: JSON.stringify({ email }),
                 headers: {

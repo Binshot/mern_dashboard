@@ -11,8 +11,10 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import VisibilityOn from '@mui/icons-material/Visibility';
 import { TextField } from '@mui/material';
-
+import useTitle from "../../hooks/useTitle"
 function ProfileSettings() {
+
+    useTitle("DRIMS | Profile Settings")
 
     const user = JSON.parse(localStorage.getItem("user"));
     const [showModal, setShowModal] = useState(null);
@@ -43,7 +45,7 @@ function ProfileSettings() {
 
         const changeEmail = { currentEmail, newEmail }
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/account/change-email/' + user.id, {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/account/change-email/' + user.id, {
             method: 'POST',
             body: JSON.stringify(changeEmail),
             headers: {
@@ -72,7 +74,7 @@ function ProfileSettings() {
 
         const changePassword = { currentPassword, newPassword, confirmPassword }
 
-        const response = await fetch('https://drims-demo.herokuapp.com/api/account/change-password/' + user.id, {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/account/change-password/' + user.id, {
             method: 'POST',
             body: JSON.stringify(changePassword),
             headers: {
