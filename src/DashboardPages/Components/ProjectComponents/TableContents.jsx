@@ -23,12 +23,12 @@ const Projects = ({ projects, actionButton, getSelectedProject, getBeneficiary }
                 partialJoin.push(`above ${age.at(0).substring(0, 2)} years old`)
             }
             gender.length == 1 && partialJoin.push(gender.join(', '))
-            occupation.length < 4 && occupation.length != 0 && !occupation.includes("student") && partialJoin.push(occupation.join(', '))
             education.length < 6 && education.length != 0 && partialJoin.push(education.join(', '))
+            occupation.length < 4 && occupation.length != 0 && partialJoin.push(occupation.join(', '))
             return (
                 <tr key={index}>
                     <td>{project.project_title}</td>
-                    {<td>{partialJoin.length != 0 ? partialJoin.join(', ') : "Anyone"}</td>}
+                    <td>{partialJoin.length != 0 ? partialJoin.join(', ') : "Anyone"}</td>
                     <td>{project.target.month.length != 0
                         ? project.target.month.join(', ')
                         : "Any Month"}</td>

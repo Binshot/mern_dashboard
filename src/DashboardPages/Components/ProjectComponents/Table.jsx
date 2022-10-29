@@ -107,7 +107,6 @@ const Table = (props) => {
                         <tr>
                             <td><h4>TITLE</h4> </td>
                             <td><h4>TARGET BENEFICIARIES</h4></td>
-                            {/* <td><h4>TARGET PARTICIPANTS</h4></td> */}
                             <td><h4>TARGET MONTH</h4></td>
                             <td><h4>ACTION</h4></td>
                         </tr>

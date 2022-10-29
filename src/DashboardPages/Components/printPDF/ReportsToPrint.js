@@ -16,7 +16,6 @@ import {
 } from "recharts";
 export const ComponentToPrint = React.forwardRef((props, ref) => {
     const date = new Date()
-    console.log(props.list.at(0))
     return (
         <div ref={ref} className="PDFTemplate">
             <div className="headerTemplate">

@@ -15,20 +15,24 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
             </div>
 
             <table id="printTable" >
-                <tr>
-                    <th colSpan="2">Name</th>
-                    <th>Position</th>
-                    <th>Email</th>
-                </tr>
-                {props.list.map(official => {
-                    return (
-                        <tr key={official._id}>
-                            <td colSpan="2">{official.official.lastName}, {official.official.firstName}</td>
-                            <td>{official.position}</td>
-                            <td>{official.official.email}</td>
-                        </tr>
-                    );
-                })}
+                <thead>
+                    <tr>
+                        <th colSpan="3">Name</th>
+                        <th>Position</th>
+                        <th colSpan="2">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.list.map(official => {
+                        return (
+                            <tr key={official._id}>
+                                <td colSpan="3">{official.official.lastName}, {official.official.firstName}</td>
+                                <td>{official.position}</td>
+                                <td colSpan="2">{official.official.email}</td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
             </table>
         </div>
     );

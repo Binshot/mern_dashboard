@@ -190,10 +190,15 @@ function Projects() {
         const filteredRows = allProjects.filter((row) => {
             return (
                 row.target.age.some(r => getFilters.includes(r))
+                || row.target.age.length == 0
                 || row.target.education.some(r => getFilters.includes(r))
+                || row.target.education.length == 0
                 || row.target.gender.some(r => getFilters.includes(r))
+                || row.target.gender.length == 0
                 || row.target.month.some(r => getFilters.includes(r))
+                || row.target.month.length == 0
                 || row.target.occupation.some(r => getFilters.includes(r))
+                || row.target.occupation.length == 0
             )
         });
 
@@ -480,7 +485,7 @@ function Projects() {
                     </div>
                 </> :
                 <div style={{ height: "calc(100vh - 160px)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <CircularProgress size={100} />
+                    <CircularProgress size={100} sx={{color: "#0C1096"}}/>
                 </div>
             }
         </>
