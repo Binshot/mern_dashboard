@@ -21,13 +21,14 @@ function ResetPassword() {
     const [error, setError] = useState("");
     const [emptyFields, setEmptyFields] = useState([])
     const url = `https://drims-demo.herokuapp.com/api/account/reset-password/${params.id}/${params.token}`;
-
+    const [email, setemail] = useState('')
     useEffect(() => {
         const verifyLink = async () => {
             const response = await fetch(url);
             const json = await response.json();
-
+            console.log(json)
             if (response.ok) {
+                setemail(json.email)
                 setIsVerified(true);
                 console.log(json);
             } else {
@@ -80,7 +81,7 @@ function ResetPassword() {
         } catch (error) {
             console.log(error);
         }
-        
+
     }
 
     return (
@@ -93,7 +94,7 @@ function ResetPassword() {
                                 <div className='loginForm'>
                                     <div className='loginHeader'>
                                         <h2>Reset Password</h2>
-                                        <p>Account Email: 1@s.com</p>
+                                        <p>{`Account Email: ${email}`}</p>
                                         <p style={{ fontSize: "14px", margin: "16px", color: "#9C9C9C" }}>
                                             Passwod must be at least 8 charactes with both uppercase and lowercase letters, numbers, and symbols. <br></br>
                                             Allowed symbols: [ ! @ # $ % ^ & * - _ . ]
@@ -169,7 +170,7 @@ function ResetPassword() {
                                 </div>
                             </form>
                         ) : (
-                            <h3 style={{color: "white"}}>Reset Password Link is not valid. You will be redirected to the Login page shortly...</h3>
+                            <h3 style={{ color: "white" }}>Reset Password Link is not valid. You will be redirected to the Login page shortly...</h3>
                         )
                 ) : (
                     <div className='loginForm'>

@@ -253,8 +253,8 @@ function ViewResident(props) {
                                     )}
                                     {value === 2 && (
                                         <div className="flex-column tab">
-                                            {props.familyMembers.length == 0 ?
-                                                <div className='flex-column' style={{ padding: "0 100px" }}>
+                                            {props.familyMembers.length == 0
+                                                ? <div className='flex-column' style={{ padding: "0 100px" }}>
                                                     <div className='flex-row' style={{ justifyContent: "center", flexGrow: "1" }} >
                                                         <img src={Woman} alt="" style={{ width: "140px", marginBottom: "10px" }} />
                                                     </div>
@@ -262,16 +262,15 @@ function ViewResident(props) {
                                                         There are no relatives for <span style={{ fontWeight: "bold" }}>{props.resident.lastName}, {props.resident.firstName}</span>. <br />
                                                         Relatives are listed if the Head of the family added their own family members
                                                     </p>
-                                                </div> :
-                                                props.familyMembers.map((member) => {
-                                                    console.log(member)
+                                                </div>
+                                                : props.familyMembers.map((member) => {
                                                     return (
-                                                        <div className='flex-row viewFamilyMemberContainer' key={member._id}>
-                                                            <img src={avatar} alt="" style={{ height: "100px", width: "100px", marginRight: "16px" }} />
+                                                        <div className='flex-row viewFamilyMemberContainer' key={member.member_data._id}>
+                                                            <img src={Avatar} alt="" style={{ height: "100px", width: "100px", marginRight: "16px" }} />
                                                             <div className='flex-column' style={{ justifyContent: "center", flexGrow: "1" }}>
-                                                                <h4>{member.lastName + ", " + member.firstName + " " + member.middleName}</h4>
+                                                                <h4>{member.member_data.lastName + ", " + member.member_data.firstName + " " + member.member_data.middleName}</h4>
                                                                 <h5 style={{ fontSize: "14px", color: "#9C9C9C", fontWeight: "normal" }}>
-                                                                    {relation}
+                                                                    {member.relationship}
                                                                 </h5>
                                                             </div>
                                                         </div>

@@ -232,7 +232,7 @@ function Projects() {
                                         </div>
                                     </div>
                                     <Box sx={{ width: 400, maxHeight: '50vh', overflow: 'auto' }}>
-                                        {/* <div style={{ padding: "24px" }}>
+                                        <div style={{ padding: "24px" }}>
                                             Target Number of Participant
                                             <TextField
                                                 type="number"
@@ -252,7 +252,7 @@ function Projects() {
                                                     e.target.value >= 0 && setparticiantsNum(e.target.value)
                                                 }}
                                             />
-                                        </div> */}
+                                        </div>
                                         <Accordion disableGutters elevation={0}
                                             sx={{
                                                 '&:before': {

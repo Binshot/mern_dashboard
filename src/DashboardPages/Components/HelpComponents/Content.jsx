@@ -124,7 +124,7 @@ function Content() {
                             <img src={OrganizationFrame4} alt="" />
                         </div>
                         <div id='residents'>
-                            <h2>Resdients</h2>
+                            <h2>Residents</h2>
                             <p>The Residents module is the third page of the dashboard. You can view, add, update, or delete a Resident.</p>
                             <img src={ResidentsFrame1} alt="" />
                             <p>You can add a Resident by clicking the div “Add Resident.” Information to be filled such as Personal, Background, and Family information.</p>
