@@ -212,7 +212,10 @@ const Table = (props) => {
                                             fullWidth
                                             disabled
                                             multiline
-                                            // sx={{backgroundColor: "#d4d4d4"}}
+                                            sx={{
+                                                backgroundColor: "#d4d4d4",
+                                                borderRadius: "8px"
+                                            }}
                                         />
                                         <div style={{ position: "absolute", right: "14px", bottom: "14px", color: '#636363' }}>
                                             {`${description.length}/400`}

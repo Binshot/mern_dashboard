@@ -408,7 +408,10 @@ const Table = (props) => {
                                                     rows={6}
                                                     fullWidth
                                                     multiline
-                                                    sx={{backgroundColor: "#d4d4d4"}}
+                                                    sx={{
+                                                        backgroundColor: "#d4d4d4",
+                                                        borderRadius: "8px"
+                                                    }}
                                                 />
                                                 <div style={{ position: "absolute", right: "14px", bottom: "14px", color: '#636363' }}>
                                                     {`${eventDescription.length}/400`}
