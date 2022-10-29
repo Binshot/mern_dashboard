@@ -6,18 +6,6 @@ import Modal from "./Modal";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-//Unactive Icons
-import Overview from "../NewImageFiles/Sidebar/Overview.svg";
-import Organization from "../NewImageFiles/Sidebar/Organization.svg";
-import Residents from "../NewImageFiles/Sidebar/Residents.svg";
-import Announcement from "../NewImageFiles/Sidebar/Announcement.svg";
-import Events from "../NewImageFiles/Sidebar/Events.svg";
-import Projects from "../NewImageFiles/Sidebar/Projects.svg";
-import Messages from "../NewImageFiles/Sidebar/Messages.svg";
-import Help from "../NewImageFiles/Sidebar/Help.svg";
-import Activity from "../NewImageFiles/Sidebar/Activity.svg";
-import LogOut from "../NewImageFiles/Sidebar/Logout.svg";
-
 import { io } from "socket.io-client";
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { messageCount } from "./messageCount"
