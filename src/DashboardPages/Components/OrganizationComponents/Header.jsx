@@ -34,7 +34,7 @@ function Header(props) {
     const [officialList, setOfficialList] = useState(null)
     const [selectedResident, setSelectedResident] = useState(null)
     const [position, setPosition] = useState(null)
-    // const [name, setName] = useState(null)
+    const [name, setName] = useState('')
     useEffect(() => {
         const fetchResident = async () => {
             const response = await fetch(process.env.REACT_APP_API_URL + '/residents/')
@@ -54,6 +54,7 @@ function Header(props) {
 
         if (response.ok) {
             setSelectedResident(json)
+            setName(`${json.lastName}, ${json.firstName}`)
         }
     }
 
@@ -352,24 +353,22 @@ function Header(props) {
                 </div>
             </Modal>
 
-            {selectedResident && (
-                <Snackbar
-                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                    open={snackbar}
-                    onClose={() => { toggleSnackbar(false) }}
-                    autoHideDuration={5000}
-                    message={`${selectedResident.lastName}, ${selectedResident.firstName} has been added!`}
-                    action={action}
-                    ContentProps={{
-                        sx: {
-                            background: "#35CA3B",
-                            width: 560,
-                            ml: 30,
-                            mt: 10
-                        }
-                    }}
-                />
-            )}
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={snackbar}
+                onClose={() => { toggleSnackbar(false) }}
+                autoHideDuration={5000}
+                message={`${name} has been added!`}
+                action={action}
+                ContentProps={{
+                    sx: {
+                        background: "#35CA3B",
+                        width: 560,
+                        ml: 30,
+                        mt: 10
+                    }
+                }}
+            />
 
             <div id='headerBlur' className='header'>
                 <div className="flex-row borderBottom2 topHeader">

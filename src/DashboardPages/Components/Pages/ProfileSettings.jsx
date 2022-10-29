@@ -12,6 +12,12 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import VisibilityOn from '@mui/icons-material/Visibility';
 import { TextField } from '@mui/material';
 import useTitle from "../../hooks/useTitle"
+
+//FOR SNACKBAR
+import Snackbar from '@mui/material/Snackbar';
+// import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+
 function ProfileSettings() {
 
     useTitle("DRIMS | Profile Settings")
@@ -59,11 +65,9 @@ function ProfileSettings() {
             setShowModal(false)
             localStorage.removeItem('user')
             localStorage.setItem('user', JSON.stringify({ ...user, email: json.email }))
-            toggleAddModal(false)
             toggleSnackbar(true)
         } else {
             setError(json.error)
-            setEmptyFields(json.emptyFields)
         }
     }
 
@@ -86,31 +90,66 @@ function ProfileSettings() {
         if (response.ok) {
             setIsLoading(false)
             setShowModal(false)
-            toggleAddModal(false)
             toggleSnackbar(true)
+            setEmptyFields([])
+            setError(null)
         } else {
             setError(json.error)
-            setEmptyFields(json.emptyFields)
+            // setEmptyFields(json.emptyFields)
+            console.log(json)
         }
     }
 
+    //FOR SNACKBAR
+    const [snackbar, toggleSnackbar] = useState(false);
+    const actionButton = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => { toggleSnackbar(false) }}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
     return (
         <div>
+
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={snackbar}
+                onClose={() => { toggleSnackbar(false) }}
+                autoHideDuration={3000}
+                message={`${action} has been updated!`}
+                action={actionButton}
+                ContentProps={{
+                    sx: {
+                        background: "#DBB324",
+                        width: 560,
+                        ml: 30,
+                        mt: 10
+                    }
+                }}
+            />
+
             <Modal
                 shown={showModal}
                 close={() => {
                     setShowModal(false);
                 }}>
-                <form onSubmit={action == "email" ? handleChangeEmailSubmit : handleChangePasswordSubmit}>
+                <form onSubmit={action == "Email" ? handleChangeEmailSubmit : handleChangePasswordSubmit}>
                     <div className="profileModals">
-                        <h2 className="marginBottom">Change {action == "email" ? "Email" : "Password"}?</h2>
+                        <h2 className="marginBottom">Change {action}?</h2>
                         {action != "email" &&
                             <p style={{ fontSize: "14px", marginBottom: "24px", color: "#9C9C9C" }}>
                                 Passwod must be at least 8 charactes with both uppercase and lowercase letters, numbers, and symbols. <br></br>
                                 Allowed symbols: [ ! @ # $ % ^ & * - _ . ]
                             </p>
                         }
-                        <div hidden={action == "email" ? true : false} className="password">
+                        <div hidden={action == "Email" ? true : false} className="password">
                             <div className='textfield'>
                                 <h3>Current Password</h3>
                                 <OutlinedInput
@@ -177,13 +216,12 @@ function ProfileSettings() {
                                 />
                             </div>
                         </div>
-                        <div hidden={action == "email" ? false : true} className="email">
+                        <div hidden={action == "Email" ? false : true} className="email">
                             <h4>Current Email</h4>
                             <TextField
                                 error={emptyFields.includes('Current Email') ? true : false}
                                 type="text"
                                 placeholder="Input Current Email"
-                                value={currentEmail}
                                 fullWidth
                                 onChange={(e) => setCurrentEmail(e.target.value)}
                                 sx={{
@@ -201,7 +239,6 @@ function ProfileSettings() {
                                 fullWidth
                                 type="text"
                                 placeholder="Input New Email"
-                                value={newEmail}
                                 onChange={(e) => setNewEmail(e.target.value)}
                                 sx={{
                                     backgroundColor: "white",
@@ -252,13 +289,13 @@ function ProfileSettings() {
                     </div>
                     <div className='updateProfileButtons'>
                         <button onClick={() => {
-                            setAction("email")
+                            setAction("Email")
                             setShowModal(true)
                         }}>
                             Change Email
                         </button>
                         <button onClick={() => {
-                            setAction("password")
+                            setAction("Password")
                             setShowModal(true)
                         }}>
                             Change Password

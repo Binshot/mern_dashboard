@@ -363,7 +363,7 @@ function Officials(props) {
                     action={action}
                     ContentProps={{
                         sx: {
-                            background: "#836B16",
+                            background: "#DBB324",
                             width: 560,
                             ml: 30,
                             mt: 10
