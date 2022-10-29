@@ -1,6 +1,4 @@
-import Header from "../ProjectComponents/Header"
 import Table from "../ProjectComponents/Table"
-import ProjectList from "../dummyDB/Projects"
 import React, { useEffect, useState, useRef } from "react";
 import { Accordion, AccordionSummary, AccordionDetails, FormControlLabel, Checkbox, TextField, CircularProgress, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';

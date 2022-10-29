@@ -14,46 +14,50 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                 <p>Total Projects: {props.list.length}</p>
             </div>
             <table id="printTable" >
-                <tr>
-                    <th>TITLE</th>
-                    <th>DESCRIPTION</th>
-                    <th>TARGET BENEFICIARIES</th>
-                    <th>TARGET MONTH</th>
-                </tr>
-                {props.list.map((project, index) => {
-                    const partialJoin = []
+                <thead>
+                    <tr>
+                        <th>TITLE</th>
+                        <th>DESCRIPTION</th>
+                        <th>TARGET BENEFICIARIES</th>
+                        <th>TARGET MONTH</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.list.map((project, index) => {
+                        const partialJoin = []
 
-                    const education = project.target.education
-                    const age = project.target.age
-                    const occupation = project.target.occupation
-                    const gender = project.target.gender
+                        const education = project.target.education
+                        const age = project.target.age
+                        const occupation = project.target.occupation
+                        const gender = project.target.gender
 
-                    if (age.includes("<13")) {
-                        if (age.includes(">60")) {
-                            console.log("anyone")
-                        } else if (age.length != 1) {
-                            partialJoin.push(`below ${age.at(age.length - 1).substring(3, 5)} years old`)
-                        } else {
-                            partialJoin.push("below 13 years old")
+                        if (age.includes("<13")) {
+                            if (age.includes(">60")) {
+                                console.log("anyone")
+                            } else if (age.length != 1) {
+                                partialJoin.push(`below ${age.at(age.length - 1).substring(3, 5)} years old`)
+                            } else {
+                                partialJoin.push("below 13 years old")
+                            }
+                        } else if (age.includes(">60")) {
+                            partialJoin.push(`above ${age.at(0).substring(0, 2)} years old`)
                         }
-                    } else if (age.includes(">60")) {
-                        partialJoin.push(`above ${age.at(0).substring(0, 2)} years old`)
-                    }
-                    gender.length == 1 && partialJoin.push(gender.join(', '))
-                    occupation.length < 4 && occupation.length != 0 && !occupation.includes("student") && partialJoin.push(occupation.join(', '))
-                    education.length < 6 && education.length != 0 && partialJoin.push(education.join(', '))
+                        gender.length == 1 && partialJoin.push(gender.join(', '))
+                        occupation.length < 4 && occupation.length != 0 && !occupation.includes("student") && partialJoin.push(occupation.join(', '))
+                        education.length < 6 && education.length != 0 && partialJoin.push(education.join(', '))
 
-                    return (
-                        <tr key={index}>
-                            <td>{project.project_title}</td>
-                            <td>{project.project_description}</td>
-                            {<td>{partialJoin.length != 0 ? partialJoin.join(', ') : "Anyone"}</td>}
-                            <td>{project.target.month.length != 0
-                                ? project.target.month.join(', ')
-                                : "Any Month"}</td>
-                        </tr>
-                    );
-                })}
+                        return (
+                            <tr key={index}>
+                                <td>{project.project_title}</td>
+                                <td>{project.project_description}</td>
+                                {<td>{partialJoin.length != 0 ? partialJoin.join(', ') : "Anyone"}</td>}
+                                <td>{project.target.month.length != 0
+                                    ? project.target.month.join(', ')
+                                    : "Any Month"}</td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
             </table>
         </div>
     );

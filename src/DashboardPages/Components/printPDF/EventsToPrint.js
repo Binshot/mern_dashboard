@@ -15,13 +15,16 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
             </div>
 
             <table id="printTable" >
-                <tr>
-                    <th colSpan="3">Title</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Tag</th>
-                    <th>Location</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th colSpan="3">Title</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Tag</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
                 {props.list.map(event => {
                     return (
                         <tr key={event._id}>
@@ -33,6 +36,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                         </tr>
                     );
                 })}
+                </tbody>
             </table>
         </div>
     );

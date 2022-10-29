@@ -15,18 +15,22 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
             </div>
 
             <table id="printTable" >
-                <tr>
-                    <th>Date and Time</th>
-                    <th colSpan="2">Activity</th>
-                </tr>
-                {props.list.map(activity => {
-                    return (
-                        <tr key={activity._id}>
-                            <td>{format(new Date(activity.activityDateTime.substr(0, 23)), 'PPp')}</td>
-                            <td colSpan="2">{activity.activity}</td>
-                        </tr>
-                    );
-                })}
+                <thead>
+                    <tr>
+                        <th>Date and Time</th>
+                        <th colSpan="2">Activity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.list.map(activity => {
+                        return (
+                            <tr key={activity._id}>
+                                <td>{format(new Date(activity.activityDateTime.substr(0, 23)), 'PPp')}</td>
+                                <td colSpan="2">{activity.activity}</td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
             </table>
         </div>
     );
