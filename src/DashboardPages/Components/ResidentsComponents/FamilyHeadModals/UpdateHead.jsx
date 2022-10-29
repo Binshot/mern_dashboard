@@ -16,7 +16,7 @@ function UpdateResident(props) {
     const [loading, setLoading] = useState(false)
     const genderOptions = ['Male', 'Female'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
-    const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed'];
+    const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed', 'Seperated'];
     const educationAttainment = ['No Formal Education', 'Elementary', 'High School',
         'Bachelor’s Degree', 'Master’s Degree', 'Doctorate or Higher'];
     const residentOccupation = ["Student", "Unemployed", "Employed", "Self-Employed"]

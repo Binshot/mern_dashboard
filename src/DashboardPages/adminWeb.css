@@ -594,6 +594,49 @@ button:disabled {
     margin-bottom: 16px;
 }
 
+.sidebar a .overview{
+    mask: url(Components/NewImageFiles/Sidebar/Overview.svg) no-repeat center;
+}
+.sidebar a .organization{
+    mask: url(Components/NewImageFiles/Sidebar/Organization.svg) no-repeat center;
+}
+.sidebar a .residents{
+    mask: url(Components/NewImageFiles/Sidebar/Residents.svg) no-repeat center;
+}
+.sidebar a .announcements{
+    mask: url(Components/NewImageFiles/Sidebar/Announcement.svg) no-repeat center;
+}
+.sidebar a .events{
+    mask: url(Components/NewImageFiles/Sidebar/Events.svg) no-repeat center;
+}
+.sidebar a .projects{
+    mask: url(Components/NewImageFiles/Sidebar/Projects.svg) no-repeat center;
+}
+.sidebar a .messages{
+    mask: url(Components/NewImageFiles/Sidebar/Messages.svg) no-repeat center;
+}
+.sidebar a .helpIcon{
+    mask: url(Components/NewImageFiles/Sidebar/Help.svg) no-repeat center;
+}
+.sidebar a .activityLogs{
+    mask: url(Components/NewImageFiles/Sidebar/Activity.svg) no-repeat center;
+}
+.sidebar a .logout{
+    mask: url(Components/NewImageFiles/Sidebar/Logout.svg) no-repeat center;
+}
+
+.navlinkIcon{
+    width: 23px;
+    height: 23px;
+    margin-right: 13px;
+}
+.sidebar a:not(.active) .navlinkIcon {
+    background-color: white;
+}
+.sidebar .active .navlinkIcon {
+    background-color: #0C1096;
+}
+
 .sidebar a:hover:not(.active) {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
@@ -1652,10 +1695,6 @@ input[type="file"] {
     cursor: pointer;
     font-size: 16px;
 }
-
-/* .helpContainer .sections div:hover{
-    color: black;
-} */
 
 .help {
     width: 700px;

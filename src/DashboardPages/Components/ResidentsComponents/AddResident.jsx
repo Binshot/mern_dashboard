@@ -22,7 +22,7 @@ function AddResident(props) {
 
     const genderOptions = ['Male', 'Female'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
-    const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed'];
+    const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed', 'Seperated'];
     const educationAttainmentOptions = ['No Formal Education', 'Elementary', 'High School',
     'Bachelor’s Degree', 'Master’s Degree', 'Doctorate or Higher'];
     const familyMember = ["Parent", "Spouse", "Child", "Sibling", "Grandparent", "Grandchild", "Other Relative"];

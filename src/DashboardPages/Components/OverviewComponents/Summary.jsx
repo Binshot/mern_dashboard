@@ -63,7 +63,7 @@ function Summary() {
     } else {
         return (
             <div style={{ height: "100%", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <CircularProgress size={70} />
+                <CircularProgress size={70} sx={{color: "#0C1096"}} />
             </div>
         )
     }
