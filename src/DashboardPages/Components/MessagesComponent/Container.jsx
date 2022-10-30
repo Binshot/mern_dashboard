@@ -8,11 +8,9 @@ import { useState, useEffect, useRef } from "react"
 import { io } from "socket.io-client";
 
 import { useAuthContext } from '../../hooks/useAuthContext';
-import Avatar from "../NewImageFiles/Resident/Avatar.svg"
-import { messageCount } from "../CommonComponents/messageCount"
 import { useMessageContext } from "../../hooks/useMessageContext"
 export default function Container() {
-    const { messages, dispatch } = useMessageContext()
+    const { dispatch } = useMessageContext()
     const concernTypes = [
         "All Messages",
         "Community Question",
@@ -52,9 +50,9 @@ export default function Container() {
             const json = await response.json();
 
             if (response.ok) {
+                // console.log(json)
+                setContacts(json)
                 if (json.length > 0) {
-                    // console.log(json);
-                    setContacts(json)
                     handleChangeCurrentConvo(json[0], json);
                 }
             }

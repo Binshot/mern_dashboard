@@ -31,15 +31,15 @@ function ProjectsPageNumber({ projectsPerPage, totalProjects, paginate }) {
             />
             {
                 getPaginationGroup().map((item, index) => (
-                    (item <= Math.ceil(totalProjects / projectsPerPage)) && (
+                    (item <= Math.ceil(totalProjects / projectsPerPage) || item === 1) && (
                         <button
+                            style={{ cursor: "default" }}
                             key={index}
                             className={currentPage === item ? 'pageNumber activeNumber' : 'pageNumber'}
                         >
                             <span>{item}</span>
                         </button>
                     )
-
                 ))
             }
             <NextPage

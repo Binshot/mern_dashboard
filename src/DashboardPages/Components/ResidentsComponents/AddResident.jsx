@@ -22,9 +22,9 @@ function AddResident(props) {
 
     const genderOptions = ['Male', 'Female'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
-    const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed', 'Seperated'];
+    const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed', 'Separated', 'Live-in'];
     const educationAttainmentOptions = ['No Formal Education', 'Elementary', 'High School',
-    'Bachelor’s Degree', 'Master’s Degree', 'Doctorate or Higher'];
+    "Bachelor's Degree", "Master's Degree", 'Doctorate or Higher'];
     const familyMember = ["Parent", "Spouse", "Child", "Sibling", "Grandparent", "Grandchild", "Other Relative"];
     const residentOccupation = ["Student", "Unemployed", "Employed", "Self-Employed"]
     const [value, setValue] = React.useState(0);
@@ -39,15 +39,15 @@ function AddResident(props) {
     const [middleName, setMiddleName] = useState('')
     const [suffix, setSuffix] = useState("")
     const [birthday, setBday] = useState('')
-    const [birthplace, setBirthplace] = useState('')
+    const [birthplace, setBirthplace] = useState('VALENZUELA')
     const [gender, setGender] = useState(null)
-    const [religion, setReligion] = useState(null)
+    const [religion, setReligion] = useState('Catholic')
     const [email, setEmail] = useState('')
     const [contactNumber, setPhone] = useState('')
-    const [address, setAddress] = useState('')
+    const [address, setAddress] = useState('DRCNAI COLOONG 1 VAL.')
     const [civilStatus, setCivilStatus] = useState(null)
     const [educationalAttainment, setEducationalAttainment] = useState(null)
-    const [occupation, setOccupation] = useState(null)
+    const [occupation, setOccupation] = useState("Student")
     const [monthlyIncome, setMonthlyIncome] = useState('')
     const [sss, setSSS] = useState(false)
     const [gsis, setGSIS] = useState(false)
@@ -184,14 +184,14 @@ function AddResident(props) {
         setEmail('')
         setPhone('')
         setAddress('')
-        setCivilStatus(null)
-        setEducationalAttainment(null)
+        setCivilStatus('')
+        setEducationalAttainment('')
         setOccupation('')
         setMonthlyIncome('')
-        setSSS('')
-        setGSIS('')
-        setPagibig('')
-        setPhilhealth('')
+        setSSS(false)
+        setGSIS(false)
+        setPagibig(false)
+        setPhilhealth(false)
         setEmptyFields([])
         setError(null)
     }

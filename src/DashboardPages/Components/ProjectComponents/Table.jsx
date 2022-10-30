@@ -1,10 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Projects from './TableContents';
 import PageNumber from './PageNumber';
-import Print from "../NewImageFiles/Topbar/Print.svg"
-import { useReactToPrint } from 'react-to-print';
-import { ComponentToPrint } from '../printPDF/ProjectToPrint';
-import { Accordion, AccordionSummary, AccordionDetails, FormControlLabel, Checkbox, TextField, CircularProgress, Box } from '@mui/material';
 
 import Modal from '../CommonComponents/Modal';
 

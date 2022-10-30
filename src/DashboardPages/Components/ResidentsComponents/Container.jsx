@@ -14,16 +14,13 @@ function Container() {
             const json = await response.json()
             if (response.ok) {
                 dispatch({ type: 'SET_RESIDENT', payload: json })
+                setRows(json)
             }
         }
 
         fetchResidents()
     }, [])
-
-    useEffect(() => {
-        setRows(residents)
-    }, [residents])
-
+    
     const getRows = rows => setRows(rows)
     if (rows) {
         return (

@@ -187,6 +187,34 @@ input::-webkit-input-placeholder {
     border-radius: 8px;
 }
 
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.emptyState img {
+    width: 490px;
+    height: 220px;
+}
+
+.emptyState h2 {
+    font-weight: 500;
+    font-size: 36px;
+    text-align: center;
+    margin: 32px 0 16px;
+}
+
+.emptyState p {
+    font-weight: 400;
+    font-size: 24px;
+    text-align: center;
+    width: 500px;
+}
+
 /* ================== BUTTONS =========================== */
 
 .solidButton {
@@ -594,45 +622,56 @@ button:disabled {
     margin-bottom: 16px;
 }
 
-.sidebar a .overview{
+.sidebar a .overview {
     mask: url(Components/NewImageFiles/Sidebar/Overview.svg) no-repeat center;
 }
-.sidebar a .organization{
+
+.sidebar a .organization {
     mask: url(Components/NewImageFiles/Sidebar/Organization.svg) no-repeat center;
 }
-.sidebar a .residents{
+
+.sidebar a .residents {
     mask: url(Components/NewImageFiles/Sidebar/Residents.svg) no-repeat center;
 }
-.sidebar a .announcements{
+
+.sidebar a .announcements {
     mask: url(Components/NewImageFiles/Sidebar/Announcement.svg) no-repeat center;
 }
-.sidebar a .events{
+
+.sidebar a .events {
     mask: url(Components/NewImageFiles/Sidebar/Events.svg) no-repeat center;
 }
-.sidebar a .projects{
+
+.sidebar a .projects {
     mask: url(Components/NewImageFiles/Sidebar/Projects.svg) no-repeat center;
 }
-.sidebar a .messages{
+
+.sidebar a .messages {
     mask: url(Components/NewImageFiles/Sidebar/Messages.svg) no-repeat center;
 }
-.sidebar a .helpIcon{
+
+.sidebar a .helpIcon {
     mask: url(Components/NewImageFiles/Sidebar/Help.svg) no-repeat center;
 }
-.sidebar a .activityLogs{
+
+.sidebar a .activityLogs {
     mask: url(Components/NewImageFiles/Sidebar/Activity.svg) no-repeat center;
 }
-.sidebar a .logout{
+
+.sidebar a .logout {
     mask: url(Components/NewImageFiles/Sidebar/Logout.svg) no-repeat center;
 }
 
-.navlinkIcon{
+.navlinkIcon {
     width: 23px;
     height: 23px;
     margin-right: 13px;
 }
+
 .sidebar a:not(.active) .navlinkIcon {
     background-color: white;
 }
+
 .sidebar .active .navlinkIcon {
     background-color: #0C1096;
 }

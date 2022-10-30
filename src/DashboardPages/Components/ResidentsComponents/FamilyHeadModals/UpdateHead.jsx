@@ -16,9 +16,9 @@ function UpdateResident(props) {
     const [loading, setLoading] = useState(false)
     const genderOptions = ['Male', 'Female'];
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
-    const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed', 'Seperated'];
+    const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed', 'Separated', 'Live-in'];
     const educationAttainment = ['No Formal Education', 'Elementary', 'High School',
-        'Bachelor’s Degree', 'Master’s Degree', 'Doctorate or Higher'];
+        "Bachelor's Degree", "Master's Degree", 'Doctorate or Higher'];
     const residentOccupation = ["Student", "Unemployed", "Employed", "Self-Employed"]
 
     // for tabs
@@ -378,7 +378,7 @@ function UpdateResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Contact Number</h4>
                                                         <TextField
-                                                            defaultValue={phone}
+                                                            value={phone}
                                                             onChange={(e) => {
                                                                 if (re.test(e.target.value)) {
                                                                     setPhone(e.target.value)
@@ -484,7 +484,7 @@ function UpdateResident(props) {
                                                         <h4>Monthly Income</h4>
                                                         <TextField
                                                             placeholder="Input monthly income"
-                                                            defaultValue={monthlyIncome}
+                                                            value={monthlyIncome}
                                                             onChange={(e) => {
                                                                 if (re.test(e.target.value)) {
                                                                     setMonthlyIncome(e.target.value)

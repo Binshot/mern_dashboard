@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 function Container() {
 
-    const { organizations, dispatch } = useOrganizationContext()
+    const { dispatch } = useOrganizationContext()
     // get all resident that are officials
     const [rows, setRows] = useState(null)
 
@@ -44,6 +44,7 @@ function Container() {
                         return { official: obj, position: props.position, _id: props._id, positionIndex: sortPosition }
                     })
                     dispatch({ type: 'SET_OFFICIAL', payload: dta })
+                    setRows(dta)
                 }
             }
         }
@@ -51,13 +52,9 @@ function Container() {
         fetchOfficials()
     }, [])
 
-    useEffect(() => {
-        setRows(organizations)
-    }, [organizations])
-
     const getRows = rows => setRows(rows)
 
-    if (organizations) {
+    if (rows) {
         return (
             <div id="mainContentBlur" className="content">
                 <Header get={getRows} />

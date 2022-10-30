@@ -15,14 +15,12 @@ function Container() {
             const json = await response.json()
             if (response.ok) {
                 dispatch({ type: 'SET_EVENT', payload: json })
+                setRows(json)
             }
         }
 
         fetchWorkouts()
     }, [])
-    useEffect(() => {
-        setRows(events)
-    }, [events])
 
     const getRows = rows => setRows(rows)
 
