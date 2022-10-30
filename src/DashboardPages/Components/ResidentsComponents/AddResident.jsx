@@ -39,15 +39,15 @@ function AddResident(props) {
     const [middleName, setMiddleName] = useState('')
     const [suffix, setSuffix] = useState("")
     const [birthday, setBday] = useState('')
-    const [birthplace, setBirthplace] = useState('VALENZUELA')
+    const [birthplace, setBirthplace] = useState('')
     const [gender, setGender] = useState(null)
-    const [religion, setReligion] = useState('Catholic')
+    const [religion, setReligion] = useState('')
     const [email, setEmail] = useState('')
     const [contactNumber, setPhone] = useState('')
-    const [address, setAddress] = useState('DRCNAI COLOONG 1 VAL.')
-    const [civilStatus, setCivilStatus] = useState(null)
+    const [address, setAddress] = useState('')
+    const [civilStatus, setCivilStatus] = useState('')
     const [educationalAttainment, setEducationalAttainment] = useState(null)
-    const [occupation, setOccupation] = useState("Student")
+    const [occupation, setOccupation] = useState("")
     const [monthlyIncome, setMonthlyIncome] = useState('')
     const [sss, setSSS] = useState(false)
     const [gsis, setGSIS] = useState(false)
@@ -55,6 +55,32 @@ function AddResident(props) {
     const [philhealth, setPhilhealth] = useState(false)
 
     const [snackbar, toggleSnackbar] = useState(false);
+
+    const cancelForm = () => {
+        props.setShown(false)
+        setFirstName('')
+        setLastName('')
+        setMiddleName('')
+        setSuffix("")
+        setBday('')
+        setBirthplace('')
+        setGender(null)
+        setReligion(null)
+        setEmail('')
+        setPhone('')
+        setAddress('')
+        setCivilStatus('')
+        setEducationalAttainment('')
+        setOccupation('')
+        setMonthlyIncome('')
+        setRelationship('')
+        setSSS(false)
+        setGSIS(false)
+        setPagibig(false)
+        setPhilhealth(false)
+        setEmptyFields([])
+        setError(null)
+    }
 
     const handleFamilyHeadSubmit = async (e) => {
         setLoading(true)
@@ -81,6 +107,7 @@ function AddResident(props) {
             setEmptyFields(json.emptyFields)
         }
         if (response.ok) {
+            setValue(0)
             setChanged(false)
             setError(null)
             setLoading(false)
@@ -120,6 +147,7 @@ function AddResident(props) {
 
         const json = await response.json()
         if (response.ok) {
+            setValue(0)
             toggleSnackbar(true)
             setError(null)
             setChanged(false)
@@ -171,30 +199,7 @@ function AddResident(props) {
         </React.Fragment>
     );
 
-    const cancelForm = () => {
-        props.setShown(false)
-        setFirstName('')
-        setLastName('')
-        setMiddleName('')
-        setSuffix("")
-        setBday('')
-        setBirthplace('')
-        setGender(null)
-        setReligion(null)
-        setEmail('')
-        setPhone('')
-        setAddress('')
-        setCivilStatus('')
-        setEducationalAttainment('')
-        setOccupation('')
-        setMonthlyIncome('')
-        setSSS(false)
-        setGSIS(false)
-        setPagibig(false)
-        setPhilhealth(false)
-        setEmptyFields([])
-        setError(null)
-    }
+    
 
     const re = new RegExp('^[0-9]*$')
     const ref = useRef();
@@ -212,7 +217,10 @@ function AddResident(props) {
         <div>
             <Snackbar
                 open={snackbar}
-                onClose={() => { toggleSnackbar(false) }}
+                onClose={() => { 
+                    toggleSnackbar(false) 
+                    cancelForm()
+                    }}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 autoHideDuration={2000}
                 message={`${lastName}, ${firstName} has been added!`}
@@ -377,6 +385,7 @@ function AddResident(props) {
                                                             error={emptyFields.includes('Birthday') ? true : false}
                                                             id="date"
                                                             type="date"
+                                                            value={birthday}
                                                             inputProps={{
                                                                 max: new Date().toISOString().slice(0, 10)
                                                             }}
@@ -702,6 +711,7 @@ function AddResident(props) {
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={familyMember}
+                                                            value={relationship}
                                                             renderInput={(params) => <TextField {...params}
                                                                 error={emptyFields.includes('Family Relationship') ? true : false}
                                                                 placeholder="Choose relationship to the head of the family" />}

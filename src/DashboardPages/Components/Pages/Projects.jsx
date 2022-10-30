@@ -1,15 +1,18 @@
 import Table from "../ProjectComponents/Table"
 import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Accordion, AccordionSummary, AccordionDetails, FormControlLabel, Checkbox, TextField, CircularProgress, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Print from "../NewImageFiles/Topbar/Print.svg"
 import { useReactToPrint } from 'react-to-print';
 import { ComponentToPrint } from '../printPDF/ProjectToPrint';
 import useTitle from "../../hooks/useTitle"
+import EmptyState from "../NewImageFiles/EmptyStates/Sheets.svg"
 function Projects() {
 
     useTitle("DRIMS | Projects")
 
+    const navigate = useNavigate()
     const [allProjects, setAllProjects] = useState(null)
     const [prescriptiveProjects, setPrescriptiveProjects] = useState(null)
     const [filteredRow, setfilteredRow] = useState(null)
@@ -478,12 +481,26 @@ function Projects() {
                             <div style={{ display: "none" }}><ComponentToPrint ref={componentRef} list={filteredRow} /></div>
                         </div>
                     </div>
-                    <div id="mainContentBlur" className="content">
-                        <Table prescriptiveList={filteredRow} counts={Counts} />
-                    </div>
+
+                    {filteredRow.length != 0
+                        ? <div id="mainContentBlur" className="content">
+                            <Table prescriptiveList={filteredRow} counts={Counts} />
+                        </div>
+                        : <div className="emptyState">
+                            <img src={EmptyState} />
+                            <h2>No Projects Yet</h2>
+                            <p>Start adding residents in the Residents
+                                Module to generate suggested projects</p>
+                            <button
+                                className="solidButton add buttonBlue"
+                                onClick={() => navigate("/admin/residents")}>
+                                Go to Residents Module
+                            </button>
+                        </div>
+                    }
                 </> :
                 <div style={{ height: "calc(100vh - 160px)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <CircularProgress size={100} sx={{color: "#0C1096"}}/>
+                    <CircularProgress size={100} sx={{ color: "#0C1096" }} />
                 </div>
             }
         </>

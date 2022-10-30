@@ -18,7 +18,7 @@ function ViewUpdate(props) {
     const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed', 'Separated', 'Live-in'];
     const educationAttainment = ['No Formal Education', 'Elementary', 'High School',
-    "Bachelor's Degree", "Master's Degree", 'Doctorate or Higher'];
+        "Bachelor's Degree", "Master's Degree", 'Doctorate or Higher'];
     const residentOccupation = ["Student", "Unemployed", "Employed", "Self-Employed"]
     const familyMember = ["Parent", "Spouse", "Child", "Sibling", "Grandparent", "Grandchild", "Other Relative"];
 
@@ -547,11 +547,14 @@ function ViewUpdate(props) {
                                                         value={occupation}
                                                         disabled
                                                     /> :
-                                                    <TextField
-                                                        placeholder="Input Occupation"
+                                                    <Autocomplete
+                                                        disablePortal
+                                                        id="combo-box-demo"
                                                         value={occupation}
-                                                        onChange={(e) => {
-                                                            setOccupation(e.target.value)
+                                                        options={residentOccupation}
+                                                        renderInput={(params) => <TextField {...params} />}
+                                                        onChange={(e, newValue) => {
+                                                            setOccupation(newValue)
                                                             setChanged(true)
                                                         }}
                                                         sx={{

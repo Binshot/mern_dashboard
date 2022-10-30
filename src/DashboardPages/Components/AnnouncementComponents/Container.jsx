@@ -3,7 +3,7 @@ import Header from "./Header"
 import AnnouncementsTable from "./AnnouncementTable"
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext"
 import CircularProgress from '@mui/material/CircularProgress';
-
+import EmptyState from "../NewImageFiles/EmptyStates/Sheets.svg"
 function Container() {
     //get all announcement
     const { announcements, dispatch } = useAnnouncementContext()
@@ -15,32 +15,31 @@ function Container() {
             const json = await response.json()
             if (response.ok) {
                 dispatch({ type: 'SET_ANNOUNCEMENT', payload: json })
-                setRows(json)
             }
         }
 
         fetchWorkouts()
     }, [])
 
+    useEffect(() => {
+        setRows(announcements)
+    }, [announcements])
+
     const getRows = rows => setRows(rows)
 
     if (rows) {
         return (
-            <>
+            <div id="mainContentBlur" className="content">
+                <Header get={getRows} />
                 {rows.length != 0
-                    ?
-                    <div id="mainContentBlur" className="content">
-                        <Header get={getRows} />
-                        <AnnouncementsTable list={rows} get={getRows} />
-                    </div>
-                    :
-                    <div className="emptyState">
-                        <img src={EmptyState_Activity} />
+                    ? <AnnouncementsTable list={rows} get={getRows} />
+                    : <div className="emptyState">
+                        <img src={EmptyState} />
                         <h2>No Announcements Yet</h2>
-                        <p>Click on the button to add an Announcement</p>
+                        <p>Click on the "Add Announcement" button to add an announcement</p>
                     </div>
                 }
-            </>
+            </div>
         );
     } else {
         return (

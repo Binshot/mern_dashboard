@@ -2,7 +2,7 @@ import RightHeader from "./RightHeader"
 import Contacts from "./Contacts"
 import Conversation from "./Conversation"
 import { TextField, MenuItem, CircularProgress } from "@mui/material"
-
+import EmptyState from "../NewImageFiles/EmptyStates/Message.svg"
 import { useState, useEffect, useRef } from "react"
 
 import { io } from "socket.io-client";
@@ -218,8 +218,10 @@ export default function Container() {
                         </div>
                     }
                 </div> :
-                <div style={{ height: "100%", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <CircularProgress size={100} sx={{color: "#0C1096"}} />
+                <div className="emptyState">
+                    <img src={EmptyState} />
+                    <h2>No Messages Yet</h2>
+                    <p>All incoming messages will appear in this module</p>
                 </div>
             }
         </>

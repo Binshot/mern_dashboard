@@ -3,10 +3,10 @@ import Header from "./Header"
 import Officials from "./Officials"
 import { useOrganizationContext } from "../../hooks/useOrganizationContext"
 import CircularProgress from '@mui/material/CircularProgress';
-
+import EmptyState from "../NewImageFiles/EmptyStates/Organization.svg"
 function Container() {
 
-    const { dispatch } = useOrganizationContext()
+    const { organizations, dispatch } = useOrganizationContext()
     // get all resident that are officials
     const [rows, setRows] = useState(null)
 
@@ -52,19 +52,30 @@ function Container() {
         fetchOfficials()
     }, [])
 
+    useEffect(() => {
+        setRows(organizations)
+    }, [organizations])
+
     const getRows = rows => setRows(rows)
 
     if (rows) {
         return (
             <div id="mainContentBlur" className="content">
                 <Header get={getRows} />
-                <Officials list={rows} />
+                {rows.length != 0
+                    ? <Officials list={rows} />
+                    : <div className="emptyState">
+                        <img src={EmptyState} />
+                        <h2>No Organization Yet</h2>
+                        <p>Click on the "Add official" button to add officials</p>
+                    </div>
+                }
             </div>
         );
     } else {
         return (
             <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <CircularProgress size={100} sx={{color: "#0C1096"}}/>
+                <CircularProgress size={100} sx={{ color: "#0C1096" }} />
             </div>
         )
     }

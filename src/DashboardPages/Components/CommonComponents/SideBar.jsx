@@ -163,7 +163,6 @@ export default function SideBar() {
                 <div className="navbar">
                     <NavLink to="/admin/overview">
                         <div className="flex-row navLinks">
-                            {/* <img src={(path === "/admin/overview") ? ActiveOverview : Overview} alt="" /> */}
                             <div className="navlinkIcon overview"></div>
                             <p>Overview</p>
                         </div>

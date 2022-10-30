@@ -23,22 +23,18 @@ function ActivityLog() {
 
     if (rows) {
         return (
-            <>
+            <div id="mainContentBlur" className="content">
+                <Header get={getRows} />
                 {rows.length != 0
-                    ? <div id="mainContentBlur" className="content">
-                        <Header get={getRows} />
-                        <ResidentsTable list={rows} />
-                    </div>
-                    :
-                    <div className="emptyState">
+                    ? <ResidentsTable list={rows} /> 
+                    : <div className="emptyState">
                         <img src={EmptyState_Activity} />
                         <h2>No Activity Yet</h2>
                         <p>When you make changes to your site you'll be
                             able to see your activity history here</p>
                     </div>
                 }
-            </>
-
+            </div>
         );
     } else {
         return (
