@@ -6,7 +6,11 @@ export const residentsReducer = (state, action) => {
   switch (action.type) {
     case 'SET_RESIDENT':
       return {
-        residents: action.payload
+        residents: action.payload.sort((a, b) => {
+          const name1 = a.lastName + " " + a.firstName
+          const name2 = b.lastName + " " + b.firstName
+
+          return name1.localeCompare(name2)})
       }
     case 'CREATE_RESIDENT':
       return {

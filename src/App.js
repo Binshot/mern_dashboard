@@ -49,11 +49,11 @@ export default function App() {
       : <Router>
         <ScrollToTop />
         <Routes>
-          <Route exact path="/" element={<InformationMainPage />}>
-            <Route exact path="home" element={<HomePage />} />
-            <Route exact path="about" element={<AboutPage />} />
-            <Route exact path="contact" element={<ContactPage />} />
-            <Route path="*" element={<NotFound />} />
+          <Route exact path="/" element={!user ? <InformationMainPage /> : <Navigate to="/admin" />}>
+            <Route exact path="home" element={!user ? <HomePage /> : <Navigate to="/admin" />} />
+            <Route exact path="about" element={!user ? <AboutPage /> : <Navigate to="/admin" />} />
+            <Route exact path="contact" element={!user ? <ContactPage /> : <Navigate to="/admin" />} />
+            <Route path="*" element={<NotFound />} /> 
           </Route>
           <Route exact path="reset-password/:id/:token" element={<ResetPassword />} />
           <Route exact path="login" element={!user ? <Login /> : <Navigate to="/admin" />} />
