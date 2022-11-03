@@ -160,68 +160,72 @@ export default function Container() {
     const setCurrentConvos = set => setcurrentConvoIndex(set)
     return (
         <>
-            {contacts ?
-                <div className="message-container">
-                    <div className="left">
-                        <div className="header">
-                            <h2 style={{ fontSize: "36px" }}>Messages</h2>
-                        </div>
-                        <div style={{ margin: "0 24px" }}>
-                            <TextField
-                                id="outlined-select-currency"
-                                select
-                                fullWidth
-                                defaultValue={"All Messages"}
-                                onChange={(e) => {
-                                    setfilter(e.target.value)
-                                }}
-                                sx={{
-                                    "& .MuiOutlinedInput-root:hover": {
-                                        "& > fieldset": {
-                                            borderColor: "#7175F4"
+            {contacts
+                ? contacts.length > 0
+                    ? <div className="message-container">
+                        <div className="left">
+                            <div className="header">
+                                <h2 style={{ fontSize: "36px" }}>Messages</h2>
+                            </div>
+                            <div style={{ margin: "0 24px" }}>
+                                <TextField
+                                    id="outlined-select-currency"
+                                    select
+                                    fullWidth
+                                    defaultValue={"All Messages"}
+                                    onChange={(e) => {
+                                        setfilter(e.target.value)
+                                    }}
+                                    sx={{
+                                        "& .MuiOutlinedInput-root:hover": {
+                                            "& > fieldset": {
+                                                borderColor: "#7175F4"
+                                            }
                                         }
-                                    }
-                                }}
-                            >
-                                {concernTypes.map((option) => (
-                                    <MenuItem key={option} value={option}>
-                                        {option}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                                    }}
+                                >
+                                    {concernTypes.map((option) => (
+                                        <MenuItem key={option} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </div>
+                            <div className="contacts" >
+                                {
+                                    contacts.map((contact, index) => {
+                                        const resident = getResidentName(contact);
+                                        return (
+                                            <Contacts
+                                                key={contact._id}
+                                                contact={contact}
+                                                contactList={contacts}
+                                                resident={resident}
+                                                changeConvo={handleChangeCurrentConvo}
+                                                convoIndex={index}
+                                                currentIndex={currentConvoIndex}
+                                                returnIndex={setCurrentConvos}
+                                            />
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
-                        <div className="contacts" >
-                            {
-                                contacts.map((contact, index) => {
-                                    const resident = getResidentName(contact);
-                                    return (
-                                        <Contacts
-                                            key={contact._id}
-                                            contact={contact}
-                                            contactList={contacts}
-                                            resident={resident}
-                                            changeConvo={handleChangeCurrentConvo}
-                                            convoIndex={index}
-                                            currentIndex={currentConvoIndex}
-                                            returnIndex={setCurrentConvos}
-                                        />
-                                    )
-                                })
-                            }
-                        </div>
+                        {
+                            currentConvo &&
+                            <div className="right">
+                                <RightHeader conversation={currentConvo} />
+                                <Conversation resident={currentConvo.resident_id} socket={socket} filterProps={filter} />
+                            </div>
+                        }
                     </div>
-                    {
-                        currentConvo &&
-                        <div className="right">
-                            <RightHeader conversation={currentConvo} />
-                            <Conversation resident={currentConvo.resident_id} socket={socket} filterProps={filter} />
-                        </div>
-                    }
-                </div> :
-                <div className="emptyState">
-                    <img src={EmptyState} />
-                    <h2>No Messages Yet</h2>
-                    <p>All incoming messages will appear in this module</p>
+                    : <div className="emptyState" style={{height: "79vh"}}>
+                        <img src={EmptyState} />
+                        <h2>No Messages Yet</h2>
+                        <p>All incoming messages will appear in this module</p>
+                    </div>
+                : <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <CircularProgress size={100} sx={{ color: "#0C1096" }} />
                 </div>
             }
         </>
