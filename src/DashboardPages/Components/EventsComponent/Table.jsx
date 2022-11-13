@@ -152,6 +152,7 @@ const Table = (props) => {
                     setUploadedFlag(false)
                     setFile(null)
                     setUploadButtonFlag(true)
+                    setProgressflag(false)
                 }}
             >
                 <CloseIcon fontSize="small" />

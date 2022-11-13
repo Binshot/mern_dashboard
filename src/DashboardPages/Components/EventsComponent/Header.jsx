@@ -156,7 +156,6 @@ function Header(props) {
     const [imageURL, setImageURL] = useState(null)
     const [cancelModal, setCancelModal] = useState(false)
     const [changed, setChanged] = useState(false)
-    const inputRef = useRef();
     const onImageUpload = (image) => {
         setProgressflag(true)
         setUploadButtonFlag(false)
@@ -190,7 +189,7 @@ function Header(props) {
                     setUploadButtonFlag(true)
                     setUploadedFlag(false)
                     setProgressflag(false)
-                    inputRef.value = ''
+                    document.querySelector('.inputFile').value='';
                 }}
             >
                 <CloseIcon fontSize="small" />
@@ -389,7 +388,7 @@ function Header(props) {
 
                                         <div className="upload" style={{ cursor: "pointer" }}>Upload</div>
                                     </div>
-                                    <input type="file" accept="image/*"
+                                    <input type="file" accept="image/*" className="inputFile"
                                         onChange={(e) => {
                                             setFile(e.target.files[0])
                                             e.target.files.length > 0 && onImageUpload(e.target.files[0])
