@@ -7,7 +7,7 @@ import { MessageContextProvider } from '../../context/messageContext'
 function MainPage() {
     let pathname = useLocation().pathname
     return (
-        <div style={{ position: "absolute", height: "100%", width: "100%" }}>
+        <div style={{ position: "absolute", height: "100%", width: "100vw" }}>
             <MessageContextProvider>
                 <div className='sideBar'>
                     <Sidebar />

@@ -485,6 +485,7 @@ const Table = (props) => {
                                                         <div />
                                                         <button type="button" onClick={() => setPreviewImage(true)}>Preview</button>
                                                     </div>
+                                                    <span>{totalSize}</span>
                                                 </div>
                                             </div>
                                             <div>{deleteImage}</div>

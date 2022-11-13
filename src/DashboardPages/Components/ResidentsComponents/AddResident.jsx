@@ -297,7 +297,7 @@ function AddResident(props) {
                                             <div className="flex-column tab">
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
-                                                        <h4>Last Name</h4>
+                                                        <h4>Last Name<span style={{color: "#e7195a"}}>*</span></h4>
                                                         <TextField
                                                             error={emptyFields.includes('Last Name') ? true : false}
                                                             id={'outlined-error'}
@@ -317,7 +317,7 @@ function AddResident(props) {
                                                         />
                                                     </div>
                                                     <div className="flex-column inputs">
-                                                        <h4>First Name</h4>
+                                                        <h4>First Name<span style={{color: "#e7195a"}}>*</span></h4>
                                                         <TextField
                                                             error={emptyFields.includes('First Name') ? true : false}
                                                             id={'outlined-error'}
@@ -339,7 +339,7 @@ function AddResident(props) {
                                                 </div>
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
-                                                        <h4>Middle Name</h4>
+                                                        <h4>Middle Name<span style={{color: "#e7195a"}}>*</span></h4>
                                                         <TextField
                                                             error={emptyFields.includes('Middle Name') ? true : false}
                                                             id={'outlined-error'}
@@ -379,7 +379,7 @@ function AddResident(props) {
                                                 </div>
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
-                                                        <h4>Birthday</h4>
+                                                        <h4>Birthday<span style={{color: "#e7195a"}}>*</span></h4>
                                                         <TextField
 
                                                             error={emptyFields.includes('Birthday') ? true : false}
@@ -407,7 +407,7 @@ function AddResident(props) {
                                                         />
                                                     </div>
                                                     <div className="flex-column inputs">
-                                                        <h4>Birth Place</h4>
+                                                        <h4>Birth Place<span style={{color: "#e7195a"}}>*</span></h4>
                                                         <TextField
                                                             error={emptyFields.includes('Birthplace') ? true : false}
                                                             id={'outlined-error'}
@@ -429,7 +429,7 @@ function AddResident(props) {
                                                 </div>
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
-                                                        <h4>Gender</h4>
+                                                        <h4>Gender<span style={{color: "#e7195a"}}>*</span></h4>
                                                         <Autocomplete
                                                             id={'outlined-error'}
                                                             options={genderOptions}
@@ -515,7 +515,7 @@ function AddResident(props) {
                                                         />
                                                     </div>
                                                 </div>
-                                                <h4>Address</h4>
+                                                <h4>Address<span style={{color: "#e7195a"}}>*</span></h4>
                                                 <TextField
                                                     error={emptyFields.includes('Address') ? true : false}
                                                     id={'outlined-error'}
@@ -706,7 +706,7 @@ function AddResident(props) {
                                             <div className="flex-column tab">
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
-                                                        <h4>Relationship</h4>
+                                                        <h4>Relationship<span style={{color: "#e7195a"}}>*</span></h4>
                                                         <Autocomplete
                                                             disablePortal
                                                             id="combo-box-demo"

@@ -149,17 +149,18 @@ function Header(props) {
     const [totalSize, setTotalSize] = useState('')
     const [name, setName] = useState('')
     const [percent, setPercent] = useState(0)
-    const [progressFlag, setProgressflag] = useState(true)
-    const [uploadedFlag, setUploadedFlag] = useState(true)
+    const [progressFlag, setProgressflag] = useState(false)
+    const [uploadedFlag, setUploadedFlag] = useState(false)
     const [uploadButtonFlag, setUploadButtonFlag] = useState(true)
     const [previewImage, setPreviewImage] = useState(false)
     const [imageURL, setImageURL] = useState(null)
     const [cancelModal, setCancelModal] = useState(false)
     const [changed, setChanged] = useState(false)
-
+    const inputRef = useRef();
     const onImageUpload = (image) => {
-        setProgressflag(false)
+        setProgressflag(true)
         setUploadButtonFlag(false)
+        console.log("hello")
 
         setImageURL(URL.createObjectURL(image))
         setName(image.name)
@@ -172,8 +173,8 @@ function Header(props) {
         }
         axios.post("https://httpbin.org/post", image, config)
             .then(res => {
-                setProgressflag(true)
-                setUploadedFlag(false)
+                setProgressflag(false)
+                setUploadedFlag(true)
             })
             .catch(err => console.log(err))
     }
@@ -187,6 +188,9 @@ function Header(props) {
                 onClick={() => {
                     setFile(null)
                     setUploadButtonFlag(true)
+                    setUploadedFlag(false)
+                    setProgressflag(false)
+                    inputRef.value = ''
                 }}
             >
                 <CloseIcon fontSize="small" />
@@ -217,8 +221,8 @@ function Header(props) {
         setName('')
         setTotalSize('')
         setUploadButtonFlag(true)
-        setProgressflag(true)
-        setUploadedFlag(true)
+        setProgressflag(false)
+        setUploadedFlag(false)
         setChanged(false)
         setCancelModal(false)
         setDateFrom(new Date().toISOString().slice(0, 10))
@@ -332,7 +336,7 @@ function Header(props) {
                             </div>
                             <div style={{ marginBottom: "16px" }}>
                                 <h4>Description</h4>
-                                <div style={{position: "relative"}}>
+                                <div style={{ position: "relative" }}>
                                     <TextField
                                         error={emptyFields.includes('Event Description') ? true : false}
                                         id="outlined-multiline-static"
@@ -353,7 +357,7 @@ function Header(props) {
                                             }
                                         }}
                                     />
-                                    <div style={{position: "absolute", right: "14px", bottom:"14px", color: '#636363'}}>
+                                    <div style={{ position: "absolute", right: "14px", bottom: "14px", color: '#636363' }}>
                                         {`${eventDescription.length}/400`}
                                     </div>
                                 </div>
@@ -371,6 +375,7 @@ function Header(props) {
                                     </div>
                                 </div>
                             </Modal>
+                            {/* upload image */}
                             <div className="uploadArticleBanner" style={uploadButtonFlag ? { marginBottom: "16px" } : { display: "none", marginBottom: "16px" }}>
                                 <label className="fileUpload">
                                     <div className="flex-row fileUploadContent">
@@ -387,12 +392,13 @@ function Header(props) {
                                     <input type="file" accept="image/*"
                                         onChange={(e) => {
                                             setFile(e.target.files[0])
-                                            onImageUpload(e.target.files[0])
+                                            e.target.files.length > 0 && onImageUpload(e.target.files[0])
                                             setChanged(true)
                                         }} />
                                 </label>
                             </div>
-                            <section className="progress-area" style={progressFlag ? { display: "none" } : { display: "flex" }}>
+                            {/* uploading image */}
+                            <section className="progress-area" style={progressFlag ? { display: "flex" } : { display: "none" }}>
                                 <img src={imageIcon} alt="" />
                                 <div className="center-div">
                                     <div className="progress-details">
@@ -405,7 +411,8 @@ function Header(props) {
                                 </div>
                                 <div>{deleteImage}</div>
                             </section>
-                            <section className="uploaded-area" style={uploadedFlag ? { display: "none" } : { display: "flex" }}>
+                            {/* uploaded image */}
+                            <section className="uploaded-area" style={uploadedFlag ? { display: "flex" } : { display: "none" }}>
                                 <img src={imageIcon} alt="" />
                                 <div className="center-div">
                                     <div className="progress-details">
