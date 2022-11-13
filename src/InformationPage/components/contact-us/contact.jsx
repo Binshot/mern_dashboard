@@ -30,7 +30,7 @@ const Contact = () => {
                         </a>
                     </div>
                     <div className="contact-socials">
-                        <a href="https://www.facebook.com" target="_blank" rel="noreferrer"><img src={facebook} alt="facebook" /></a>
+                        <a href="https://www.facebook.com/profile.php?id=100064776607979" target="_blank" rel="noreferrer"><img src={facebook} alt="facebook" /></a>
                         <a href="https://www.twitter.com" target="_blank" rel="noreferrer"><img src={twitter} alt="facebook" /></a>
                         <a href="https://www.instagram.com" target="_blank" rel="noreferrer"><img src={instagram} alt="facebook" /></a>
                     </div>

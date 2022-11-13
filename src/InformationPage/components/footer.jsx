@@ -15,7 +15,7 @@ const Footer = () => {
                 <Link to="/contact">CONTACT US</Link>
             </div>
             <div className="footer-socials">
-                <a href="https://www.facebook.com" target="_blank" rel='noreferrer'>
+                <a href="https://www.facebook.com/profile.php?id=100064776607979" target="_blank" rel='noreferrer'>
                     <div className="social-link">
                         <img src={facebook} alt="" />
                     </div>

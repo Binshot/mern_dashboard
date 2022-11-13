@@ -458,6 +458,7 @@ function Officials(props) {
                                     <Tooltip title="Update" arrow>
                                         <button className="solidButton squareButton buttonBlue" style={{ marginRight: "16px" }}
                                             onClick={() => {
+                                                setAvatar(props.official.account_image)
                                                 setPosition(props.position)
                                                 setAddress(props.official.address)
                                                 setEmail(props.official.email)

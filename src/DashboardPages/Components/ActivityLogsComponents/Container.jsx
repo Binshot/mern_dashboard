@@ -14,7 +14,7 @@ function ActivityLog() {
             const json = await response.json()
             if (response.ok) {
                 activityDispatch({ type: 'SET_ACTIVITY', payload: json })
-                setRows([])
+                setRows(json)
             }
         }
 

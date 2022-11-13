@@ -43,7 +43,7 @@ const Residents = ({ residents, flag, action, del, returnResident }) => {
                             <img src={Update} alt="" />
                         </button>
                     </Tooltip>
-                    <Tooltip title="Change New Head of the Family" arrow>
+                    <Tooltip title="Change Head of the Family" arrow>
                         <button style={{ marginRight: "16px" }} className="solidButton squareButton buttonBrown"
                             onClick={() => {
                                 flag(true)
