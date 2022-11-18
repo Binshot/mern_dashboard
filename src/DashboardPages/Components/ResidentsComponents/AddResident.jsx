@@ -21,7 +21,9 @@ function AddResident(props) {
     const [changed, setChanged] = useState(false)
 
     const genderOptions = ['Male', 'Female'];
-    const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
+    const religionOptions = ['Catholic', 'Islam', 'Evangelicals', 'Iglesia ni Cristo', 'Non-Roman Catholic and Protestant',
+    'Aglipay', 'Seventh Day Adventist', 'Bible Baptist Church', 'United Church of Christ in the Philippines',
+    "Jehova's Witness", 'None', 'Others'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed', 'Separated', 'Live-in'];
     const educationAttainmentOptions = ['No Formal Education', 'Elementary', 'High School',
     "Bachelor's Degree", "Master's Degree", 'Doctorate or Higher'];
@@ -458,6 +460,7 @@ function AddResident(props) {
                                                         <h4>Religion</h4>
                                                         <Autocomplete
                                                             disablePortal
+                                                            ListboxProps={{ style: { maxHeight: '12rem' } }}
                                                             options={religionOptions}
                                                             renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
                                                             value={religion}

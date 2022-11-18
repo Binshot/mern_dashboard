@@ -29,7 +29,7 @@ function Header(props) {
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
-    const tagOption = ['Business', 'Work', 'Legal', 'Community'];
+    const tagOption = ['Community', 'Education', 'Livelihood', 'Recreation'];
 
     //FOR SNACKBAR
     const [snackbar, toggleSnackbar] = useState(false);

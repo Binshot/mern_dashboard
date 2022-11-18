@@ -35,10 +35,12 @@ const Table = (props) => {
     //Get Id of selected Resident
     const [eventTitle, setEventTitle] = useState(null);
     const [eventDescription, setEventDescription] = useState(null);
+    const [eventImage, setEventImage] = useState(null)
 
     useEffect(() => {
         setEventTitle(selectedEvent.eventTitle)
         setEventDescription(selectedEvent.eventDescription)
+        setEventImage(selectedEvent.eventImage)
     }, [selectedEvent])
 
 
@@ -78,7 +80,7 @@ const Table = (props) => {
     const [snackbar, toggleSnackbar] = useState(false);
     const [Deletesnackbar, toggleDeletesnackbar] = useState(false);
 
-    const tag = ['Business', 'Work', 'Legal', 'Community'];
+    const tag = ['Community', 'Education', 'Livelihood', 'Recreation'];
 
     const actionButton = (
         <React.Fragment>
@@ -181,12 +183,14 @@ const Table = (props) => {
         setIsLoading(true)
         e.preventDefault();
 
-        var eventImage = "";
+        // var eventImage = "";
         if (eventTitle && file) {
             const fileExtension = file.name.substring(file.name.lastIndexOf('.'));
             const regex = /[!*'();:@&=+$,/?%#\\[\]\s]/gm;
             const fileName = eventTitle.replaceAll(regex, "+").toLowerCase();
-            eventImage = fileName + fileExtension;
+            // eventImage = fileName + fileExtension;
+            const imageName = fileName + fileExtension;
+            setEventImage(imageName)
         }
 
         const eventObj = {
@@ -484,7 +488,10 @@ const Table = (props) => {
                                                     <div className="left">
                                                         <span>{imageURL ? name : selectedEvent.eventImage}</span>
                                                         <div />
-                                                        <button type="button" onClick={() => setPreviewImage(true)}>Preview</button>
+                                                        <button type="button" onClick={() => {
+                                                            setPreviewImage(true)
+                                                            setEventImage('')
+                                                            }}>Preview</button>
                                                     </div>
                                                     <span>{totalSize}</span>
                                                 </div>
