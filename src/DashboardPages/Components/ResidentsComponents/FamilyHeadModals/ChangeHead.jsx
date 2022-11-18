@@ -147,7 +147,7 @@ function ChangeHeadOfTheFamily(props) {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={familyMembers}
-
+                                    freeSolo
                                     renderInput={(params) => <TextField {...params} placeholder="Choose New Head of the Family" />}
                                     onChange={(e, newValue) => {
                                         setselectedMember(newValue.id)

@@ -36,6 +36,7 @@ function GraphHeader() {
                     <h4 style={{ marginBottom: "8px" }}>Category</h4>
                     <Autocomplete
                         disablePortal
+                        freeSolo
                         id="combo-box-demo"
                         options={tagOption}
                         sx={{ width: '100%' }}

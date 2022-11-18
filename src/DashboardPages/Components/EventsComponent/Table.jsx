@@ -348,6 +348,7 @@ const Table = (props) => {
                                             <h4>Tag</h4>
                                             {action != 'view' ?
                                                 <Autocomplete
+                                                    freeSolo
                                                     disablePortal
                                                     id="combo-box-demo"
                                                     options={tag}
@@ -491,7 +492,7 @@ const Table = (props) => {
                                                         <button type="button" onClick={() => {
                                                             setPreviewImage(true)
                                                             setEventImage('')
-                                                            }}>Preview</button>
+                                                        }}>Preview</button>
                                                     </div>
                                                     <span>{totalSize}</span>
                                                 </div>

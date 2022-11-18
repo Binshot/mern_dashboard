@@ -243,6 +243,7 @@ function Officials(props) {
                                     />
                                     <h4 style={{ marginBottom: "8px" }}>Position</h4>
                                     <Autocomplete
+                                        freeSolo
                                         disablePortal
                                         id="combo-box-demo"
                                         value={position}
@@ -269,7 +270,7 @@ function Officials(props) {
                                     </div>
                                     <div className="details">
                                         <div className="addOfficialDetailsHeader">
-                                            <img className="modalAvatar" style={{objectFit: "cover"}}
+                                            <img className="modalAvatar" style={{ objectFit: "cover" }}
                                                 src={officialAvatar
                                                     ? `https://drims-demo.herokuapp.com/api/uploads/${officialAvatar}`
                                                     : Avatar}
@@ -429,7 +430,7 @@ function Officials(props) {
                         return (
                             <div className="flex-column officialCard " key={props._id}>
                                 <div className="avatar">
-                                    <img className="modalAvatar"  style={{ width: "100px", height: "100px", borderRadius: "50%", objectFit: "cover" }}
+                                    <img className="modalAvatar" style={{ width: "100px", height: "100px", borderRadius: "50%", objectFit: "cover" }}
                                         src={props.official.account_image
                                             ? `https://drims-demo.herokuapp.com/api/uploads/${props.official.account_image}`
                                             : Avatar}

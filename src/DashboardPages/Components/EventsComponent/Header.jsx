@@ -293,6 +293,7 @@ function Header(props) {
                                     <h4>Tag</h4>
                                     <Autocomplete
                                         disablePortal
+                                        freeSolo
                                         id="combo-box-demo"
                                         options={tagOption}
                                         renderInput={(params) => <TextField {...params} placeholder="Choose Tag" error={emptyFields.includes('Event Tag') ? true : false} />}

@@ -215,6 +215,7 @@ function Header(props) {
                                 <h4 style={{ marginBottom: "8px" }}>Resident's Name</h4>
                                 <Autocomplete
                                     disablePortal
+                                    freeSolo
                                     id="combo-box-demo"
                                     options={membername}
                                     isOptionEqualToValue={(option, value) => option.label == value.label}
@@ -238,6 +239,7 @@ function Header(props) {
                                 <h4 style={{ marginBottom: "8px", marginTop: "16px" }}>Position</h4>
                                 <Autocomplete
                                     disablePortal
+                                    freeSolo
                                     id="combo-box-demo"
                                     options={positionOptions}
                                     renderInput={(params) => <TextField {...params}

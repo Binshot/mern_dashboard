@@ -15,7 +15,9 @@ function UpdateResident(props) {
 
     const [loading, setLoading] = useState(false)
     const genderOptions = ['Male', 'Female'];
-    const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
+    const religionOptions = ['Catholic', 'Islam', 'Evangelicals', 'Iglesia ni Cristo', 'Non-Roman Catholic and Protestant',
+        'Aglipay', 'Seventh Day Adventist', 'Bible Baptist Church', 'United Church of Christ in the Philippines',
+        "Jehova's Witness", 'None', 'Others'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed', 'Separated', 'Live-in'];
     const educationAttainment = ['No Formal Education', 'Elementary', 'High School',
         "Bachelor's Degree", "Master's Degree", 'Doctorate or Higher'];
@@ -316,6 +318,7 @@ function UpdateResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Gender</h4>
                                                         <Autocomplete
+                                                            freeSolo
                                                             style={{ width: "99%" }}
                                                             disablePortal
                                                             id="combo-box-demo"
@@ -339,10 +342,11 @@ function UpdateResident(props) {
                                                         <h4>Religion</h4>
                                                         <Autocomplete
                                                             disablePortal
-                                                            id="combo-box-demo"
+                                                            freeSolo
                                                             defaultValue={religion}
+                                                            ListboxProps={{ style: { maxHeight: '12rem' } }}
                                                             options={religionOptions}
-                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
+                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Religion" onChange={(e) => setReligion(e.target.value)} />}
                                                             onChange={(e, newValue) => {
                                                                 setReligion(newValue)
                                                                 setChanged(true)
@@ -421,6 +425,7 @@ function UpdateResident(props) {
                                                         <Autocomplete
                                                             disablePortal
                                                             id="combo-box-demo"
+                                                            freeSolo
                                                             defaultValue={civilStatus}
                                                             options={civilStatusOptions}
                                                             renderInput={(params) => <TextField {...params} placeholder="Choose Civil Status" />}
@@ -442,6 +447,7 @@ function UpdateResident(props) {
                                                         <Autocomplete
                                                             disablePortal
                                                             id="combo-box-demo"
+                                                            freeSolo
                                                             defaultValue={educationalAttainment}
                                                             options={educationAttainment}
                                                             renderInput={(params) => <TextField {...params} />}
@@ -466,6 +472,7 @@ function UpdateResident(props) {
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             value={occupation}
+                                                            freeSolo
                                                             options={residentOccupation}
                                                             renderInput={(params) => <TextField {...params} />}
                                                             onChange={(e, newValue) => {

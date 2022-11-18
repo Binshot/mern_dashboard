@@ -93,12 +93,13 @@ export default function App() {
                         <div className="rightAlign actions" style={{ cursor: "pointer" }} onClick={() => handlePrint()} >
                             <img src={Print} alt="" className="export" />
                         </div>
-                        <div style={{ display: "none" }}><ComponentToPrint ref={componentRef} list={[age,occupation,education, income,gender]}/></div>
+                        <div style={{ display: "none" }}><ComponentToPrint ref={componentRef} list={[age, occupation, education, income, gender]} /></div>
                     </div>
                     <div className='flex-row' style={{ marginBottom: " 24px" }}>
                         <div style={{ width: "30%", marginRight: "24px" }}>
                             <h4 style={{ marginBottom: "8px" }}>Category</h4>
                             <Autocomplete
+                                freeSolo
                                 disablePortal
                                 id="combo-box-demo"
                                 options={tagOption}
@@ -161,8 +162,8 @@ export default function App() {
                                     <YAxis width={10} allowDecimals={false} />
                                     <Tooltip />
                                     {/* <Legend align="right" verticalAlign="bottom" iconSize={20} /> */}
-                                    <Bar dataKey="value" fill="#288DD7" barSize={40} isAnimationActive={false}/>
-                                        
+                                    <Bar dataKey="value" fill="#288DD7" barSize={40} isAnimationActive={false} />
+
                                 </BarChart>
                             </ResponsiveContainer>
                         </>
@@ -262,7 +263,7 @@ export default function App() {
                     )}
                 </div> :
                 <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <CircularProgress size={100} sx={{color: "#0C1096"}}/>
+                    <CircularProgress size={100} sx={{ color: "#0C1096" }} />
                 </div>
             }
         </>

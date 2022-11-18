@@ -15,7 +15,9 @@ function ViewUpdate(props) {
     const [loading, setLoading] = useState(false)
 
     const genderOptions = ['Male', 'Female'];
-    const religionOptions = ['Catholic', 'Christian', 'Muslim', 'Other'];
+    const religionOptions = ['Catholic', 'Islam', 'Evangelicals', 'Iglesia ni Cristo', 'Non-Roman Catholic and Protestant',
+        'Aglipay', 'Seventh Day Adventist', 'Bible Baptist Church', 'United Church of Christ in the Philippines',
+        "Jehova's Witness", 'None', 'Others'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed', 'Separated', 'Live-in'];
     const educationAttainment = ['No Formal Education', 'Elementary', 'High School',
         "Bachelor's Degree", "Master's Degree", 'Doctorate or Higher'];
@@ -358,6 +360,7 @@ function ViewUpdate(props) {
                                                         disabled
                                                     /> :
                                                     <Autocomplete
+                                                        freesolo
                                                         style={{ width: "99%" }}
                                                         disablePortal
                                                         id="combo-box-demo"
@@ -386,10 +389,12 @@ function ViewUpdate(props) {
                                                         disabled
                                                     /> :
                                                     <Autocomplete
+                                                        freesolo
                                                         disablePortal
                                                         id="combo-box-demo"
                                                         value={religion}
                                                         options={religionOptions}
+                                                        ListboxProps={{ style: { maxHeight: '12rem' } }}
                                                         renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
                                                         onChange={(e, newValue) => {
                                                             setReligion(newValue)
@@ -492,6 +497,7 @@ function ViewUpdate(props) {
                                                         disabled
                                                     /> :
                                                     <Autocomplete
+                                                        freesolo
                                                         disablePortal
                                                         id="combo-box-demo"
                                                         value={civilStatus}
@@ -519,6 +525,7 @@ function ViewUpdate(props) {
                                                         disabled
                                                     /> :
                                                     <Autocomplete
+                                                        freesolo
                                                         disablePortal
                                                         id="combo-box-demo"
                                                         value={educationalAttainment}
@@ -548,6 +555,7 @@ function ViewUpdate(props) {
                                                         disabled
                                                     /> :
                                                     <Autocomplete
+                                                        freesolo
                                                         disablePortal
                                                         id="combo-box-demo"
                                                         value={occupation}
@@ -679,6 +687,7 @@ function ViewUpdate(props) {
                                                         disabled
                                                     /> :
                                                     <Autocomplete
+                                                        freesolo
                                                         disablePortal
                                                         id="combo-box-demo"
                                                         value={relationship}

@@ -22,11 +22,11 @@ function AddResident(props) {
 
     const genderOptions = ['Male', 'Female'];
     const religionOptions = ['Catholic', 'Islam', 'Evangelicals', 'Iglesia ni Cristo', 'Non-Roman Catholic and Protestant',
-    'Aglipay', 'Seventh Day Adventist', 'Bible Baptist Church', 'United Church of Christ in the Philippines',
-    "Jehova's Witness", 'None', 'Others'];
+        'Aglipay', 'Seventh Day Adventist', 'Bible Baptist Church', 'United Church of Christ in the Philippines',
+        "Jehova's Witness", 'None', 'Others'];
     const civilStatusOptions = ['Married', 'Single', 'Divorced', 'Widowed', 'Separated', 'Live-in'];
     const educationAttainmentOptions = ['No Formal Education', 'Elementary', 'High School',
-    "Bachelor's Degree", "Master's Degree", 'Doctorate or Higher'];
+        "Bachelor's Degree", "Master's Degree", 'Doctorate or Higher'];
     const familyMember = ["Parent", "Spouse", "Child", "Sibling", "Grandparent", "Grandchild", "Other Relative"];
     const residentOccupation = ["Student", "Unemployed", "Employed", "Self-Employed"]
     const [value, setValue] = React.useState(0);
@@ -201,7 +201,7 @@ function AddResident(props) {
         </React.Fragment>
     );
 
-    
+
 
     const re = new RegExp('^[0-9]*$')
     const ref = useRef();
@@ -219,10 +219,10 @@ function AddResident(props) {
         <div>
             <Snackbar
                 open={snackbar}
-                onClose={() => { 
-                    toggleSnackbar(false) 
+                onClose={() => {
+                    toggleSnackbar(false)
                     cancelForm()
-                    }}
+                }}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 autoHideDuration={2000}
                 message={`${lastName}, ${firstName} has been added!`}
@@ -299,7 +299,7 @@ function AddResident(props) {
                                             <div className="flex-column tab">
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
-                                                        <h4>Last Name<span style={{color: "#e7195a"}}>*</span></h4>
+                                                        <h4>Last Name<span style={{ color: "#e7195a" }}>*</span></h4>
                                                         <TextField
                                                             error={emptyFields.includes('Last Name') ? true : false}
                                                             id={'outlined-error'}
@@ -319,7 +319,7 @@ function AddResident(props) {
                                                         />
                                                     </div>
                                                     <div className="flex-column inputs">
-                                                        <h4>First Name<span style={{color: "#e7195a"}}>*</span></h4>
+                                                        <h4>First Name<span style={{ color: "#e7195a" }}>*</span></h4>
                                                         <TextField
                                                             error={emptyFields.includes('First Name') ? true : false}
                                                             id={'outlined-error'}
@@ -341,7 +341,7 @@ function AddResident(props) {
                                                 </div>
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
-                                                        <h4>Middle Name<span style={{color: "#e7195a"}}>*</span></h4>
+                                                        <h4>Middle Name<span style={{ color: "#e7195a" }}>*</span></h4>
                                                         <TextField
                                                             error={emptyFields.includes('Middle Name') ? true : false}
                                                             id={'outlined-error'}
@@ -381,7 +381,7 @@ function AddResident(props) {
                                                 </div>
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
-                                                        <h4>Birthday<span style={{color: "#e7195a"}}>*</span></h4>
+                                                        <h4>Birthday<span style={{ color: "#e7195a" }}>*</span></h4>
                                                         <TextField
 
                                                             error={emptyFields.includes('Birthday') ? true : false}
@@ -409,7 +409,7 @@ function AddResident(props) {
                                                         />
                                                     </div>
                                                     <div className="flex-column inputs">
-                                                        <h4>Birth Place<span style={{color: "#e7195a"}}>*</span></h4>
+                                                        <h4>Birth Place<span style={{ color: "#e7195a" }}>*</span></h4>
                                                         <TextField
                                                             error={emptyFields.includes('Birthplace') ? true : false}
                                                             id={'outlined-error'}
@@ -431,15 +431,17 @@ function AddResident(props) {
                                                 </div>
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
-                                                        <h4>Gender<span style={{color: "#e7195a"}}>*</span></h4>
+                                                        <h4>Gender<span style={{ color: "#e7195a" }}>*</span></h4>
                                                         <Autocomplete
-                                                            id={'outlined-error'}
+                                                            freesolo
+                                                            disablePortal
+                                                            id="combo-box-demo"
                                                             options={genderOptions}
+                                                            freeSolo
                                                             renderInput={
                                                                 (params) => <TextField {...params}
                                                                     placeholder="Choose Gender"
                                                                     error={emptyFields.includes('Gender') ? true : false}
-                                                                    id={'outlined-error'}
                                                                 />
                                                             }
                                                             value={gender}
@@ -459,10 +461,12 @@ function AddResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Religion</h4>
                                                         <Autocomplete
+                                                            freesolo
                                                             disablePortal
                                                             ListboxProps={{ style: { maxHeight: '12rem' } }}
                                                             options={religionOptions}
-                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Religion" />}
+                                                            freeSolo
+                                                            renderInput={(params) => <TextField {...params} placeholder="Choose Religion" onChange={(e) => setReligion(e.target.value)} />}
                                                             value={religion}
                                                             onChange={(event, e) => {
                                                                 setReligion(e)
@@ -518,7 +522,7 @@ function AddResident(props) {
                                                         />
                                                     </div>
                                                 </div>
-                                                <h4>Address<span style={{color: "#e7195a"}}>*</span></h4>
+                                                <h4>Address<span style={{ color: "#e7195a" }}>*</span></h4>
                                                 <TextField
                                                     error={emptyFields.includes('Address') ? true : false}
                                                     id={'outlined-error'}
@@ -544,6 +548,7 @@ function AddResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Civil Status</h4>
                                                         <Autocomplete
+                                                            freesolo
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={civilStatusOptions}
@@ -565,6 +570,7 @@ function AddResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Educational Attainment</h4>
                                                         <Autocomplete
+                                                            freesolo
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={educationAttainmentOptions}
@@ -588,6 +594,7 @@ function AddResident(props) {
                                                     <div className="flex-column inputs">
                                                         <h4>Occupation</h4>
                                                         <Autocomplete
+                                                            freesolo
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={residentOccupation}
@@ -709,8 +716,9 @@ function AddResident(props) {
                                             <div className="flex-column tab">
                                                 <div className="flex-row space-between">
                                                     <div className="flex-column inputs">
-                                                        <h4>Relationship<span style={{color: "#e7195a"}}>*</span></h4>
+                                                        <h4>Relationship<span style={{ color: "#e7195a" }}>*</span></h4>
                                                         <Autocomplete
+                                                            freesolo
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={familyMember}
